@@ -2,6 +2,7 @@ package clueGame;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -15,6 +16,13 @@ public class ClueGame {
 	private String legendFile;
 	private String layoutFile;
 	private Board b;
+	//New stuff from CluePlayer
+	public final int MAX_PLAYERS=5;
+	private ArrayList<Card> cards;
+	private ArrayList<Player> players;
+	private Solution solution;
+	
+	
 	private ClueGame game;
 	
 	// Constructors
@@ -89,6 +97,20 @@ public class ClueGame {
 	// setter for layout file
 	public void setLayoutFile(String layoutFile) {
 		this.layoutFile = layoutFile;
+	}
+	
+	//New methods from cluePlayer
+	public void deal(){
+		
+	}
+	public void selectAnswer(){
+		
+	}
+	public void handleSuggestions(String person, String room, String weapon, Player accusingPerson){
+		
+	}
+	public boolean checkAccusation(Solution solution){
+		return false;
 	}
 	
 }
