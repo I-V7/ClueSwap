@@ -144,6 +144,9 @@ public class ClueGame {
 	public ArrayList<Player> getPlayers(){
 		return this.players;
 	}
+	public ArrayList<Card> getCards(){
+		return this.cards;
+	}
 	//FOR TESTING
 	public static void main(String[] args){
 		ClueGame game=new ClueGame("Clue Board.csv", "Clue Legend.csv");

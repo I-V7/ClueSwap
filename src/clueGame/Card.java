@@ -6,4 +6,10 @@ public class Card {
 	public Card(){
 		
 	}
+	
+	
+	//GETTERS AND SETTERS
+	public CardType getCardType(){
+		return this.card;
+	}
 }
