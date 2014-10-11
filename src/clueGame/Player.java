@@ -17,7 +17,7 @@ public class Player {
 		
 	}
 	public Card disproveSuggestoiin(String person, String room, String weapon){
-		return new Card();
+		return new Card("","");
 	}
 	
 	// Be sure to trim the color, we don't want spaces around the name

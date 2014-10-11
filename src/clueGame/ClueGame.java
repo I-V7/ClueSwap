@@ -44,8 +44,10 @@ public class ClueGame {
 	// load the config files
 	public void loadConfigFiles() throws BadConfigFormatException {
 		loadRoomConfig();
-		loadPlayers();
 		b.loadBoardConfig(rooms);	
+		loadPlayers();
+		loadCards();
+	
 	}
 
 	
@@ -93,7 +95,6 @@ public class ClueGame {
 				String color=  line[1].substring(1);
 				int row = Integer.parseInt(line[2].substring(1));
 				int col = Integer.parseInt(line[3].substring(1));
-				System.out.println(name + " " + color + " " +row + " "+ col);
 				if(i!=humanPlayer){
 					players.add(new ComputerPlayer(name, color, row, col));
 				}else{
@@ -102,6 +103,22 @@ public class ClueGame {
 				i++;
 			}
 		
+		}catch(FileNotFoundException e){
+			System.out.println(e.getLocalizedMessage());
+		}
+	}
+	public void  loadCards(){
+		cards=new ArrayList<Card>();
+		try{
+			FileReader reader= new FileReader("cards.txt");
+			Scanner cardsFile= new Scanner(reader);
+			int i=0;
+			while(cardsFile.hasNextLine()){
+				String[] line=cardsFile.nextLine().split(",");
+				String name = line[0];
+				String cardType=  line[1].substring(1);
+				cards.add(new Card(name,cardType));
+			}
 		}catch(FileNotFoundException e){
 			System.out.println(e.getLocalizedMessage());
 		}

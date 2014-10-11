@@ -22,7 +22,6 @@ public class GameSetupTests {
 	@BeforeClass
 	public static void setup() throws BadConfigFormatException {
 		game = new ClueGame("Clue Board.csv", "Clue Legend.csv");
-		game.loadConfigFiles();
 		board = game.getBoard();
 	}
 	@Before
@@ -67,21 +66,26 @@ public class GameSetupTests {
 				if(card.getCardType()==CardType.WEAPON){
 					weaponCount++;
 				}else if(card.getCardType()==CardType.ROOM){
-					personCount++;
-				}else if(card.getCardType()==CardType.PERSON){
 					roomCount++;
+				}else if(card.getCardType()==CardType.PERSON){
+					personCount++;
 				}
 		}
 		Assert.assertEquals(weaponCount, 6);
 		Assert.assertEquals(personCount, 6);
 		Assert.assertEquals(roomCount, 9);
 		//test selection (names of cards)
-		//test person
-		Assert.assertTrue(cards.get(0).name.equals("Reverend Green"));
-		//test weapon
-		Assert.assertTrue(cards.get(0).name.equals("Wrench"));
 		//test room
-		Assert.assertTrue(cards.get(0).name.equals("Conservatory"));
+		Assert.assertTrue(cards.get(0).name.equals("Kitchen"));
+		Assert.assertTrue(cards.get(4).name.equals("Library"));
+
+		//test weapon
+		Assert.assertTrue(cards.get(9).name.equals("Candle Stick"));
+		Assert.assertTrue(cards.get(12).name.equals("Revolver"));
+		//test person
+		Assert.assertTrue(cards.get(15).name.equals("Miss Scarlett"));
+		Assert.assertTrue(cards.get(18).name.equals("Reverend Green"));
+		
 	}
 	
 	public void dealCardsTest(){
