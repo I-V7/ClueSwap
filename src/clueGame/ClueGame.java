@@ -2,6 +2,7 @@ package clueGame;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,6 +44,7 @@ public class ClueGame {
 	// load the config files
 	public void loadConfigFiles() throws BadConfigFormatException {
 		loadRoomConfig();
+		loadPlayers();
 		b.loadBoardConfig(rooms);	
 	}
 
@@ -78,7 +80,32 @@ public class ClueGame {
 		}
 		
 	}
-	
+	public void loadPlayers(){
+		players=new ArrayList<Player>();
+		int humanPlayer=1;
+		try{
+			FileReader reader= new FileReader("players.txt");
+			Scanner playersFile= new Scanner(reader);
+			int i=0;
+			while(playersFile.hasNextLine()){
+				String[] line=playersFile.nextLine().split(",");
+				String name = line[0];
+				String color=  line[1].substring(1);
+				int row = Integer.parseInt(line[2].substring(1));
+				int col = Integer.parseInt(line[3].substring(1));
+				System.out.println(name + " " + color + " " +row + " "+ col);
+				if(i!=humanPlayer){
+					players.add(new ComputerPlayer(name, color, row, col));
+				}else{
+					players.add(new HumanPlayer(name, color, row, col));
+				}
+				i++;
+			}
+		
+		}catch(FileNotFoundException e){
+			System.out.println(e.getLocalizedMessage());
+		}
+	}
 	// getter for Board
 	public Board getBoard() {
 		return b;
@@ -116,6 +143,10 @@ public class ClueGame {
 	//GETTERS AND SETTER FOR CLUE PLAYERS
 	public ArrayList<Player> getPlayers(){
 		return this.players;
+	}
+	//FOR TESTING
+	public static void main(String[] args){
+		ClueGame game=new ClueGame("Clue Board.csv", "Clue Legend.csv");
 	}
 	
 }

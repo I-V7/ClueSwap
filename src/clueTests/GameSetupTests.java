@@ -34,16 +34,23 @@ public class GameSetupTests {
 		//test Human
 		Assert.assertTrue(players.get(1).getName().equals("Professor Plum"));
 		Assert.assertTrue(players.get(1).getColorString().equals("purple"));
-		Assert.assertEquals(players.get(1).getLocation(), board.getCellAt(14, 0));
+		Assert.assertEquals(players.get(1).getRow(), 14);
+		Assert.assertEquals(players.get(1).getCol(), 0);
+		Assert.assertTrue(players.get(1).isHuman());
+
 		
 		//test CPU first and last cpu player
 		Assert.assertTrue(players.get(0).getName().equals("Miss Scarlett"));
 		Assert.assertTrue(players.get(0).getColorString().equals("red"));
-		Assert.assertEquals(players.get(0).getLocation(), board.getCellAt(6, 0));
+		Assert.assertEquals(players.get(0).getRow(), 6);
+		Assert.assertEquals(players.get(0).getCol(), 0);
+		Assert.assertFalse(players.get(0).isHuman());
 		
 		Assert.assertTrue(players.get(5).getName().equals("Mrs White"));
 		Assert.assertTrue(players.get(5).getColorString().equals("white"));
-		Assert.assertEquals(players.get(5).getLocation(), board.getCellAt(7, 19));
+		Assert.assertEquals(players.get(5).getRow(), 7);
+		Assert.assertEquals(players.get(5).getCol(), 19);
+		Assert.assertFalse(players.get(5).isHuman());
 	}
 	
 	public void loadCardsTest(){

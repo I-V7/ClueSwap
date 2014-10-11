@@ -6,10 +6,13 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public class Player {
-	private String name;
-	private Color color;
-	private BoardCell boardCell;
-	private ArrayList<Card> myCards;
+	protected String name;
+	protected Color color;
+	protected String colorString;
+	protected int row;
+	protected int col;
+	protected ArrayList<Card> myCards;
+	
 	public Player(){
 		
 	}
@@ -42,16 +45,25 @@ public class Player {
 		}
 		return result;
 	}
+	public boolean isHuman(){
+		return false;
+	}
 	
 	//GETTERS AND SETTERS
 	public String getName(){
 		return this.name;
 	}
 	public String getColorString(){
-		return color.toString();
+		return this.colorString;
 	}
-	public BoardCell getLocation(){
-		return this.boardCell;
+	public Color getColor(){
+		return this.color;
+	}
+	public int getRow(){
+		return this.row;
+	}
+	public int getCol(){
+		return this.col;
 	}
 	
 }
