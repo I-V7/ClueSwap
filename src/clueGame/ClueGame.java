@@ -17,7 +17,7 @@ public class ClueGame {
 	private String layoutFile;
 	private Board b;
 	//New stuff from CluePlayer
-	public final int MAX_PLAYERS=5;
+	public final int MAX_PLAYERS=6;
 	private ArrayList<Card> cards;
 	private ArrayList<Player> players;
 	private Solution solution;
@@ -42,7 +42,7 @@ public class ClueGame {
 
 	// load the config files
 	public void loadConfigFiles() throws BadConfigFormatException {
-		loadRoomConfig();	
+		loadRoomConfig();
 		b.loadBoardConfig(rooms);	
 	}
 
@@ -111,6 +111,11 @@ public class ClueGame {
 	}
 	public boolean checkAccusation(Solution solution){
 		return false;
+	}
+	
+	//GETTERS AND SETTER FOR CLUE PLAYERS
+	public ArrayList<Player> getPlayers(){
+		return this.players;
 	}
 	
 }
