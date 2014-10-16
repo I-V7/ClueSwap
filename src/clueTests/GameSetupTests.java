@@ -144,6 +144,7 @@ public class GameSetupTests {
 	public void dealCardsTest3()
 	{
 		ArrayList<Player> players = game.getPlayers();
+		game.deal();
 		System.out.println("players size is " + players.size());
 		Assert.assertEquals(3, players.get(0).getCards().size());
 		Assert.assertEquals(3, players.get(1).getCards().size());
