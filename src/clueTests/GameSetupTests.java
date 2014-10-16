@@ -3,7 +3,7 @@ package clueTests;
 
 import java.util.ArrayList;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -25,16 +25,25 @@ public class GameSetupTests {
 	static Card revolverCard;
 	static Card scarlettCard;
 	static Card greenCard;
+	static ArrayList<Card> cards;
+	
 	@BeforeClass
 	public static void setup() throws BadConfigFormatException {
-		game = new ClueGame("Clue Board.csv", "Clue Legend.csv");
+		
 		kitchenCard=new Card("Kitchen", "Room");
 		libraryCard=new  Card("Library", "Room");
 		candleCard=new Card("Candle Stick", "Weapon");
 		revolverCard= new Card("Revolver", "Weapon");
 		scarlettCard=new Card("Miss Scarlett", "Person");
 		greenCard=new Card("Reverend Green", "Person");
+		
+	}
+	@Before
+	public void init() throws BadConfigFormatException {
+		game = new ClueGame("Clue Board.csv", "Clue Legend.csv");
 		board = game.getBoard();
+		cards=game.getCards();
+		
 	}
 	@Test
 	public void loadPeopleTest(){
@@ -61,11 +70,12 @@ public class GameSetupTests {
 		Assert.assertEquals(players.get(5).getCol(), 19);
 		Assert.assertFalse(players.get(5).isHuman());
 	}
+	
 	@Test
 	public void loadCardsTest(){
-		ArrayList<Card> cards=game.getCards();
+		
 		//test size of deck
-		Assert.assertEquals(cards.size(), 21);
+		Assert.assertEquals(21,cards.size());
 		//test correct number of cards of types
 		int weaponCount=0;
 		int personCount=0;
@@ -97,8 +107,51 @@ public class GameSetupTests {
 		
 		
 	}
-	
+	@Test
+	//Test the amount of cards before and after the deal
 	public void dealCardsTest(){
+
+		//before the deal
+		Assert.assertEquals(21, cards.size());
+		game.deal();
+		Assert.assertEquals(0, cards.size());
+		
+	}
+	
+	@Test
+	//Test each players hand to see if any duplicate were dealt
+	public void dealCardsTest2()
+	{
+		ArrayList<Player> players = game.getPlayers();
+		ArrayList<Card> player1Cards;
+		ArrayList<Card> player2Cards;
+		for(int i=0; i<players.size();i++)
+		{
+			player1Cards = players.get(i).getCards();
+			for(int j = i + 1; j<players.size(); j++)
+			{
+				player2Cards = players.get(j).getCards();
+				for(int k=0; k < player2Cards.size(); k++)
+				{
+					Assert.assertFalse(player1Cards.contains(player2Cards.get(k)));
+				}
+			}
+		}
+	}
+	
+	@Test
+	//test that all the players have an even amount of cards
+	public void dealCardsTest3()
+	{
+		ArrayList<Player> players = game.getPlayers();
+		System.out.println("players size is " + players.size());
+		Assert.assertEquals(3, players.get(0).getCards().size());
+		Assert.assertEquals(3, players.get(1).getCards().size());
+		Assert.assertEquals(3, players.get(2).getCards().size());
+		
+		Assert.assertEquals(3, players.get(3).getCards().size());
+		Assert.assertEquals(3, players.get(4).getCards().size());
+		Assert.assertEquals(3, players.get(5).getCards().size());
 		
 	}
 }

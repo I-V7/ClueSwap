@@ -14,6 +14,7 @@ public class Player {
 	protected ArrayList<Card> myCards;
 	
 	public Player(){
+		myCards = new ArrayList<Card>();
 		
 	}
 	public Card disproveSuggestoiin(String person, String room, String weapon){
@@ -46,7 +47,11 @@ public class Player {
 		return result;
 	}
 	public boolean isHuman(){
-		return false;
+		return this instanceof HumanPlayer;
+	}
+	public void addCard(Card card)
+	{
+		myCards.add(card);
 	}
 	
 	//GETTERS AND SETTERS
@@ -64,6 +69,11 @@ public class Player {
 	}
 	public int getCol(){
 		return this.col;
+	}
+	public ArrayList<Card> getCards()
+	{
+		System.out.println("return cards");
+		return myCards;
 	}
 	
 }

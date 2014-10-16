@@ -20,17 +20,23 @@ public class ClueGame {
 	//New stuff from CluePlayer
 	public final int MAX_PLAYERS=6;
 	private ArrayList<Card> cards;
+	private String personAccusation;
+	private String roomAccusation;
+	private String weaponAccusation;
 	private ArrayList<Player> players;
 	private Solution solution;
+	
 	
 	
 	private ClueGame game;
 	
 	// Constructors
 	public ClueGame(String board, String legend) {//throws BadConfigFormatException {
+		
 		b = new Board(this);
 		rooms = new HashMap<Character,String>();
 		legendFile = legend;
+		
 		setLayoutFile(board);
 		try {
 			loadConfigFiles();
@@ -47,13 +53,12 @@ public class ClueGame {
 		b.loadBoardConfig(rooms);	
 		loadPlayers();
 		loadCards();
-	
+	    
 	}
 
 	
 
 	public void loadRoomConfig() throws BadConfigFormatException {
-		// TODO load the room configuration files
 
 		Scanner scan; 
 		String line = "";
@@ -146,15 +151,66 @@ public class ClueGame {
 	//New methods from cluePlayer
 	public void deal(){
 		
+		int playerNumber =0;
+		
+		selectAnswer();
+		int i =cards.size()-1;
+		while(!cards.isEmpty())
+		{
+			players.get(playerNumber%MAX_PLAYERS).addCard(cards.get(i));
+			cards.remove(i);
+			playerNumber++;
+			
+			i--;
+		}
+		System.out.println(players.get(0).getCards());
 	}
+	
 	public void selectAnswer(){
+
+		ArrayList<Card> personCards = new ArrayList<Card>();
+		ArrayList<Card> weaponCards = new ArrayList<Card>();
+		ArrayList<Card> roomCards = new ArrayList<Card>();
+		
+		for(Card card: cards)
+		{
+			if(card.getCardType() == CardType.PERSON)
+			{
+				personCards.add(card);
+			}
+			else if(card.getCardType() == CardType.WEAPON)
+			{
+				weaponCards.add(card);
+			}
+			else
+			{
+				roomCards.add(card);
+			}
+		}
+		
+		int randomCardNum = (int)(Math.random()*personCards.size());
+		solution.person = personCards.get(randomCardNum).getName();
+		cards.remove(personCards.get(randomCardNum));
+		
+		randomCardNum = (int)(Math.random()*weaponCards.size());
+		solution.weapon = weaponCards.get(randomCardNum).getName();
+		cards.remove(weaponCards.get(randomCardNum));
+		
+		randomCardNum = (int)(Math.random()*roomCards.size());
+		solution.room = roomCards.get(randomCardNum).getName();
+		cards.remove(roomCards.get(randomCardNum));
 		
 	}
 	public void handleSuggestions(String person, String room, String weapon, Player accusingPerson){
 		
 	}
 	public boolean checkAccusation(Solution solution){
-		return false;
+		if(solution.person == personAccusation && solution.weapon == weaponAccusation && solution.room == roomAccusation)
+		{
+			return true;
+		}
+		else
+			return false;
 	}
 	
 	//GETTERS AND SETTER FOR CLUE PLAYERS
@@ -164,9 +220,14 @@ public class ClueGame {
 	public ArrayList<Card> getCards(){
 		return this.cards;
 	}
+	public Solution getSolution()
+	{
+		return solution;
+	}
 	//FOR TESTING
 	public static void main(String[] args){
 		ClueGame game=new ClueGame("Clue Board.csv", "Clue Legend.csv");
+		
 	}
 	
 }
