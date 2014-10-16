@@ -3,7 +3,6 @@ package clueTests;
 import java.util.ArrayList;
 
 import org.junit.Assert;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -11,6 +10,7 @@ import org.junit.Test;
 import clueGame.BadConfigFormatException;
 import clueGame.Board;
 import clueGame.Card;
+import clueGame.CardType;
 import clueGame.ClueGame;
 import clueGame.Solution;
 
@@ -35,6 +35,7 @@ public class GameActionTests {
 		scarlettCard=new Card("Miss Scarlett", "Person");
 		greenCard=new Card("Reverend Green", "Person");
 		
+		
 	}
 	
 	@Before
@@ -48,25 +49,24 @@ public class GameActionTests {
 	@Test
 	public void correctAccusation()
 	{
-		Solution solution = new Solution();
+		Solution solution = game.getSolution();
 		solution.person = "Miss Scarlett";
 		solution.room = "Kitchen";
 		solution.weapon="Revolver";
-		Assert.assertTrue(solution.person == "Miss Scarlett");
-		Assert.assertTrue(solution.room == "Kitchen");
-		Assert.assertTrue(solution.weapon == "Revolver");
+		Card personCard = new Card("Miss Scarlett", "Person");
+		Card roomCard = new Card("Kitchen", "Room");
+		Card weaponCard = new Card("Revolver", "Weapon");
+		Card wrongPersonCard = new Card("Mrs White", "Person");
+		Card wrongWeaponCard = new Card("Hall", "Room");
+		Card wrongRoomCard = new Card("Rope", "Weapon");
 		
-		Assert.assertFalse(solution.person == "Professor Plum");
-		Assert.assertTrue(solution.room == "Kitchen");
-		Assert.assertTrue(solution.weapon == "Revolver");
 		
-		Assert.assertTrue(solution.person == "Miss Scarlett");
-		Assert.assertFalse(solution.room == "Hall");
-		Assert.assertTrue(solution.weapon == "Revolver");
+		Assert.assertTrue(game.checkAccusation(personCard, roomCard, weaponCard));
 		
-		Assert.assertTrue(solution.person == "Miss Scarlett");
-		Assert.assertTrue(solution.room == "Kitchen");
-		Assert.assertFalse(solution.weapon == "Wrench");
+		Assert.assertFalse(game.checkAccusation(wrongPersonCard, roomCard, weaponCard));
+	
+		Assert.assertFalse(game.checkAccusation(personCard, wrongRoomCard, weaponCard));
+		Assert.assertFalse(game.checkAccusation(personCard, roomCard, wrongWeaponCard));
 		
 	
 		

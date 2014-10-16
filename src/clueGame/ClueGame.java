@@ -43,6 +43,7 @@ public class ClueGame {
 			// TODO Auto-generated catch block
 			e.getMessage();
 		}
+		solution= new Solution();
 	}
 	public ClueGame() {}
 
@@ -186,7 +187,7 @@ public class ClueGame {
 				roomCards.add(card);
 			}
 		}
-		solution= new Solution();
+		
 		int randomCardNum = (int)(Math.random()*personCards.size());
 		System.out.println(personCards.get(randomCardNum).getName());
 		solution.person = personCards.get(randomCardNum).getName();
@@ -205,8 +206,15 @@ public class ClueGame {
 	public void handleSuggestions(String person, String room, String weapon, Player accusingPerson){
 		
 	}
-	public boolean checkAccusation(Solution solution){
-		if(solution.person == personAccusation && solution.weapon == weaponAccusation && solution.room == roomAccusation)
+	public boolean checkAccusation(Card person, Card room, Card weapon){
+		System.out.println(solution.person);
+		System.out.println(solution.room);
+		System.out.println(solution.weapon);
+		System.out.println(person.getName());
+		System.out.println(room.getName());
+		System.out.println(weapon.getName());
+		
+		if(solution.person.equals(person.getName()) && solution.weapon.equals(weapon.getName()) && solution.room.equals(room.getName()))
 		{
 			return true;
 		}
