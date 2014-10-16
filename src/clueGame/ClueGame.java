@@ -32,7 +32,6 @@ public class ClueGame {
 	
 	// Constructors
 	public ClueGame(String board, String legend) {//throws BadConfigFormatException {
-		
 		b = new Board(this);
 		rooms = new HashMap<Character,String>();
 		legendFile = legend;
@@ -43,6 +42,7 @@ public class ClueGame {
 			// TODO Auto-generated catch block
 			e.getMessage();
 		}
+		//deal();
 	}
 	public ClueGame() {}
 
@@ -227,8 +227,8 @@ public class ClueGame {
 	}
 	//FOR TESTING
 	public static void main(String[] args){
-		ClueGame game=new ClueGame("Clue Board.csv", "Clue Legend.csv");
-		game.deal();
+		//ClueGame game=new ClueGame("Clue Board.csv", "Clue Legend.csv");
+		//game.deal();
 		
 	}
 	
