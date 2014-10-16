@@ -36,7 +36,6 @@ public class ClueGame {
 		b = new Board(this);
 		rooms = new HashMap<Character,String>();
 		legendFile = legend;
-		
 		setLayoutFile(board);
 		try {
 			loadConfigFiles();
@@ -148,7 +147,7 @@ public class ClueGame {
 		this.layoutFile = layoutFile;
 	}
 	
-	//New methods from cluePlayer
+	//New methods from cluePlayer, new load configs are placed with load functions
 	public void deal(){
 		
 		int playerNumber =0;
@@ -187,9 +186,11 @@ public class ClueGame {
 				roomCards.add(card);
 			}
 		}
-		
+		solution= new Solution();
 		int randomCardNum = (int)(Math.random()*personCards.size());
+		System.out.println(personCards.get(randomCardNum).getName());
 		solution.person = personCards.get(randomCardNum).getName();
+		System.out.println(cards.get(4).name);
 		cards.remove(personCards.get(randomCardNum));
 		
 		randomCardNum = (int)(Math.random()*weaponCards.size());
@@ -227,6 +228,7 @@ public class ClueGame {
 	//FOR TESTING
 	public static void main(String[] args){
 		ClueGame game=new ClueGame("Clue Board.csv", "Clue Legend.csv");
+		game.deal();
 		
 	}
 	
