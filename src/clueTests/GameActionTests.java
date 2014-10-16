@@ -45,7 +45,7 @@ public class GameActionTests {
 		
 	}
 	
-	/*@Test
+	@Test
 	public void correctAccusation()
 	{
 		Solution solution = new Solution();
@@ -70,7 +70,7 @@ public class GameActionTests {
 		
 	
 		
-	}*/
+	}
 	
 
 }
