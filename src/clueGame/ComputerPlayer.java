@@ -45,3 +45,25 @@ public class ComputerPlayer extends Player{
 	}
 	
 }
+/*
+BoardCell nextLocation=null;
+//pick random target number
+int randomCardNum = (int)(Math.random()*targets.size());
+int i=0;
+//look for random target number
+for(BoardCell cell: targets){
+	if(cell.isRoom()){
+		RoomCell room=(RoomCell)cell;
+		if(room.getInitial()!=lastRoomVisited){
+			nextLocation=cell;
+			this.lastRoomVisited=room.getInitial();
+			break;
+		}
+		if(i == randomCardNum){
+			nextLocation = cell;
+		}
+	}else if(i == randomCardNum){
+		nextLocation = cell;
+	}
+	i++;
+*/
