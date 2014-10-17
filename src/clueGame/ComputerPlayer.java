@@ -20,7 +20,20 @@ public class ComputerPlayer extends Player{
 	}
 	@Override
 	public BoardCell pickLocation(Set<BoardCell> targets){
-		return board.getCellAt(4,4);
+		BoardCell nextLocation=null;
+		//pick random target number
+		int randomCardNum = (int)(Math.random()*targets.size());
+		int i=0;
+		//look for random target number
+		for(BoardCell cell: targets){
+			if(i == randomCardNum){
+				nextLocation = cell;
+				break;
+			}
+			i++;
+		}
+		
+		return nextLocation;
 	}
 	public void createSuggestion(){
 		

@@ -194,9 +194,9 @@ public class Board {
 	public void calcTargets(int x, int y, int moves) {
 		
 		BoardCell cell = getCellAt(x,y);
+		
 		visited.add(cell);
 		LinkedList<BoardCell> possMove = adjMtx.get(cell);
-		
 		// Base Case
 		for(BoardCell b : possMove) {
 			if(moves == 1 && !visited.contains(b)) {

@@ -187,9 +187,7 @@ public class ClueGame {
 		}
 		
 		int randomCardNum = (int)(Math.random()*personCards.size());
-		System.out.println(personCards.get(randomCardNum).getName());
 		solution.person = personCards.get(randomCardNum).getName();
-		System.out.println(cards.get(4).name);
 		cards.remove(personCards.get(randomCardNum));
 		
 		randomCardNum = (int)(Math.random()*weaponCards.size());
@@ -205,12 +203,6 @@ public class ClueGame {
 		
 	}
 	public boolean checkAccusation(Card person, Card room, Card weapon){
-		System.out.println(solution.person);
-		System.out.println(solution.room);
-		System.out.println(solution.weapon);
-		System.out.println(person.getName());
-		System.out.println(room.getName());
-		System.out.println(weapon.getName());
 		
 		if(solution.person.equals(person.getName()) && solution.weapon.equals(weapon.getName()) && solution.room.equals(room.getName()))
 		{

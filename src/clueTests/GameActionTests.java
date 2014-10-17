@@ -47,6 +47,7 @@ public class GameActionTests {
 	public void init() throws BadConfigFormatException {
 		game = new ClueGame("Clue Board.csv", "Clue Legend.csv");
 		board = game.getBoard();
+		board.calcAdjacencies();
 		cards=game.getCards();
 		
 	}
@@ -81,13 +82,13 @@ public class GameActionTests {
 		ComputerPlayer player=(ComputerPlayer)players.get(0); 
 		player.setRow(8);
 		player.setCol(18);
-		board.calcTargets(player.getRow(), player.getCol(), 2);
 		//possible locations
 		int loc_7_19Tot = 0;
 		int loc_7_17Tot = 0;
 		int loc_8_16Tot = 0;
 		// Run the test 100 times
-		for (int i=0; i<100; i++) {
+		for (int i=0; i< 100; i++) {
+			board.calcTargets(player.getRow(), player.getCol(), 2);
 			BoardCell selected = player.pickLocation(board.getTargets());
 			if (selected == board.getCellAt(7,19))
 				loc_7_19Tot++;
