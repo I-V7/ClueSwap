@@ -4,14 +4,18 @@ package clueGame;
 import java.awt.Color;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Set;
 
-public class Player {
+public abstract class Player {
 	protected String name;
 	protected Color color;
 	protected String colorString;
 	protected int row;
 	protected int col;
 	protected ArrayList<Card> myCards;
+	protected Board board;
+	//may or may not use
+	//protected BoardCell boardCell;
 	
 	public Player(){
 		myCards = new ArrayList<Card>();
@@ -53,6 +57,7 @@ public class Player {
 	{
 		myCards.add(card);
 	}
+	public abstract BoardCell pickLocation(Set<BoardCell> targets);
 	
 	//GETTERS AND SETTERS
 	public String getName(){
@@ -70,9 +75,15 @@ public class Player {
 	public int getCol(){
 		return this.col;
 	}
+	public void setRow(int row) {
+		this.row = row;
+	}
+	public void setCol(int col) {
+		this.col = col;
+	}
 	public ArrayList<Card> getCards()
 	{
-		System.out.println("return cards");
+		//System.out.println("return cards");
 		return myCards;
 	}
 	

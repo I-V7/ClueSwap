@@ -16,7 +16,7 @@ public class ClueGame {
 	Map<Character,String> rooms;
 	private String legendFile;
 	private String layoutFile;
-	private Board b;
+	private Board board;
 	//New stuff from CluePlayer
 	public final int MAX_PLAYERS=6;
 	private ArrayList<Card> cards;
@@ -27,12 +27,9 @@ public class ClueGame {
 	private Solution solution;
 	
 	
-	
-	private ClueGame game;
-	
 	// Constructors
 	public ClueGame(String board, String legend) {//throws BadConfigFormatException {
-		b = new Board(this);
+		this.board = new Board(this);
 		rooms = new HashMap<Character,String>();
 		legendFile = legend;
 		setLayoutFile(board);
@@ -51,7 +48,7 @@ public class ClueGame {
 	// load the config files
 	public void loadConfigFiles() throws BadConfigFormatException {
 		loadRoomConfig();
-		b.loadBoardConfig(rooms);	
+		board.loadBoardConfig(rooms);	
 		loadPlayers();
 		loadCards();
 	    
@@ -131,7 +128,7 @@ public class ClueGame {
 	}
 	// getter for Board
 	public Board getBoard() {
-		return b;
+		return board;
 	}
 	
 	// getter for rooms

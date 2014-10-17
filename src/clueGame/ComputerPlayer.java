@@ -10,14 +10,17 @@ public class ComputerPlayer extends Player{
 		
 	}
 	public ComputerPlayer(String name, String color, int row, int col){
+		super();
 		this.name=name;
 		setPlayerColor(color);
 		this.colorString=color;
 		this.row=row;
 		this.col=col;
+		//this.boardCell=
 	}
-	public void pickLocation(Set<BoardCell> targets){
-		
+	@Override
+	public BoardCell pickLocation(Set<BoardCell> targets){
+		return board.getCellAt(4,4);
 	}
 	public void createSuggestion(){
 		
@@ -25,4 +28,5 @@ public class ComputerPlayer extends Player{
 	public void updateSeen(Card seen){
 		
 	}
+	
 }
