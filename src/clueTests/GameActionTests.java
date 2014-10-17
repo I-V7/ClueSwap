@@ -119,16 +119,16 @@ public class GameActionTests {
 		//walkway locations
 		int otherLocations = 0;
 		// Run the test 100 times
-		for (int i=0; i< 30; i++) {
+		for (int i=0; i< 100; i++) {
 			board.calcTargets(player.getRow(), player.getCol(), 2);
 			BoardCell selected = player.pickLocation(board.getTargets());
-			if (selected == board.getCellAt(5,27))
+			if (selected == board.getCellAt(5,17))
 				roomLoc_6_16++;
 			else
 				otherLocations++;
 		}
 		// Ensure we have 100 total selections (fail should also ensure)
-		assertEquals(30, roomLoc_6_16);
+		assertEquals(100, roomLoc_6_16);
 	}
 
 }

@@ -26,9 +26,11 @@ public class ComputerPlayer extends Player{
 		int i=0;
 		//look for random target number
 		for(BoardCell cell: targets){
-			if(i == randomCardNum){
-				nextLocation = cell;
+			if(cell.isRoom()){
+				nextLocation=cell;
 				break;
+			}else if(i == randomCardNum){
+				nextLocation = cell;
 			}
 			i++;
 		}
