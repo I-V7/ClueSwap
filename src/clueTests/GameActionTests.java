@@ -120,6 +120,8 @@ public class GameActionTests {
 		int otherLocations = 0;
 		// Run the test 100 times
 		for (int i=0; i< 100; i++) {
+			//do this so player doesnt think room is last room visited
+			player.setLastRoomVisited('X');
 			board.calcTargets(player.getRow(), player.getCol(), 2);
 			BoardCell selected = player.pickLocation(board.getTargets());
 			if (selected == board.getCellAt(5,17))
@@ -155,6 +157,7 @@ public class GameActionTests {
 		// Ensure we have 100 total selections (fail should also ensure)
 		assertEquals(100,otherLocations+roomLoc_6_16);
 		Assert.assertNotEquals(100, roomLoc_6_16);
+		//assure other locations is more than room
 		assertTrue(otherLocations > roomLoc_6_16);
 	}
 }

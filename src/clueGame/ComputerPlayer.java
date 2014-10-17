@@ -27,8 +27,15 @@ public class ComputerPlayer extends Player{
 		//look for random target number
 		for(BoardCell cell: targets){
 			if(cell.isRoom()){
-				nextLocation=cell;
-				break;
+				RoomCell room=(RoomCell)cell;
+				if(room.getInitial()!=lastRoomVisited){
+					nextLocation=cell;
+					this.lastRoomVisited=room.getInitial();
+					break;
+				}
+				if(i == randomCardNum){
+					nextLocation = cell;
+				}
 			}else if(i == randomCardNum){
 				nextLocation = cell;
 			}
@@ -43,27 +50,7 @@ public class ComputerPlayer extends Player{
 	public void updateSeen(Card seen){
 		
 	}
-	
-}
-/*
-BoardCell nextLocation=null;
-//pick random target number
-int randomCardNum = (int)(Math.random()*targets.size());
-int i=0;
-//look for random target number
-for(BoardCell cell: targets){
-	if(cell.isRoom()){
-		RoomCell room=(RoomCell)cell;
-		if(room.getInitial()!=lastRoomVisited){
-			nextLocation=cell;
-			this.lastRoomVisited=room.getInitial();
-			break;
-		}
-		if(i == randomCardNum){
-			nextLocation = cell;
-		}
-	}else if(i == randomCardNum){
-		nextLocation = cell;
+	public void setLastRoomVisited(char room){
+		lastRoomVisited=room;
 	}
-	i++;
-*/
+}
