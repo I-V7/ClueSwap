@@ -106,5 +106,29 @@ public class GameActionTests {
 		assertTrue(loc_7_17Tot > 10);
 		assertTrue(loc_8_16Tot > 10);
 	}
+	@Test
+	public void testRoomTargetSelection(){
+		ArrayList<Player> players=game.getPlayers();
+		//I know player 0 is computer since i assigned which player is human for the time being
+		ComputerPlayer player=(ComputerPlayer)players.get(0); 
+		player.setRow(6);
+		player.setCol(16);
+		//possible locations
+		//room location
+		int roomLoc_6_16=0;
+		//walkway locations
+		int otherLocations = 0;
+		// Run the test 100 times
+		for (int i=0; i< 30; i++) {
+			board.calcTargets(player.getRow(), player.getCol(), 2);
+			BoardCell selected = player.pickLocation(board.getTargets());
+			if (selected == board.getCellAt(5,27))
+				roomLoc_6_16++;
+			else
+				otherLocations++;
+		}
+		// Ensure we have 100 total selections (fail should also ensure)
+		assertEquals(30, roomLoc_6_16);
+	}
 
 }
