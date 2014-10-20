@@ -190,8 +190,9 @@ public class GameActionTests {
 		//assure other locations is more than room
 		assertTrue(otherLocations > roomLoc_6_16);
 	}
+	//Disprove test for a single player
+	//test that one player returns only possible card and that that a player randomly chooses a card
 	@Test
-	//disprove a couple suggestions
 	public void disproveTest()
 	{
 		Solution solution = game.getSolution();
@@ -211,22 +212,58 @@ public class GameActionTests {
 		players.get(4).setCardHand(player4sHand);
 		players.get(5).setCardHand(player5sHand);
 	
-		for(Player p: players)
-		{
-			for(Card card: p.getCards())
-			{
-				alreadyShown.add(card);
-			}
-		}
+		//TESTS ASSERTIONS
+		//disprove suggestions for different players
+		//room
+		assertTrue("Kitchen".equals(players.get(0).disproveSuggestion("Professor Plum", "Kitchen", "Wrench").getName()));
+		//weapon
+	    assertTrue("Wrench".equals(players.get(2).disproveSuggestion("Professor Plum", "Kitchen", "Wrench").getName()));
+		//person
+		assertTrue("Miss Scarlett".equals(players.get(3).disproveSuggestion("Miss Scarlett", "Kitchen", "Wrench").getName()));
+		//null
+		assertEquals(null,players.get(4).disproveSuggestion("Miss Scarlett",  "Kitchen" , "Wrench"));
 		alreadyShown.remove(players.get(2).getCards().get(2));
 		
-		//only possible card
-		alreadyShown.remove(players.get(2).getCards().get(1));
+		//randomly choose between 2 cards
+		int kitchen=0;
+		int cMustard=0;
+		for(int i=0; i < 20; i++){
+			if("Kitchen".equals(players.get(0).disproveSuggestion("Colonel Mustard", "Kitchen", "Wrench").getName())){
+				kitchen++;
+			}else if("Colonel Mustard".equals(players.get(0).disproveSuggestion("Colonel Mustard", "Kitchen", "Wrench").getName())){
+				cMustard++;
+			}
+		}
+		assertTrue( kitchen > 5 );
+		assertTrue( cMustard > 5);
+	}
+	@Test
+	//test that players are queried in order
+	public void PlayerOrderTest()
+	{
+		Solution solution = game.getSolution();
+		solution.person = "Mrs White";
+		solution.room = "Hall";
+		solution.weapon = "Rope";
+		ArrayList<Player> players = game.getPlayers();
+		Player player = game.getPlayers().get(0);
+		Card shownCard = game.handleSuggestions("", "", "", player);
+		players.get(0).setCardHand(player0sHand);
+		players.get(1).setCardHand(player1sHand);
+		players.get(2).setCardHand(player2sHand);
+		players.get(3).setCardHand(player3sHand);
+		players.get(4).setCardHand(player4sHand);
+		players.get(5).setCardHand(player5sHand);
+	
+		//test that the last player is queried
+		shownCard = game.handleSuggestions("Mrs White", "Hall", "Lead Pipe", player);
+		Assert.assertTrue(players.get(5).getCards().contains(shownCard));
 		
-		Card shownCard = game.handleSuggestions("Mrs White", "Dinning Room", "Wrench", player);
+		//test that a middle player is queried
+		shownCard = game.handleSuggestions("Mrs White", "Hall", "Wrench", player);
+		Assert.assertTrue(players.get(2).getCards().contains(shownCard));
 		
-		//randomly choose between 2
-		Assert.assertTrue(shownCard.getName().equals("Dinning Room") || shownCard.getName().equals("Wrench"));
 		
 	}
+	
 }
