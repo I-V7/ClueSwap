@@ -29,6 +29,12 @@ public class GameActionTests {
 	static Card scarlettCard;
 	static Card greenCard;
 	static ArrayList<Card> cards;
+	static ArrayList<Card> player0sHand;
+	static ArrayList<Card> player1sHand;
+	static ArrayList<Card> player2sHand;
+	static ArrayList<Card> player3sHand;
+	static ArrayList<Card> player4sHand;
+	static ArrayList<Card> player5sHand;
 	
 	@BeforeClass
 	public static void setup() throws BadConfigFormatException {
@@ -40,7 +46,6 @@ public class GameActionTests {
 		scarlettCard=new Card("Miss Scarlett", "Person");
 		greenCard=new Card("Reverend Green", "Person");
 		
-		
 	}
 	
 	@Before
@@ -49,6 +54,31 @@ public class GameActionTests {
 		board = game.getBoard();
 		board.calcAdjacencies();
 		cards=game.getCards();
+		player0sHand = new ArrayList<Card>();
+		player1sHand = new ArrayList<Card>();
+		player2sHand = new ArrayList<Card>();
+		player3sHand = new ArrayList<Card>();
+		player4sHand = new ArrayList<Card>();
+		player5sHand = new ArrayList<Card>();
+		
+		player0sHand.add(new Card("Kitchen","Room"));
+		player0sHand.add(new Card("Colonel Mustard","Person"));
+		player0sHand.add(new Card("Revolver","Weapon"));
+		player1sHand.add(new Card("Ballroom","Room"));
+		player1sHand.add(new Card("Lounge","Room"));
+		player1sHand.add(new Card("Reverend Green","Person"));
+		player2sHand.add(new Card("Conservatory","Room"));
+		player2sHand.add(new Card("Dining Room","Room"));
+		player2sHand.add(new Card("Wrench","Weapon"));
+		player3sHand.add(new Card("Billiard Room","Room"));
+		player3sHand.add(new Card("Candle Stick","Weapon"));
+		player3sHand.add(new Card("Miss Scarlett","Person"));
+		player4sHand.add(new Card("Library","Room"));
+		player4sHand.add(new Card("Knife","Weapon"));
+		player4sHand.add(new Card("Professor Plum","Person"));
+		player5sHand.add(new Card("Study","Room"));
+		player5sHand.add(new Card("Lead Pipe","Weapon"));
+		player5sHand.add(new Card("Mrs Peacock","Person"));
 		
 	}
 	
@@ -159,5 +189,46 @@ public class GameActionTests {
 		Assert.assertNotEquals(100, roomLoc_6_16);
 		//assure other locations is more than room
 		assertTrue(otherLocations > roomLoc_6_16);
+	}
+	@Test
+	//disprove a couple suggestions
+	public void disproveTest()
+	{
+		Solution solution = game.getSolution();
+		ArrayList<Card> playerHand = new ArrayList<Card>();
+		ArrayList<Player> players = game.getPlayers();
+		ArrayList<Card> testShownCards = new ArrayList<Card>();
+		solution.person = "Mrs White";
+		solution.room = "Hall";
+		solution.weapon = "Rope";
+		Player player = game.getPlayers().get(0);
+		ArrayList<Card> alreadyShown = new ArrayList<Card>();
+		//set up card scenarios 
+		players.get(0).setCardHand(player0sHand);
+		players.get(1).setCardHand(player1sHand);
+		players.get(2).setCardHand(player2sHand);
+		players.get(3).setCardHand(player3sHand);
+		players.get(4).setCardHand(player4sHand);
+		players.get(5).setCardHand(player5sHand);
+	
+		for(Player p: players)
+		{
+			for(Card card: p.getCards())
+			{
+				alreadyShown.add(card);
+			}
+		}
+		alreadyShown.remove(players.get(2).getCards().get(2));
+		
+		
+		
+		//only possible card
+		alreadyShown.remove(players.get(2).getCards().get(1));
+		
+		Card shownCard = game.handleSuggestions("Mrs White", "Dinning Room", "Wrench", player);
+		
+		//randomly choose between 2
+		Assert.assertTrue(shownCard.getName().equals("Dinning Room") || shownCard.getName().equals("Wrench"));
+		
 	}
 }
