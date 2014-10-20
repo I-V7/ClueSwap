@@ -47,12 +47,6 @@ public class GameActionTests {
 		scarlettCard=new Card("Miss Scarlett", "Person");
 		greenCard=new Card("Reverend Green", "Person");
 		
-		
-		
-		
-		
-		
-		
 	}
 	
 	@Before
@@ -88,7 +82,7 @@ public class GameActionTests {
 		player5sHand.add(new Card("Mrs Peacock","Person"));
 		
 	}
-/*	
+
 	@Test
 	public void correctAccusation()
 	{
@@ -197,67 +191,101 @@ public class GameActionTests {
 		//assure other locations is more than room
 		assertTrue(otherLocations > roomLoc_6_16);
 	}
-*/	
+
 	@Test
+	//disprove a couple suggestions
 	public void disproveTest()
 	{
 		Solution solution = game.getSolution();
 		ArrayList<Card> playerHand = new ArrayList<Card>();
 		ArrayList<Player> players = game.getPlayers();
 		ArrayList<Card> testShownCards = new ArrayList<Card>();
-		solution.person = "Miss Scarlet";
-		solution.room = "Kitchen";
-		solution.weapon = "Knife";
+		solution.person = "Mrs White";
+		solution.room = "Hall";
+		solution.weapon = "Rope";
 		Player player = game.getPlayers().get(0);
-				System.out.println("before");
-		playerHand.add(new Card("Conservatory", "Room"));
-		playerHand.add(new Card("Billiard Room", "Room"));
-		playerHand.add(new Card("Revolver", "Weapon"));
-		players.get(2).setCardHand(playerHand);
+		ArrayList<Card> alreadyShown = new ArrayList<Card>();
+		//set up card scenarios 
+		players.get(0).setCardHand(player0sHand);
+		players.get(1).setCardHand(player1sHand);
+		players.get(2).setCardHand(player2sHand);
+		players.get(3).setCardHand(player3sHand);
+		players.get(4).setCardHand(player4sHand);
+		players.get(5).setCardHand(player5sHand);
+	
+		for(Player p: players)
+		{
+			for(Card card: p.getCards())
+			{
+				alreadyShown.add(card);
+			}
+		}
+		alreadyShown.remove(players.get(2).getCards().get(2));
 		
-		testShownCards.add(players.get(2).getCards().get(0));
-		testShownCards.add(players.get(2).getCards().get(1));
-		game.setShownCards(testShownCards);
-		Card shownCard = game.handleSuggestions("Miss Scarlett", "Kitchen", "Revolver", player);
-		System.out.println("after");
+		
+		
 		//only possible card
-		System.out.println(shownCard);
-		Assert.assertTrue(shownCard.getName().equals("Revolver"));
+		alreadyShown.remove(players.get(2).getCards().get(1));
 		
-		
-		testShownCards.clear();
-		testShownCards.add(players.get(2).getCards().get(0));
-		
-		shownCard = game.handleSuggestions("Miss Scarlett", "Billiard Room", "Revolver", player);
+		Card shownCard = game.handleSuggestions("Mrs White", "Dinning Room", "Wrench", player);
 		
 		//randomly choose between 2
-		Assert.assertTrue(shownCard.getName().equals("Billiard Room") || shownCard.getName().equals("Revolver"));
+		Assert.assertTrue(shownCard.getName().equals("Dinning Room") || shownCard.getName().equals("Wrench"));
 		
 	}
 	
 	@Test
-	//HELP!!!!!
 	//test that players are queried in order
 	public void PlayerOrderTest()
 	{
 		Solution solution = game.getSolution();
-		solution.person = "";
-		solution.room = "";
-		solution.weapon = "";
+		solution.person = "Mrs White";
+		solution.room = "Hall";
+		solution.weapon = "Rope";
 		ArrayList<Player> players = game.getPlayers();
 		Player player = game.getPlayers().get(0);
 		Card shownCard = game.handleSuggestions("", "", "", player);
+		players.get(0).setCardHand(player0sHand);
+		players.get(1).setCardHand(player1sHand);
+		players.get(2).setCardHand(player2sHand);
+		players.get(3).setCardHand(player3sHand);
+		players.get(4).setCardHand(player4sHand);
+		players.get(5).setCardHand(player5sHand);
+	
+		//test that the last player is queried
+		shownCard = game.handleSuggestions("Mrs White", "Hall", "Lead Pipe", player);
+		Assert.assertTrue(players.get(5).getCards().contains(shownCard));
 		
-		Assert.assertTrue(shownCard.getName().equals(""));
+		//test that a middle player is queried
+		shownCard = game.handleSuggestions("Mrs White", "Hall", "Wrench", player);
+		Assert.assertTrue(players.get(2).getCards().contains(shownCard));
 		
 		
 	}
 	
 	@Test
-	//HELP!!!!!!!!!!
 	//test involving human player
 	public void humanDisproveTest()
 	{
+		Solution solution = game.getSolution();
+		solution.person = "Mrs White";
+		solution.room = "Hall";
+		solution.weapon = "Rope";
+		ArrayList<Player> players = game.getPlayers();
+		Player player = game.getPlayers().get(0);
+		players.get(0).setCardHand(player0sHand);
+		players.get(1).setCardHand(player1sHand);
+		players.get(2).setCardHand(player2sHand);
+		players.get(3).setCardHand(player3sHand);
+		players.get(4).setCardHand(player4sHand);
+		players.get(5).setCardHand(player5sHand);
+	
+		//With no GUI i wasn't sure how to prompt the user to select a card to show
+		//so I printed out the list of possible cards the user could show
+		//and then wait for them to enter the name of a card
+		Card shownCard = game.handleSuggestions("Reverend Green", "Lounge", "Lead Pipe", player);
+		players.get(1).disproveSuggestion("Reverend Green", "Lounge", "Lead Pipe");
+		
 		
 	}
 	@Test
@@ -268,7 +296,7 @@ public class GameActionTests {
 		ArrayList<Card> playerHand = new ArrayList<Card>();
 		solution.person = "Miss Scarlett";
 		solution.room = "Kitchen";
-		solution.weapon = "Revolver";
+		solution.weapon = "";
 		ArrayList<Player> players = game.getPlayers();
 		Player player = players.get(0);
 		ArrayList<Card> shownCards = new ArrayList<Card>();
@@ -280,16 +308,9 @@ public class GameActionTests {
 		players.get(4).setCardHand(player4sHand);
 		players.get(5).setCardHand(player5sHand);
 		
-		System.out.println("after hand change");
-		for(Card card: players.get(0).getCards())
-		{
-			
-			System.out.println(card.getName());
-		}
+		//player0 has the revolver and kitchen cards so the result should be null
 	    Card shownCard = game.handleSuggestions("Mrs White", "Kitchen", "Revolver", player);
-	    //System.out.println(",,,,,,,,,'''''''''" + shownCard.getName());
-		//test that the player doesn't have the card that is shown 
-		//(player doesn't show themselves their own card)
+	    
 	    Assert.assertNull(shownCard);
 		
 		
@@ -303,12 +324,13 @@ public class GameActionTests {
 	{
 		Solution solution = game.getSolution();
 		ArrayList<Card> alreadyShown = new ArrayList<Card>();
-		solution.person = "";
-		solution.room = "";
-		solution.weapon = "";
+		solution.person = "Mrs White";
+		solution.room = "Hall";
+		solution.weapon = "Rope";
 		ArrayList<Player> players = game.getPlayers();
 		Player player = players.get(0);
 		
+		//set up card scenario
 		players.get(0).setCardHand(player0sHand);
 		players.get(1).setCardHand(player1sHand);
 		players.get(2).setCardHand(player2sHand);
@@ -324,14 +346,13 @@ public class GameActionTests {
 			}
 		}
 		
+		//set player's board location
 		game.setShownCards(alreadyShown);
 		player.setRow(28);
 		player.setCol(0);
 		
 		String[] suggestion = ((ComputerPlayer) player).createSuggestion(game.getStringToCard(), game.getBoard());
 		Assert.assertEquals(3, suggestion.length);
-		System.out.println(suggestion[0] +"/////////");
-		System.out.println(suggestion[1]);
         Assert.assertTrue(suggestion[0].equals("Mrs White"));
         Assert.assertTrue(suggestion[1].equals("Rope"));
         Assert.assertTrue(suggestion[2].equals("Hall"));
@@ -343,9 +364,9 @@ public class GameActionTests {
 	{
 		Solution solution = game.getSolution();
 		ArrayList<Card> playerHand = new ArrayList<Card>();
-		solution.person = "";
-		solution.room = "";
-		solution.weapon = "";
+		solution.person = "Mrs White";
+		solution.room = "Hall";
+		solution.weapon = "Rope";
 		ArrayList<Player> players = game.getPlayers();
 		ArrayList<Card> testShownCards = new ArrayList<Card>();
 		HashMap<String, Card> cards = new HashMap<String,Card>();

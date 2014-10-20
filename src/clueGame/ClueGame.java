@@ -22,7 +22,7 @@ public class ClueGame {
 	private ArrayList<Card> cards;
 	private ArrayList<Player> players;
 	private ArrayList<Card> shownCards;
-	private Map<String,Card> cardStringToCard;
+	static Map<String,Card> cardStringToCard;
 	private Solution solution;
 	private boolean winner;
 	
@@ -165,10 +165,7 @@ public class ClueGame {
 			
 			i--;
 		}
-		for(Card card: players.get(0).getCards())
-		{
-			System.out.println(card.getName());
-		}
+		
 	}
 	
 	public void selectAnswer(){
@@ -210,39 +207,34 @@ public class ClueGame {
 	
 	public Card handleSuggestions(String person, String room, String weapon, Player accusingPerson)
 	{
-		boolean cardFound = false;
-		Card wrongCard = null;
+		
+		String firstPlayer = "";
+		HashMap<String,Card> playersThatCanDisprove = new HashMap<String,Card>();
 		
 		for(Player player: players)
 		{
-			
 			if(!player.getName().equals(accusingPerson.getName()))
 			{
-				System.out.println(player.getName() + " name and accusing person is " + accusingPerson.getName());
 				for(Card card: player.getCards())
 				{
-					
 					if(!shownCards.contains(card) && (card.getName().equals(person) || card.getName().equals(weapon) || card.getName().equals(room)))
 					{
-						wrongCard = card;
-						cardFound = true;
+						if(firstPlayer == "")
+						{
+							firstPlayer = player.getName();
+						}
+						playersThatCanDisprove.put(player.getName(), card);
 						break;
 					}
 				}
-				
-				
-			}	if(cardFound)
-				{
-					break;
-				}		
+			}		
 		}
-		shownCards.add(wrongCard);
+		shownCards.add(playersThatCanDisprove.get(firstPlayer));
 		for(Player player: players)
 		{
 			player.setShownCards(shownCards);
 		}
-		//System.out.println("wrong card is " + wrongCard.getName()+"/////...........//////");
-		return wrongCard;
+		return playersThatCanDisprove.get(firstPlayer);
 	}
 	public boolean checkAccusation(Card person, Card room, Card weapon)
 	{

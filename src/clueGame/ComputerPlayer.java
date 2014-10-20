@@ -48,6 +48,7 @@ public class ComputerPlayer extends Player{
 		
 		return nextLocation;
 	}
+	
 	public String[] createSuggestion(HashMap<String, Card> allCards, Board board){
 		
 		ArrayList<Card> alreadyGuessedCards = new ArrayList<Card>();
@@ -55,7 +56,7 @@ public class ComputerPlayer extends Player{
 		ArrayList<Card> weaponCards = new ArrayList<Card>();
 		
 		String[] suggestions= new String[3];
-		
+		//put all of the players cards and cards they have already seen into one list
 		for(Card card: myCards)
 		{
 			System.out.println("mycard ....." +card.getName());
@@ -82,6 +83,7 @@ public class ComputerPlayer extends Player{
 			}
 		}
 		
+		//divide all of the cards into their groups (person, weapon)
 		Iterator it = allCards.entrySet().iterator();
 	    while (it.hasNext()) 
 	    {
@@ -100,36 +102,19 @@ public class ComputerPlayer extends Player{
 	       
 	    }
 	    
-	    for(int i=0; i<alreadyGuessedCards.size(); i++)
-	    {
-	    	System.out.println("********" + alreadyGuessedCards.get(i).getName());
-	    	
-	    }
-	    for(int i=0; i<shownCards.size(); i++)
-	    {
-	    	System.out.println("------------" + shownCards.get(i).getName());
-	    	
-	    }
-	    
-	   
+	    //remove all of the (person) cards that the player has or already seen
 	    for(int j=0; j<alreadyGuessedCards.size(); j++)
 	    {
-	    	
 	    	 for(int i=0; i<personCards.size(); i++)
 	    	 {
-	    		
 	    		if(personCards.get(i).getName().equals(alreadyGuessedCards.get(j).getName()))
 	    		{
-	    			
-	    			System.out.println("removing " + personCards.get(i).getName());
 	    			personCards.remove(i);
-	    			System.out.println("after remove");
-	    			
-	    			
 	    		}
 	    		
 	    	}
 	    }
+	    //remove all of the (weapon) cards that the player has or already seen
 	    for(int i=0; i<weaponCards.size(); i++)
 	    {
 	    	for(Card card2: alreadyGuessedCards)
@@ -139,12 +124,14 @@ public class ComputerPlayer extends Player{
 	    			break;
 	    		}
 	    }
+	    //choose a random person card and weapon card from the remaining cards
 	    int randomCardNum = (int)(Math.random()*personCards.size());
 		suggestions[0] = personCards.get(randomCardNum).getName();
 		
 		randomCardNum = (int)(Math.random()*personCards.size());
 		suggestions[1] = weaponCards.get(randomCardNum).getName();
 		
+		//get the current room initial and set the room suggestion to that room
 		char roomInitial = board.getRoomCellAt(row, col).getInitial();
 		switch(roomInitial)
 		{
