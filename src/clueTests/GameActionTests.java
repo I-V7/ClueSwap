@@ -228,17 +228,20 @@ public class GameActionTests {
 		int kitchen=0;
 		int cMustard=0;
 		for(int i=0; i < 20; i++){
+			System.out.println(i + " " + players.get(0).disproveSuggestion("Colonel Mustard", "Kitchen", "Wrench").getName());
 			if("Kitchen".equals(players.get(0).disproveSuggestion("Colonel Mustard", "Kitchen", "Wrench").getName())){
 				kitchen++;
 			}else if("Colonel Mustard".equals(players.get(0).disproveSuggestion("Colonel Mustard", "Kitchen", "Wrench").getName())){
 				cMustard++;
 			}
 		}
-		assertTrue( kitchen > 5 );
-		assertTrue( cMustard > 5);
+		System.out.println(kitchen + " " + cMustard);
+		assertEquals(20, kitchen + cMustard);
+		assertTrue( kitchen >= 5 );
+		assertTrue( cMustard >= 5);
 	}
 	@Test
-	//test that players are queried in order
+	//test that players are queried in order 
 	public void PlayerOrderTest()
 	{
 		Solution solution = game.getSolution();
@@ -260,13 +263,35 @@ public class GameActionTests {
 		Assert.assertTrue(players.get(5).getCards().contains(shownCard));
 		
 		//test that a middle player is queried
-		shownCard = game.handleSuggestions("Mrs White", "Hall", "Wrench", player);
+		shownCard = game.handleSuggestions("Miss Scarlett", "Hall", "Wrench", player);
 		Assert.assertTrue(players.get(2).getCards().contains(shownCard));
 		
-		//test that current play is not queried
+		//test that current player is not does not return a card
 		shownCard = game.handleSuggestions("Colonel Mustard", "Kitchen", "Revolver", player);
 		assertEquals(null, shownCard);
 		
 	}
+	@Test
+	//test that current player does not return a card
+	public void currentPlayerReturnTest()
+	{
+		Solution solution = game.getSolution();
+		solution.person = "Mrs White";
+		solution.room = "Hall";
+		solution.weapon = "Rope";
+		ArrayList<Player> players = game.getPlayers();
+		Player player = game.getPlayers().get(0);
+		Card shownCard = game.handleSuggestions("", "", "", player);
+		players.get(0).setCardHand(player0sHand);
+		players.get(1).setCardHand(player1sHand);
+		players.get(2).setCardHand(player2sHand);
+		players.get(3).setCardHand(player3sHand);
+		players.get(4).setCardHand(player4sHand);
+		players.get(5).setCardHand(player5sHand);
 	
+		//test that current player is not does not return a card
+		shownCard = game.handleSuggestions("Colonel Mustard", "Kitchen", "Revolver", player);
+		assertEquals(null, shownCard);
+		
+	}
 }
