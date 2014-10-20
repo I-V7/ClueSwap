@@ -263,6 +263,9 @@ public class GameActionTests {
 		shownCard = game.handleSuggestions("Mrs White", "Hall", "Wrench", player);
 		Assert.assertTrue(players.get(2).getCards().contains(shownCard));
 		
+		//test that current play is not queried
+		shownCard = game.handleSuggestions("Colonel Mustard", "Kitchen", "Revolver", player);
+		assertEquals(null, shownCard);
 		
 	}
 	
