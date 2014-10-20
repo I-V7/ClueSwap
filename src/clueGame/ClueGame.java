@@ -20,11 +20,12 @@ public class ClueGame {
 	//New stuff from CluePlayer
 	public final int MAX_PLAYERS=6;
 	private ArrayList<Card> cards;
-	private String personAccusation;
-	private String roomAccusation;
-	private String weaponAccusation;
 	private ArrayList<Player> players;
+	private ArrayList<Card> shownCards;
+	static Map<String,Card> cardStringToCard;
 	private Solution solution;
+	private boolean winner;
+	
 	
 	
 	// Constructors
@@ -199,8 +200,45 @@ public class ClueGame {
 		cards.remove(roomCards.get(randomCardNum));
 		
 	}
-	public void handleSuggestions(String person, String room, String weapon, Player accusingPerson){
-		
+	public Card handleSuggestions(String person, String room, String weapon, Player accusingPerson){
+		String firstPlayer = "";
+		Card suggestedCardResult=null;
+		HashMap<String,Card> playersThatCanDisprove = new HashMap<String,Card>();
+		int indexOfPlayer=players.indexOf(accusingPerson);
+		int curPlayer=(indexOfPlayer+1)%(players.size());
+		while(curPlayer!=indexOfPlayer){
+			suggestedCardResult=players.get(curPlayer).disproveSuggestion(person, room, weapon);
+			if(suggestedCardResult!=null){
+				break;
+			}
+			curPlayer=(curPlayer+1)%(players.size());
+		}
+		return suggestedCardResult;
+		/*
+		for(Player player: players)
+		{
+			if(!player.getName().equals(accusingPerson.getName()))
+			{
+				for(Card card: player.getCards())
+				{
+					if(!shownCards.contains(card) && (card.getName().equals(person) || card.getName().equals(weapon) || card.getName().equals(room)))
+					{
+						if(firstPlayer == "")
+						{
+							firstPlayer = player.getName();
+						}
+						playersThatCanDisprove.put(player.getName(), card);
+						break;
+					}
+				}
+			}		
+		}
+		shownCards.add(playersThatCanDisprove.get(firstPlayer));
+		for(Player player: players)
+		{
+			player.setShownCards(shownCards);
+		}
+		return playersThatCanDisprove.get(firstPlayer);*/
 	}
 	public boolean checkAccusation(Card person, Card room, Card weapon){
 		

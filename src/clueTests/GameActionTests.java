@@ -220,8 +220,6 @@ public class GameActionTests {
 		}
 		alreadyShown.remove(players.get(2).getCards().get(2));
 		
-		
-		
 		//only possible card
 		alreadyShown.remove(players.get(2).getCards().get(1));
 		
