@@ -77,7 +77,7 @@ public class ClueGame {
 				// check for a bad name
 				if(name.contains(","))	throw new BadConfigFormatException(legendFile);
 				rooms.put(letter, name);
-				scan.close();
+				
 			}
 			
 		} catch (FileNotFoundException e) {
@@ -129,7 +129,6 @@ public class ClueGame {
 		}catch(FileNotFoundException e){
 			System.out.println(e.getLocalizedMessage());
 		}
-		
 	}
 	// getter for Board
 	public Board getBoard() {
@@ -166,7 +165,10 @@ public class ClueGame {
 			
 			i--;
 		}
-		System.out.println(players.get(0).getCards());
+		for(Card card: players.get(0).getCards())
+		{
+			System.out.println(card.getName());
+		}
 	}
 	
 	public void selectAnswer(){
@@ -208,21 +210,38 @@ public class ClueGame {
 	
 	public Card handleSuggestions(String person, String room, String weapon, Player accusingPerson)
 	{
-		ArrayList<Card> playerCards = new ArrayList<Card>();
-		boolean correctGuess = true;
+		boolean cardFound = false;
 		Card wrongCard = null;
+		
 		for(Player player: players)
 		{
-			if(!player.equals(accusingPerson))
+			
+			if(!player.getName().equals(accusingPerson.getName()))
 			{
-				do
+				System.out.println(player.getName() + " name and accusing person is " + accusingPerson.getName());
+				for(Card card: player.getCards())
 				{
-					wrongCard = player.disproveSuggestion(person, room, weapon);
 					
-				}while(shownCards.contains(wrongCard) || wrongCard != null);
+					if(!shownCards.contains(card) && (card.getName().equals(person) || card.getName().equals(weapon) || card.getName().equals(room)))
+					{
+						wrongCard = card;
+						cardFound = true;
+						break;
+					}
+				}
 				
-			}			
+				
+			}	if(cardFound)
+				{
+					break;
+				}		
 		}
+		shownCards.add(wrongCard);
+		for(Player player: players)
+		{
+			player.setShownCards(shownCards);
+		}
+		//System.out.println("wrong card is " + wrongCard.getName()+"/////...........//////");
 		return wrongCard;
 	}
 	public boolean checkAccusation(Card person, Card room, Card weapon)
@@ -243,6 +262,7 @@ public class ClueGame {
 	public ArrayList<Card> getCards(){
 		return this.cards;
 	}
+	
 	public Solution getSolution()
 	{
 		return solution;
@@ -256,6 +276,11 @@ public class ClueGame {
 	public void setShownCards(ArrayList<Card> testShownCards)
 	{
 		shownCards = testShownCards;
+		for(Player player: players)
+		{
+			player.setShownCards(testShownCards);
+		}
+		
 	}
 	public ArrayList<Card> getShownCards()
 	{

@@ -31,7 +31,12 @@ public class GameActionTests {
 	static Card scarlettCard;
 	static Card greenCard;
 	static ArrayList<Card> cards;
-	
+	static ArrayList<Card> player0sHand;
+	static ArrayList<Card> player1sHand;
+	static ArrayList<Card> player2sHand;
+	static ArrayList<Card> player3sHand;
+	static ArrayList<Card> player4sHand;
+	static ArrayList<Card> player5sHand;
 	@BeforeClass
 	public static void setup() throws BadConfigFormatException {
 		
@@ -43,6 +48,11 @@ public class GameActionTests {
 		greenCard=new Card("Reverend Green", "Person");
 		
 		
+		
+		
+		
+		
+		
 	}
 	
 	@Before
@@ -51,9 +61,34 @@ public class GameActionTests {
 		board = game.getBoard();
 		board.calcAdjacencies();
 		cards=game.getCards();
+		player0sHand = new ArrayList<Card>();
+		player1sHand = new ArrayList<Card>();
+		player2sHand = new ArrayList<Card>();
+		player3sHand = new ArrayList<Card>();
+		player4sHand = new ArrayList<Card>();
+		player5sHand = new ArrayList<Card>();
+		
+		player0sHand.add(new Card("Kitchen","Room"));
+		player0sHand.add(new Card("Colonel Mustard","Person"));
+		player0sHand.add(new Card("Revolver","Weapon"));
+		player1sHand.add(new Card("Ballroom","Room"));
+		player1sHand.add(new Card("Lounge","Room"));
+		player1sHand.add(new Card("Reverend Green","Person"));
+		player2sHand.add(new Card("Conservatory","Room"));
+		player2sHand.add(new Card("Dining Room","Room"));
+		player2sHand.add(new Card("Wrench","Weapon"));
+		player3sHand.add(new Card("Billiard Room","Room"));
+		player3sHand.add(new Card("Candle Stick","Weapon"));
+		player3sHand.add(new Card("Miss Scarlett","Person"));
+		player4sHand.add(new Card("Library","Room"));
+		player4sHand.add(new Card("Knife","Weapon"));
+		player4sHand.add(new Card("Professor Plum","Person"));
+		player5sHand.add(new Card("Study","Room"));
+		player5sHand.add(new Card("Lead Pipe","Weapon"));
+		player5sHand.add(new Card("Mrs Peacock","Person"));
 		
 	}
-	
+/*	
 	@Test
 	public void correctAccusation()
 	{
@@ -162,24 +197,46 @@ public class GameActionTests {
 		//assure other locations is more than room
 		assertTrue(otherLocations > roomLoc_6_16);
 	}
-	
+*/	
 	@Test
 	public void disproveTest()
 	{
 		Solution solution = game.getSolution();
-		solution.person = "";
-		solution.room = "";
-		solution.weapon = "";
-		Player player = game.getPlayers().get(1);
-		Card shownCard = game.handleSuggestions("", "", "", player);
+		ArrayList<Card> playerHand = new ArrayList<Card>();
+		ArrayList<Player> players = game.getPlayers();
+		ArrayList<Card> testShownCards = new ArrayList<Card>();
+		solution.person = "Miss Scarlet";
+		solution.room = "Kitchen";
+		solution.weapon = "Knife";
+		Player player = game.getPlayers().get(0);
+				System.out.println("before");
+		playerHand.add(new Card("Conservatory", "Room"));
+		playerHand.add(new Card("Billiard Room", "Room"));
+		playerHand.add(new Card("Revolver", "Weapon"));
+		players.get(2).setCardHand(playerHand);
 		
+		testShownCards.add(players.get(2).getCards().get(0));
+		testShownCards.add(players.get(2).getCards().get(1));
+		game.setShownCards(testShownCards);
+		Card shownCard = game.handleSuggestions("Miss Scarlett", "Kitchen", "Revolver", player);
+		System.out.println("after");
 		//only possible card
-		Assert.assertTrue(shownCard.getName().equals(""));
+		System.out.println(shownCard);
+		Assert.assertTrue(shownCard.getName().equals("Revolver"));
+		
+		
+		testShownCards.clear();
+		testShownCards.add(players.get(2).getCards().get(0));
+		
+		shownCard = game.handleSuggestions("Miss Scarlett", "Billiard Room", "Revolver", player);
+		
 		//randomly choose between 2
-		Assert.assertTrue(shownCard.getName().equals("") || shownCard.getName().equals(""));
+		Assert.assertTrue(shownCard.getName().equals("Billiard Room") || shownCard.getName().equals("Revolver"));
 		
 	}
+	
 	@Test
+	//HELP!!!!!
 	//test that players are queried in order
 	public void PlayerOrderTest()
 	{
@@ -197,6 +254,7 @@ public class GameActionTests {
 	}
 	
 	@Test
+	//HELP!!!!!!!!!!
 	//test involving human player
 	public void humanDisproveTest()
 	{
@@ -208,55 +266,33 @@ public class GameActionTests {
 	{
 		Solution solution = game.getSolution();
 		ArrayList<Card> playerHand = new ArrayList<Card>();
-		solution.person = "";
-		solution.room = "";
-		solution.weapon = "";
+		solution.person = "Miss Scarlett";
+		solution.room = "Kitchen";
+		solution.weapon = "Revolver";
 		ArrayList<Player> players = game.getPlayers();
 		Player player = players.get(0);
+		ArrayList<Card> shownCards = new ArrayList<Card>();
 		
+		players.get(0).setCardHand(player0sHand);
+		players.get(1).setCardHand(player1sHand);
+		players.get(2).setCardHand(player2sHand);
+		players.get(3).setCardHand(player3sHand);
+		players.get(4).setCardHand(player4sHand);
+		players.get(5).setCardHand(player5sHand);
 		
-		//set every players card hand
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		player.setCardHand(playerHand);
-		playerHand.clear();
-		
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		players.get(1).setCardHand(playerHand);
-		playerHand.clear();
-		
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		players.get(2).setCardHand(playerHand);
-		playerHand.clear();
-		
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		players.get(3).setCardHand(playerHand);
-		playerHand.clear();
-		
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		players.get(4).setCardHand(playerHand);
-		playerHand.clear();
-		
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		players.get(5).setCardHand(playerHand);
-		playerHand.clear();
-		
-		Card shownCard = game.handleSuggestions("", "", "", player);
-		
+		System.out.println("after hand change");
+		for(Card card: players.get(0).getCards())
+		{
+			
+			System.out.println(card.getName());
+		}
+	    Card shownCard = game.handleSuggestions("Mrs White", "Kitchen", "Revolver", player);
+	    //System.out.println(",,,,,,,,,'''''''''" + shownCard.getName());
 		//test that the player doesn't have the card that is shown 
 		//(player doesn't show themselves their own card)
-		Assert.assertFalse(player.getCards().contains(shownCard));
+	    Assert.assertNull(shownCard);
+		
+		
 
 	}
 	
@@ -266,56 +302,39 @@ public class GameActionTests {
 	public void compSuggestionTest()
 	{
 		Solution solution = game.getSolution();
-		ArrayList<Card> playerHand = new ArrayList<Card>();
+		ArrayList<Card> alreadyShown = new ArrayList<Card>();
 		solution.person = "";
 		solution.room = "";
 		solution.weapon = "";
 		ArrayList<Player> players = game.getPlayers();
 		Player player = players.get(0);
 		
-	    
-	    playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		player.setCardHand(playerHand);
-		playerHand.clear();
+		players.get(0).setCardHand(player0sHand);
+		players.get(1).setCardHand(player1sHand);
+		players.get(2).setCardHand(player2sHand);
+		players.get(3).setCardHand(player3sHand);
+		players.get(4).setCardHand(player4sHand);
+		players.get(5).setCardHand(player5sHand);
 		
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		players.get(1).setCardHand(playerHand);
-		playerHand.clear();
+		for(Player p: players)
+		{
+			for(Card card: p.getCards())
+			{
+				alreadyShown.add(card);
+			}
+		}
 		
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		players.get(2).setCardHand(playerHand);
-		playerHand.clear();
+		game.setShownCards(alreadyShown);
+		player.setRow(28);
+		player.setCol(0);
 		
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		players.get(3).setCardHand(playerHand);
-		playerHand.clear();
-		
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		players.get(4).setCardHand(playerHand);
-		playerHand.clear();
-		
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		players.get(5).setCardHand(playerHand);
-		playerHand.clear();
-		
-		
-		String[] suggestion = ((ComputerPlayer)player).createSuggestion();
+		String[] suggestion = ((ComputerPlayer) player).createSuggestion(game.getStringToCard(), game.getBoard());
 		Assert.assertEquals(3, suggestion.length);
-        Assert.assertTrue(suggestion[0].equals(""));
-        Assert.assertTrue(suggestion[1].equals(""));
-        Assert.assertTrue(suggestion[2].equals(""));
+		System.out.println(suggestion[0] +"/////////");
+		System.out.println(suggestion[1]);
+        Assert.assertTrue(suggestion[0].equals("Mrs White"));
+        Assert.assertTrue(suggestion[1].equals("Rope"));
+        Assert.assertTrue(suggestion[2].equals("Hall"));
 	}
 	
 	@Test
@@ -333,50 +352,18 @@ public class GameActionTests {
 		
 		Player player = players.get(0);
 		
+		players.get(0).setCardHand(player0sHand);
+		players.get(1).setCardHand(player1sHand);
+		players.get(2).setCardHand(player2sHand);
+		players.get(3).setCardHand(player3sHand);
+		players.get(4).setCardHand(player4sHand);
+		players.get(5).setCardHand(player5sHand);
+		
+		
 	    
-	    playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		player.setCardHand(playerHand);
-		playerHand.clear();
-		
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		players.get(1).setCardHand(playerHand);
-		playerHand.clear();
-		
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		players.get(2).setCardHand(playerHand);
-		playerHand.clear();
-		
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		players.get(3).setCardHand(playerHand);
-		playerHand.clear();
-		
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		players.get(4).setCardHand(playerHand);
-		playerHand.clear();
-		
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		playerHand.add(new Card("", ""));
-		players.get(5).setCardHand(playerHand);
-		playerHand.clear();
-		
-		//set already shown cards
-		testShownCards.add(kitchenCard);
-		testShownCards.add(kitchenCard);
-		testShownCards.add(kitchenCard);
-		game.setShownCards(testShownCards);
-		
-		String[] suggestion = ((ComputerPlayer)player).createSuggestion();
+		player.setRow(28);
+		player.setCol(0);
+		String[] suggestion = ((ComputerPlayer)player).createSuggestion(game.getStringToCard(), game.getBoard());
 		Assert.assertEquals(3, suggestion.length);
         
 

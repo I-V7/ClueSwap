@@ -4,6 +4,7 @@ package clueGame;
 import java.awt.Color;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Set;
 
 public abstract class Player {
@@ -25,14 +26,30 @@ public abstract class Player {
 	}
 	public Card disproveSuggestion(String person, String room, String weapon){
 		
+		ArrayList<Card> possibleWrongCards = new ArrayList<Card>();
 		for(Card card: myCards)
 		{
 			if((card.getName().equals(person) || card.getName().equals(room) || card.getName().equals(weapon)) && !shownCards.contains(card))
 			{
-				shownCards.add(card);
-				return card;
+				possibleWrongCards.add(card);
 			}
 		}
+		if(possibleWrongCards.size() == 0)
+		{
+			return null;
+		}
+		else if(possibleWrongCards.size() == 1)
+		{
+			return possibleWrongCards.get(0);
+		}
+		else if(possibleWrongCards.size() > 1)
+		{
+			int randomNum = (int)(Math.random()*possibleWrongCards.size());
+			return possibleWrongCards.get(randomNum);
+		}
+		
+
+
 		return null;
 	}
 	
@@ -106,6 +123,10 @@ public abstract class Player {
 	public void setCardHand(ArrayList<Card> testCards)
 	{
 		myCards = testCards;
+	}
+	public void setShownCards(ArrayList<Card> shownCards) {
+		this.shownCards = shownCards;
+		
 	}
 	
 }
