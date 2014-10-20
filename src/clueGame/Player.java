@@ -13,16 +13,27 @@ public abstract class Player {
 	protected int row;
 	protected int col;
 	protected ArrayList<Card> myCards;
+	protected ArrayList<Card> shownCards;
 	protected Board board;
 	//may or may not use
 	//protected BoardCell boardCell;
 	
 	public Player(){
 		myCards = new ArrayList<Card>();
+		shownCards = new ArrayList<Card>();
 		
 	}
-	public Card disproveSuggestoiin(String person, String room, String weapon){
-		return new Card("","");
+	public Card disproveSuggestion(String person, String room, String weapon){
+		
+		for(Card card: myCards)
+		{
+			if((card.getName().equals(person) || card.getName().equals(room) || card.getName().equals(weapon)) && !shownCards.contains(card))
+			{
+				shownCards.add(card);
+				return card;
+			}
+		}
+		return null;
 	}
 	
 	// Be sure to trim the color, we don't want spaces around the name
@@ -56,7 +67,12 @@ public abstract class Player {
 	public void addCard(Card card)
 	{
 		myCards.add(card);
+		
 	}
+	
+	
+	//return true if a card has already been seen
+	//so duplicate guesses are not made
 	public abstract BoardCell pickLocation(Set<BoardCell> targets);
 	
 	//GETTERS AND SETTERS
@@ -85,6 +101,11 @@ public abstract class Player {
 	{
 		//System.out.println("return cards");
 		return myCards;
+	}
+	//for Test purposes only
+	public void setCardHand(ArrayList<Card> testCards)
+	{
+		myCards = testCards;
 	}
 	
 }

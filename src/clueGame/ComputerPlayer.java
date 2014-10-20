@@ -44,10 +44,10 @@ public class ComputerPlayer extends Player{
 		
 		return nextLocation;
 	}
-	public void createSuggestion(){
+	public String[] createSuggestion(){
 		
-	}
-	public void updateSeen(Card seen){
+		
+		return null;
 		
 	}
 	public void setLastRoomVisited(char room){

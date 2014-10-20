@@ -20,17 +20,18 @@ public class ClueGame {
 	//New stuff from CluePlayer
 	public final int MAX_PLAYERS=6;
 	private ArrayList<Card> cards;
-	private String personAccusation;
-	private String roomAccusation;
-	private String weaponAccusation;
 	private ArrayList<Player> players;
+	private ArrayList<Card> shownCards;
+	private Map<String,Card> cardStringToCard;
 	private Solution solution;
-	
+	private boolean winner;
 	
 	// Constructors
 	public ClueGame(String board, String legend) {//throws BadConfigFormatException {
 		this.board = new Board(this);
 		rooms = new HashMap<Character,String>();
+		shownCards = new ArrayList<Card>();
+		cardStringToCard = new HashMap<String, Card>();
 		legendFile = legend;
 		setLayoutFile(board);
 		try {
@@ -76,7 +77,7 @@ public class ClueGame {
 				// check for a bad name
 				if(name.contains(","))	throw new BadConfigFormatException(legendFile);
 				rooms.put(letter, name);
-				
+				scan.close();
 			}
 			
 		} catch (FileNotFoundException e) {
@@ -112,19 +113,23 @@ public class ClueGame {
 	}
 	public void  loadCards(){
 		cards=new ArrayList<Card>();
+		Card currentCard;
 		try{
 			FileReader reader= new FileReader("cards.txt");
 			Scanner cardsFile= new Scanner(reader);
-			int i=0;
 			while(cardsFile.hasNextLine()){
 				String[] line=cardsFile.nextLine().split(",");
 				String name = line[0];
 				String cardType=  line[1].substring(1);
-				cards.add(new Card(name,cardType));
+				currentCard = new Card(name,cardType);
+				cards.add(currentCard);
+				cardStringToCard.put(name, currentCard);
 			}
+			cardsFile.close();
 		}catch(FileNotFoundException e){
 			System.out.println(e.getLocalizedMessage());
 		}
+		
 	}
 	// getter for Board
 	public Board getBoard() {
@@ -199,10 +204,29 @@ public class ClueGame {
 		cards.remove(roomCards.get(randomCardNum));
 		
 	}
-	public void handleSuggestions(String person, String room, String weapon, Player accusingPerson){
-		
+	
+	
+	public Card handleSuggestions(String person, String room, String weapon, Player accusingPerson)
+	{
+		ArrayList<Card> playerCards = new ArrayList<Card>();
+		boolean correctGuess = true;
+		Card wrongCard = null;
+		for(Player player: players)
+		{
+			if(!player.equals(accusingPerson))
+			{
+				do
+				{
+					wrongCard = player.disproveSuggestion(person, room, weapon);
+					
+				}while(shownCards.contains(wrongCard) || wrongCard != null);
+				
+			}			
+		}
+		return wrongCard;
 	}
-	public boolean checkAccusation(Card person, Card room, Card weapon){
+	public boolean checkAccusation(Card person, Card room, Card weapon)
+	{
 		
 		if(solution.person.equals(person.getName()) && solution.weapon.equals(weapon.getName()) && solution.room.equals(room.getName()))
 		{
@@ -222,6 +246,24 @@ public class ClueGame {
 	public Solution getSolution()
 	{
 		return solution;
+	}
+	public boolean isWinner()
+	{
+		return winner;
+	}
+	
+	//set/get already shown cards for test purposes only
+	public void setShownCards(ArrayList<Card> testShownCards)
+	{
+		shownCards = testShownCards;
+	}
+	public ArrayList<Card> getShownCards()
+	{
+		return shownCards;
+	}
+	public HashMap<String, Card> getStringToCard()
+	{
+		return (HashMap<String, Card>) cardStringToCard;
 	}
 	//FOR TESTING
 	public static void main(String[] args){

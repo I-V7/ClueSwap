@@ -3,6 +3,7 @@ package clueTests;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -18,6 +19,7 @@ import clueGame.ClueGame;
 import clueGame.ComputerPlayer;
 import clueGame.Player;
 import clueGame.Solution;
+import clueGame.ComputerPlayer;
 
 public class GameActionTests {
 	static Board board;
@@ -160,4 +162,229 @@ public class GameActionTests {
 		//assure other locations is more than room
 		assertTrue(otherLocations > roomLoc_6_16);
 	}
+	
+	@Test
+	public void disproveTest()
+	{
+		Solution solution = game.getSolution();
+		solution.person = "";
+		solution.room = "";
+		solution.weapon = "";
+		Player player = game.getPlayers().get(1);
+		Card shownCard = game.handleSuggestions("", "", "", player);
+		
+		//only possible card
+		Assert.assertTrue(shownCard.getName().equals(""));
+		//randomly choose between 2
+		Assert.assertTrue(shownCard.getName().equals("") || shownCard.getName().equals(""));
+		
+	}
+	@Test
+	//test that players are queried in order
+	public void PlayerOrderTest()
+	{
+		Solution solution = game.getSolution();
+		solution.person = "";
+		solution.room = "";
+		solution.weapon = "";
+		ArrayList<Player> players = game.getPlayers();
+		Player player = game.getPlayers().get(0);
+		Card shownCard = game.handleSuggestions("", "", "", player);
+		
+		Assert.assertTrue(shownCard.getName().equals(""));
+		
+		
+	}
+	
+	@Test
+	//test involving human player
+	public void humanDisproveTest()
+	{
+		
+	}
+	@Test
+	//test that the players whose turn it is does not return a card
+	public void cardReturnTest()
+	{
+		Solution solution = game.getSolution();
+		ArrayList<Card> playerHand = new ArrayList<Card>();
+		solution.person = "";
+		solution.room = "";
+		solution.weapon = "";
+		ArrayList<Player> players = game.getPlayers();
+		Player player = players.get(0);
+		
+		
+		//set every players card hand
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		player.setCardHand(playerHand);
+		playerHand.clear();
+		
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		players.get(1).setCardHand(playerHand);
+		playerHand.clear();
+		
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		players.get(2).setCardHand(playerHand);
+		playerHand.clear();
+		
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		players.get(3).setCardHand(playerHand);
+		playerHand.clear();
+		
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		players.get(4).setCardHand(playerHand);
+		playerHand.clear();
+		
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		players.get(5).setCardHand(playerHand);
+		playerHand.clear();
+		
+		Card shownCard = game.handleSuggestions("", "", "", player);
+		
+		//test that the player doesn't have the card that is shown 
+		//(player doesn't show themselves their own card)
+		Assert.assertFalse(player.getCards().contains(shownCard));
+
+	}
+	
+	@Test
+	//test a computer suggestion:
+	//test where only one suggestion is possible
+	public void compSuggestionTest()
+	{
+		Solution solution = game.getSolution();
+		ArrayList<Card> playerHand = new ArrayList<Card>();
+		solution.person = "";
+		solution.room = "";
+		solution.weapon = "";
+		ArrayList<Player> players = game.getPlayers();
+		Player player = players.get(0);
+		
+	    
+	    playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		player.setCardHand(playerHand);
+		playerHand.clear();
+		
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		players.get(1).setCardHand(playerHand);
+		playerHand.clear();
+		
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		players.get(2).setCardHand(playerHand);
+		playerHand.clear();
+		
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		players.get(3).setCardHand(playerHand);
+		playerHand.clear();
+		
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		players.get(4).setCardHand(playerHand);
+		playerHand.clear();
+		
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		players.get(5).setCardHand(playerHand);
+		playerHand.clear();
+		
+		
+		String[] suggestion = ((ComputerPlayer)player).createSuggestion();
+		Assert.assertEquals(3, suggestion.length);
+        Assert.assertTrue(suggestion[0].equals(""));
+        Assert.assertTrue(suggestion[1].equals(""));
+        Assert.assertTrue(suggestion[2].equals(""));
+	}
+	
+	@Test
+	//random suggestion test
+	public void compSuggestionTest1()
+	{
+		Solution solution = game.getSolution();
+		ArrayList<Card> playerHand = new ArrayList<Card>();
+		solution.person = "";
+		solution.room = "";
+		solution.weapon = "";
+		ArrayList<Player> players = game.getPlayers();
+		ArrayList<Card> testShownCards = new ArrayList<Card>();
+		HashMap<String, Card> cards = new HashMap<String,Card>();
+		
+		Player player = players.get(0);
+		
+	    
+	    playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		player.setCardHand(playerHand);
+		playerHand.clear();
+		
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		players.get(1).setCardHand(playerHand);
+		playerHand.clear();
+		
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		players.get(2).setCardHand(playerHand);
+		playerHand.clear();
+		
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		players.get(3).setCardHand(playerHand);
+		playerHand.clear();
+		
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		players.get(4).setCardHand(playerHand);
+		playerHand.clear();
+		
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		playerHand.add(new Card("", ""));
+		players.get(5).setCardHand(playerHand);
+		playerHand.clear();
+		
+		//set already shown cards
+		testShownCards.add(kitchenCard);
+		testShownCards.add(kitchenCard);
+		testShownCards.add(kitchenCard);
+		game.setShownCards(testShownCards);
+		
+		String[] suggestion = ((ComputerPlayer)player).createSuggestion();
+		Assert.assertEquals(3, suggestion.length);
+        
+
+		Assert.assertFalse(testShownCards.contains(cards.get(suggestion[0])));
+		Assert.assertFalse(testShownCards.contains(cards.get(suggestion[1])));
+		Assert.assertFalse(testShownCards.contains(cards.get(suggestion[2])));
+		
+	}
+	
+	
 }
