@@ -31,6 +31,7 @@ public class HumanPlayer extends Player {
 	public Card disproveSuggestion(String person, String room, String weapon)
 	{
 		ArrayList<Card> disproveCards = new ArrayList<Card>();
+		Card disprovenCard=null;
 		for(Card card: myCards)
 		{
 			if((card.getName().equals(person) || card.getName().equals(room) || card.getName().equals(weapon)) && !shownCards.contains(card))
@@ -38,16 +39,31 @@ public class HumanPlayer extends Player {
 				disproveCards.add(card);
 			}
 		}
-		System.out.println("Possible cards to disprove: ");
-		for(Card card: disproveCards)
-		{
-			System.out.println(card.getName());
+		if(!disproveCards.isEmpty()){
+			System.out.println("Possible cards to disprove: ");
+			for(Card card: disproveCards)
+			{
+				System.out.println(card.getName());
+			}
+			System.out.println("Choose one to show: ");
+			Scanner scanner = new Scanner(System.in);
+			String cardChoosen = scanner.nextLine();
+			boolean invalidCard=true;
+			while(invalidCard){
+				for(Card card:myCards){
+					if(cardChoosen.equals(card.getName())){
+						disprovenCard=card;
+						invalidCard=false;
+					}
+				}
+				if(invalidCard){
+					System.out.println("Choose a valid card: ");
+					cardChoosen = scanner.nextLine();
+				}
+			}
 		}
-		System.out.println("Choose one to show: ");
-		Scanner scanner = new Scanner(System.in);
-		String cardChoosen = scanner.next();
 		
-		
-		return ClueGame.cardStringToCard.get(cardChoosen);
+		return disprovenCard;
 	}
 }
+
