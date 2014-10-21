@@ -4,7 +4,6 @@ package clueGame;
 import java.awt.Color;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Set;
 
 public abstract class Player {
@@ -22,10 +21,8 @@ public abstract class Player {
 	public Player(){
 		myCards = new ArrayList<Card>();
 		shownCards = new ArrayList<Card>();
-		
 	}
 	public Card disproveSuggestion(String person, String room, String weapon){
-		
 		ArrayList<Card> possibleWrongCards = new ArrayList<Card>();
 		for(Card card: myCards)
 		{
@@ -47,8 +44,6 @@ public abstract class Player {
 			int randomNum = (int)(Math.random()*possibleWrongCards.size());
 			return possibleWrongCards.get(randomNum);
 		}
-		
-
 
 		return null;
 	}
@@ -84,12 +79,7 @@ public abstract class Player {
 	public void addCard(Card card)
 	{
 		myCards.add(card);
-		
 	}
-	
-	
-	//return true if a card has already been seen
-	//so duplicate guesses are not made
 	public abstract BoardCell pickLocation(Set<BoardCell> targets);
 	
 	//GETTERS AND SETTERS
