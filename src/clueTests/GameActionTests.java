@@ -227,18 +227,18 @@ public class GameActionTests {
 		//randomly choose between 2 cards
 		int kitchen=0;
 		int cMustard=0;
-		for(int i=0; i < 20; i++){
-			System.out.println(i + " " + players.get(0).disproveSuggestion("Colonel Mustard", "Kitchen", "Wrench").getName());
-			if("Kitchen".equals(players.get(0).disproveSuggestion("Colonel Mustard", "Kitchen", "Wrench").getName())){
+		for(int i=0; i < 100; i++){
+			String card=players.get(0).disproveSuggestion("Colonel Mustard", "Kitchen", "Wrench").getName();
+			if("Kitchen".equals(card)){
 				kitchen++;
-			}else if("Colonel Mustard".equals(players.get(0).disproveSuggestion("Colonel Mustard", "Kitchen", "Wrench").getName())){
+			}else if("Colonel Mustard".equals(card)){
 				cMustard++;
 			}
 		}
 		System.out.println(kitchen + " " + cMustard);
-		assertEquals(20, kitchen + cMustard);
-		assertTrue( kitchen >= 5 );
-		assertTrue( cMustard >= 5);
+		assertEquals(100, kitchen + cMustard);
+		assertTrue( kitchen >= 30 );
+		assertTrue( cMustard >= 30);
 	}
 	@Test
 	//test that players are queried in order 
