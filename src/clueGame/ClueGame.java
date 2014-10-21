@@ -11,19 +11,6 @@ import java.util.Scanner;
 import clueGame.Board;
 
 
-package clueGame;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
-
-import clueGame.Board;
-
-
 public class ClueGame {
 
 	Map<Character,String> rooms;

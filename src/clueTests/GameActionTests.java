@@ -3,6 +3,7 @@ package clueTests;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -289,7 +290,7 @@ public class GameActionTests {
 		assertEquals(null, shownCard);
 		
 	}
-	@Test
+	//@Test
 	//test involving human player
 	//WHEN PROMPTED FOR CARD TYPE LOUNGE
 	public void humanDisproveTest()
@@ -354,5 +355,40 @@ public class GameActionTests {
         Assert.assertTrue(suggestion[0].equals("Mrs White"));
         Assert.assertTrue(suggestion[1].equals("Rope"));
         Assert.assertTrue(suggestion[2].equals("Hall"));
+	}
+	@Test
+	//random suggestion test
+	public void compSuggestionTest1()
+	{
+		Solution solution = game.getSolution();
+		ArrayList<Card> playerHand = new ArrayList<Card>();
+		solution.person = "Mrs White";
+		solution.room = "Hall";
+		solution.weapon = "Rope";
+		ArrayList<Player> players = game.getPlayers();
+		ArrayList<Card> testShownCards = new ArrayList<Card>();
+		HashMap<String, Card> cards = new HashMap<String,Card>();
+		
+		Player player = players.get(0);
+		
+		players.get(0).setCardHand(player0sHand);
+		players.get(1).setCardHand(player1sHand);
+		players.get(2).setCardHand(player2sHand);
+		players.get(3).setCardHand(player3sHand);
+		players.get(4).setCardHand(player4sHand);
+		players.get(5).setCardHand(player5sHand);
+		
+		
+	    
+		player.setRow(28);
+		player.setCol(0);
+		String[] suggestion = ((ComputerPlayer)player).createSuggestion(game.getStringToCard(), game.getBoard());
+		Assert.assertEquals(3, suggestion.length);
+        
+
+		Assert.assertFalse(testShownCards.contains(cards.get(suggestion[0])));
+		Assert.assertFalse(testShownCards.contains(cards.get(suggestion[1])));
+		Assert.assertFalse(testShownCards.contains(cards.get(suggestion[2])));
+		
 	}
 }
