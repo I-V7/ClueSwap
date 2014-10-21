@@ -235,7 +235,6 @@ public class GameActionTests {
 				cMustard++;
 			}
 		}
-		System.out.println(kitchen + " " + cMustard);
 		assertEquals(100, kitchen + cMustard);
 		assertTrue( kitchen >= 30 );
 		assertTrue( cMustard >= 30);
@@ -266,10 +265,6 @@ public class GameActionTests {
 		shownCard = game.handleSuggestions("Miss Scarlett", "Hall", "Wrench", player);
 		Assert.assertTrue(players.get(2).getCards().contains(shownCard));
 		
-		//test that current player is not does not return a card
-		shownCard = game.handleSuggestions("Colonel Mustard", "Kitchen", "Revolver", player);
-		assertEquals(null, shownCard);
-		
 	}
 	@Test
 	//test that current player does not return a card
@@ -293,5 +288,31 @@ public class GameActionTests {
 		shownCard = game.handleSuggestions("Colonel Mustard", "Kitchen", "Revolver", player);
 		assertEquals(null, shownCard);
 		
+	}
+	@Test
+	//test involving human player
+	//WHEN PROMPTED FOR CARD TYPE LOUNGE
+	public void humanDisproveTest()
+	{
+		Solution solution = game.getSolution();
+		solution.person = "Mrs White";
+		solution.room = "Hall";
+		solution.weapon = "Rope";
+		ArrayList<Player> players = game.getPlayers();
+		Player player = game.getPlayers().get(0);
+		players.get(0).setCardHand(player0sHand);
+		players.get(1).setCardHand(player1sHand);
+		players.get(2).setCardHand(player2sHand);
+		players.get(3).setCardHand(player3sHand);
+		players.get(4).setCardHand(player4sHand);
+		players.get(5).setCardHand(player5sHand);
+	
+		//With no GUI i wasn't sure how to prompt the user to select a card to show
+		//so I printed out the list of possible cards the user could show
+		//and then wait for them to enter the name of a card
+		Card shownCard = game.handleSuggestions("Reverend Green", "Lounge", "Lead Pipe", player);
+		//players.get(1).disproveSuggestion("Reverend Green", "Lounge", "Lead Pipe");
+		
+		assertTrue("Lounge".equals(shownCard.getName()));
 	}
 }

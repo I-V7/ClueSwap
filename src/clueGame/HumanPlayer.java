@@ -47,7 +47,7 @@ public class HumanPlayer extends Player {
 			}
 			System.out.println("Choose one to show: ");
 			Scanner scanner = new Scanner(System.in);
-			String cardChoosen = scanner.next();
+			String cardChoosen = scanner.nextLine();
 			boolean invalidCard=true;
 			while(invalidCard){
 				for(Card card:myCards){
@@ -56,8 +56,10 @@ public class HumanPlayer extends Player {
 						invalidCard=false;
 					}
 				}
-				System.out.println("Choose a valid card: ");
-				cardChoosen = scanner.next();
+				if(invalidCard){
+					System.out.println("Choose a valid card: ");
+					cardChoosen = scanner.nextLine();
+				}
 			}
 		}
 		
