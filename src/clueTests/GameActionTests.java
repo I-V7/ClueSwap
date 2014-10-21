@@ -3,7 +3,6 @@ package clueTests;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -19,7 +18,6 @@ import clueGame.ClueGame;
 import clueGame.ComputerPlayer;
 import clueGame.Player;
 import clueGame.Solution;
-import clueGame.ComputerPlayer;
 
 public class GameActionTests {
 	static Board board;
@@ -37,6 +35,7 @@ public class GameActionTests {
 	static ArrayList<Card> player3sHand;
 	static ArrayList<Card> player4sHand;
 	static ArrayList<Card> player5sHand;
+	
 	@BeforeClass
 	public static void setup() throws BadConfigFormatException {
 		
@@ -82,7 +81,7 @@ public class GameActionTests {
 		player5sHand.add(new Card("Mrs Peacock","Person"));
 		
 	}
-
+	
 	@Test
 	public void correctAccusation()
 	{
@@ -191,9 +190,9 @@ public class GameActionTests {
 		//assure other locations is more than room
 		assertTrue(otherLocations > roomLoc_6_16);
 	}
-
+	//Disprove test for a single player
+	//test that one player returns only possible card and that that a player randomly chooses a card
 	@Test
-	//disprove a couple suggestions
 	public void disproveTest()
 	{
 		Solution solution = game.getSolution();
@@ -213,29 +212,35 @@ public class GameActionTests {
 		players.get(4).setCardHand(player4sHand);
 		players.get(5).setCardHand(player5sHand);
 	
-		for(Player p: players)
-		{
-			for(Card card: p.getCards())
-			{
-				alreadyShown.add(card);
-			}
-		}
+		//TESTS ASSERTIONS
+		//disprove suggestions for different players
+		//room
+		assertTrue("Kitchen".equals(players.get(0).disproveSuggestion("Professor Plum", "Kitchen", "Wrench").getName()));
+		//weapon
+	    assertTrue("Wrench".equals(players.get(2).disproveSuggestion("Professor Plum", "Kitchen", "Wrench").getName()));
+		//person
+		assertTrue("Miss Scarlett".equals(players.get(3).disproveSuggestion("Miss Scarlett", "Kitchen", "Wrench").getName()));
+		//null
+		assertEquals(null,players.get(4).disproveSuggestion("Miss Scarlett",  "Kitchen" , "Wrench"));
 		alreadyShown.remove(players.get(2).getCards().get(2));
 		
-		
-		
-		//only possible card
-		alreadyShown.remove(players.get(2).getCards().get(1));
-		
-		Card shownCard = game.handleSuggestions("Mrs White", "Dinning Room", "Wrench", player);
-		
-		//randomly choose between 2
-		Assert.assertTrue(shownCard.getName().equals("Dinning Room") || shownCard.getName().equals("Wrench"));
-		
+		//randomly choose between 2 cards
+		int kitchen=0;
+		int cMustard=0;
+		for(int i=0; i < 100; i++){
+			String card=players.get(0).disproveSuggestion("Colonel Mustard", "Kitchen", "Wrench").getName();
+			if("Kitchen".equals(card)){
+				kitchen++;
+			}else if("Colonel Mustard".equals(card)){
+				cMustard++;
+			}
+		}
+		assertEquals(100, kitchen + cMustard);
+		assertTrue( kitchen >= 30 );
+		assertTrue( cMustard >= 30);
 	}
-	
 	@Test
-	//test that players are queried in order
+	//test that players are queried in order 
 	public void PlayerOrderTest()
 	{
 		Solution solution = game.getSolution();
@@ -257,14 +262,36 @@ public class GameActionTests {
 		Assert.assertTrue(players.get(5).getCards().contains(shownCard));
 		
 		//test that a middle player is queried
-		shownCard = game.handleSuggestions("Mrs White", "Hall", "Wrench", player);
+		shownCard = game.handleSuggestions("Miss Scarlett", "Hall", "Wrench", player);
 		Assert.assertTrue(players.get(2).getCards().contains(shownCard));
 		
+	}
+	@Test
+	//test that current player does not return a card
+	public void currentPlayerReturnTest()
+	{
+		Solution solution = game.getSolution();
+		solution.person = "Mrs White";
+		solution.room = "Hall";
+		solution.weapon = "Rope";
+		ArrayList<Player> players = game.getPlayers();
+		Player player = game.getPlayers().get(0);
+		Card shownCard = game.handleSuggestions("", "", "", player);
+		players.get(0).setCardHand(player0sHand);
+		players.get(1).setCardHand(player1sHand);
+		players.get(2).setCardHand(player2sHand);
+		players.get(3).setCardHand(player3sHand);
+		players.get(4).setCardHand(player4sHand);
+		players.get(5).setCardHand(player5sHand);
+	
+		//test that current player is not does not return a card
+		shownCard = game.handleSuggestions("Colonel Mustard", "Kitchen", "Revolver", player);
+		assertEquals(null, shownCard);
 		
 	}
-	
 	@Test
 	//test involving human player
+	//WHEN PROMPTED FOR CARD TYPE LOUNGE
 	public void humanDisproveTest()
 	{
 		Solution solution = game.getSolution();
@@ -284,39 +311,10 @@ public class GameActionTests {
 		//so I printed out the list of possible cards the user could show
 		//and then wait for them to enter the name of a card
 		Card shownCard = game.handleSuggestions("Reverend Green", "Lounge", "Lead Pipe", player);
-		players.get(1).disproveSuggestion("Reverend Green", "Lounge", "Lead Pipe");
+		//players.get(1).disproveSuggestion("Reverend Green", "Lounge", "Lead Pipe");
 		
-		
+		assertTrue("Lounge".equals(shownCard.getName()));
 	}
-	@Test
-	//test that the players whose turn it is does not return a card
-	public void cardReturnTest()
-	{
-		Solution solution = game.getSolution();
-		ArrayList<Card> playerHand = new ArrayList<Card>();
-		solution.person = "Miss Scarlett";
-		solution.room = "Kitchen";
-		solution.weapon = "";
-		ArrayList<Player> players = game.getPlayers();
-		Player player = players.get(0);
-		ArrayList<Card> shownCards = new ArrayList<Card>();
-		
-		players.get(0).setCardHand(player0sHand);
-		players.get(1).setCardHand(player1sHand);
-		players.get(2).setCardHand(player2sHand);
-		players.get(3).setCardHand(player3sHand);
-		players.get(4).setCardHand(player4sHand);
-		players.get(5).setCardHand(player5sHand);
-		
-		//player0 has the revolver and kitchen cards so the result should be null
-	    Card shownCard = game.handleSuggestions("Mrs White", "Kitchen", "Revolver", player);
-	    
-	    Assert.assertNull(shownCard);
-		
-		
-
-	}
-	
 	@Test
 	//test a computer suggestion:
 	//test where only one suggestion is possible
@@ -357,42 +355,4 @@ public class GameActionTests {
         Assert.assertTrue(suggestion[1].equals("Rope"));
         Assert.assertTrue(suggestion[2].equals("Hall"));
 	}
-	
-	@Test
-	//random suggestion test
-	public void compSuggestionTest1()
-	{
-		Solution solution = game.getSolution();
-		ArrayList<Card> playerHand = new ArrayList<Card>();
-		solution.person = "Mrs White";
-		solution.room = "Hall";
-		solution.weapon = "Rope";
-		ArrayList<Player> players = game.getPlayers();
-		ArrayList<Card> testShownCards = new ArrayList<Card>();
-		HashMap<String, Card> cards = new HashMap<String,Card>();
-		
-		Player player = players.get(0);
-		
-		players.get(0).setCardHand(player0sHand);
-		players.get(1).setCardHand(player1sHand);
-		players.get(2).setCardHand(player2sHand);
-		players.get(3).setCardHand(player3sHand);
-		players.get(4).setCardHand(player4sHand);
-		players.get(5).setCardHand(player5sHand);
-		
-		
-	    
-		player.setRow(28);
-		player.setCol(0);
-		String[] suggestion = ((ComputerPlayer)player).createSuggestion(game.getStringToCard(), game.getBoard());
-		Assert.assertEquals(3, suggestion.length);
-        
-
-		Assert.assertFalse(testShownCards.contains(cards.get(suggestion[0])));
-		Assert.assertFalse(testShownCards.contains(cards.get(suggestion[1])));
-		Assert.assertFalse(testShownCards.contains(cards.get(suggestion[2])));
-		
-	}
-	
-	
 }
