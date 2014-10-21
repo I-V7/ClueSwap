@@ -315,4 +315,44 @@ public class GameActionTests {
 		
 		assertTrue("Lounge".equals(shownCard.getName()));
 	}
+	@Test
+	//test a computer suggestion:
+	//test where only one suggestion is possible
+	public void compSuggestionTest()
+	{
+		Solution solution = game.getSolution();
+		ArrayList<Card> alreadyShown = new ArrayList<Card>();
+		solution.person = "Mrs White";
+		solution.room = "Hall";
+		solution.weapon = "Rope";
+		ArrayList<Player> players = game.getPlayers();
+		Player player = players.get(0);
+		
+		//set up card scenario
+		players.get(0).setCardHand(player0sHand);
+		players.get(1).setCardHand(player1sHand);
+		players.get(2).setCardHand(player2sHand);
+		players.get(3).setCardHand(player3sHand);
+		players.get(4).setCardHand(player4sHand);
+		players.get(5).setCardHand(player5sHand);
+		
+		for(Player p: players)
+		{
+			for(Card card: p.getCards())
+			{
+				alreadyShown.add(card);
+			}
+		}
+		
+		//set player's board location
+		game.setShownCards(alreadyShown);
+		player.setRow(28);
+		player.setCol(0);
+		
+		String[] suggestion = ((ComputerPlayer) player).createSuggestion(game.getStringToCard(), game.getBoard());
+		Assert.assertEquals(3, suggestion.length);
+        Assert.assertTrue(suggestion[0].equals("Mrs White"));
+        Assert.assertTrue(suggestion[1].equals("Rope"));
+        Assert.assertTrue(suggestion[2].equals("Hall"));
+	}
 }
