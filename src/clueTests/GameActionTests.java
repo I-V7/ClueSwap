@@ -55,6 +55,7 @@ public class GameActionTests {
 		board = game.getBoard();
 		board.calcAdjacencies();
 		cards=game.getCards();
+		game.clearSeen();
 		player0sHand = new ArrayList<Card>();
 		player1sHand = new ArrayList<Card>();
 		player2sHand = new ArrayList<Card>();
@@ -217,10 +218,13 @@ public class GameActionTests {
 		//disprove suggestions for different players
 		//room
 		assertTrue("Kitchen".equals(players.get(0).disproveSuggestion("Professor Plum", "Kitchen", "Wrench").getName()));
+		game.clearSeen();
 		//weapon
 	    assertTrue("Wrench".equals(players.get(2).disproveSuggestion("Professor Plum", "Kitchen", "Wrench").getName()));
+	    game.clearSeen();
 		//person
 		assertTrue("Miss Scarlett".equals(players.get(3).disproveSuggestion("Miss Scarlett", "Kitchen", "Wrench").getName()));
+		game.clearSeen();
 		//null
 		assertEquals(null,players.get(4).disproveSuggestion("Miss Scarlett",  "Kitchen" , "Wrench"));
 		alreadyShown.remove(players.get(2).getCards().get(2));
@@ -229,6 +233,7 @@ public class GameActionTests {
 		int kitchen=0;
 		int cMustard=0;
 		for(int i=0; i < 100; i++){
+			game.clearSeen();
 			String card=players.get(0).disproveSuggestion("Colonel Mustard", "Kitchen", "Wrench").getName();
 			if("Kitchen".equals(card)){
 				kitchen++;
@@ -261,6 +266,7 @@ public class GameActionTests {
 		//test that the last player is queried
 		shownCard = game.handleSuggestions("Mrs White", "Hall", "Lead Pipe", player);
 		Assert.assertTrue(players.get(5).getCards().contains(shownCard));
+		game.clearSeen();
 		
 		//test that a middle player is queried
 		shownCard = game.handleSuggestions("Miss Scarlett", "Hall", "Wrench", player);
@@ -290,7 +296,7 @@ public class GameActionTests {
 		assertEquals(null, shownCard);
 		
 	}
-	//@Test
+	@Test
 	//test involving human player
 	//WHEN PROMPTED FOR CARD TYPE LOUNGE
 	public void humanDisproveTest()
@@ -352,7 +358,7 @@ public class GameActionTests {
 		
 		String[] suggestion = ((ComputerPlayer) player).createSuggestion(game.getStringToCard(), game.getBoard());
 		Assert.assertEquals(3, suggestion.length);
-		System.out.println("1: " + suggestion[0] +" 2: " + suggestion[1] + " 3: "+ suggestion[2]);
+
         Assert.assertTrue(suggestion[0].equals("Mrs White"));
         Assert.assertTrue(suggestion[1].equals("Rope"));
         Assert.assertTrue(suggestion[2].equals("Hall"));
@@ -386,7 +392,6 @@ public class GameActionTests {
 		String[] suggestion = ((ComputerPlayer)player).createSuggestion(game.getStringToCard(), game.getBoard());
 		Assert.assertEquals(3, suggestion.length);
         
-		System.out.println("1: " + suggestion[0] +" 2: " + suggestion[1] + " 3: "+ suggestion[2]);
 		Assert.assertFalse(testShownCards.contains(cards.get(suggestion[0])));
 		Assert.assertFalse(testShownCards.contains(cards.get(suggestion[1])));
 		Assert.assertFalse(testShownCards.contains(cards.get(suggestion[2])));

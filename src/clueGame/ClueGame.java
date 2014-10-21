@@ -167,7 +167,6 @@ public class ClueGame {
 			
 			i--;
 		}
-		System.out.println(players.get(0).getCards());
 	}
 	
 	public void selectAnswer(){
@@ -220,31 +219,7 @@ public class ClueGame {
 			curPlayer=(curPlayer+1)%(players.size());
 		}
 		return suggestedCardResult;
-		/*
-		for(Player player: players)
-		{
-			if(!player.getName().equals(accusingPerson.getName()))
-			{
-				for(Card card: player.getCards())
-				{
-					if(!shownCards.contains(card) && (card.getName().equals(person) || card.getName().equals(weapon) || card.getName().equals(room)))
-					{
-						if(firstPlayer == "")
-						{
-							firstPlayer = player.getName();
-						}
-						playersThatCanDisprove.put(player.getName(), card);
-						break;
-					}
-				}
-			}		
-		}
-		shownCards.add(playersThatCanDisprove.get(firstPlayer));
-		for(Player player: players)
-		{
-			player.setShownCards(shownCards);
-		}
-		return playersThatCanDisprove.get(firstPlayer);*/
+
 	}
 	public boolean checkAccusation(Card person, Card room, Card weapon){
 		
@@ -276,11 +251,12 @@ public class ClueGame {
 	public void setShownCards(ArrayList<Card> testShownCards)
 	{
 		shownCards = testShownCards;
-		for(Player player: players)
-		{
-			player.setShownCards(testShownCards);
-		}
+		//only need to set for one since seen cards is static
+		players.get(0).setShownCards(testShownCards);
 		
+	}
+	public void clearSeen(){
+		players.get(0).clearShownCards();
 	}
 	public ArrayList<Card> getShownCards()
 	{
