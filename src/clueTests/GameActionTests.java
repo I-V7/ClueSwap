@@ -320,7 +320,7 @@ public class GameActionTests {
 		Card shownCard = game.handleSuggestions("Reverend Green", "Lounge", "Lead Pipe", player);
 		//players.get(1).disproveSuggestion("Reverend Green", "Lounge", "Lead Pipe");
 		
-		assertTrue("Lounge".equals(shownCard.getName()));
+		assertTrue("Lounge".equals(shownCard.getName()) || "Reverend Green".equals(shownCard.getName()));
 	}
 	@Test
 	//test a computer suggestion:
