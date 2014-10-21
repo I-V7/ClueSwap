@@ -11,6 +11,19 @@ import java.util.Scanner;
 import clueGame.Board;
 
 
+package clueGame;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+import clueGame.Board;
+
+
 public class ClueGame {
 
 	Map<Character,String> rooms;
@@ -26,12 +39,12 @@ public class ClueGame {
 	private Solution solution;
 	private boolean winner;
 	
+	
+	
 	// Constructors
 	public ClueGame(String board, String legend) {//throws BadConfigFormatException {
 		this.board = new Board(this);
 		rooms = new HashMap<Character,String>();
-		shownCards = new ArrayList<Card>();
-		cardStringToCard = new HashMap<String, Card>();
 		legendFile = legend;
 		setLayoutFile(board);
 		try {
@@ -113,19 +126,16 @@ public class ClueGame {
 	}
 	public void  loadCards(){
 		cards=new ArrayList<Card>();
-		Card currentCard;
 		try{
 			FileReader reader= new FileReader("cards.txt");
 			Scanner cardsFile= new Scanner(reader);
+			int i=0;
 			while(cardsFile.hasNextLine()){
 				String[] line=cardsFile.nextLine().split(",");
 				String name = line[0];
 				String cardType=  line[1].substring(1);
-				currentCard = new Card(name,cardType);
-				cards.add(currentCard);
-				cardStringToCard.put(name, currentCard);
+				cards.add(new Card(name,cardType));
 			}
-			cardsFile.close();
 		}catch(FileNotFoundException e){
 			System.out.println(e.getLocalizedMessage());
 		}
@@ -165,7 +175,7 @@ public class ClueGame {
 			
 			i--;
 		}
-		
+		System.out.println(players.get(0).getCards());
 	}
 	
 	public void selectAnswer(){
@@ -203,14 +213,21 @@ public class ClueGame {
 		cards.remove(roomCards.get(randomCardNum));
 		
 	}
-	
-	
-	public Card handleSuggestions(String person, String room, String weapon, Player accusingPerson)
-	{
-		
+	public Card handleSuggestions(String person, String room, String weapon, Player accusingPerson){
 		String firstPlayer = "";
+		Card suggestedCardResult=null;
 		HashMap<String,Card> playersThatCanDisprove = new HashMap<String,Card>();
-		
+		int indexOfPlayer=players.indexOf(accusingPerson);
+		int curPlayer=(indexOfPlayer+1)%(players.size());
+		while(curPlayer!=indexOfPlayer){
+			suggestedCardResult=players.get(curPlayer).disproveSuggestion(person, room, weapon);
+			if(suggestedCardResult!=null){
+				break;
+			}
+			curPlayer=(curPlayer+1)%(players.size());
+		}
+		return suggestedCardResult;
+		/*
 		for(Player player: players)
 		{
 			if(!player.getName().equals(accusingPerson.getName()))
@@ -234,10 +251,9 @@ public class ClueGame {
 		{
 			player.setShownCards(shownCards);
 		}
-		return playersThatCanDisprove.get(firstPlayer);
+		return playersThatCanDisprove.get(firstPlayer);*/
 	}
-	public boolean checkAccusation(Card person, Card room, Card weapon)
-	{
+	public boolean checkAccusation(Card person, Card room, Card weapon){
 		
 		if(solution.person.equals(person.getName()) && solution.weapon.equals(weapon.getName()) && solution.room.equals(room.getName()))
 		{
@@ -254,33 +270,9 @@ public class ClueGame {
 	public ArrayList<Card> getCards(){
 		return this.cards;
 	}
-	
 	public Solution getSolution()
 	{
 		return solution;
-	}
-	public boolean isWinner()
-	{
-		return winner;
-	}
-	
-	//set/get already shown cards for test purposes only
-	public void setShownCards(ArrayList<Card> testShownCards)
-	{
-		shownCards = testShownCards;
-		for(Player player: players)
-		{
-			player.setShownCards(testShownCards);
-		}
-		
-	}
-	public ArrayList<Card> getShownCards()
-	{
-		return shownCards;
-	}
-	public HashMap<String, Card> getStringToCard()
-	{
-		return (HashMap<String, Card>) cardStringToCard;
 	}
 	//FOR TESTING
 	public static void main(String[] args){
