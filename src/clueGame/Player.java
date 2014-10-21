@@ -14,16 +14,20 @@ public abstract class Player {
 	protected int col;
 	protected ArrayList<Card> myCards;
 	protected ArrayList<Card> shownCards;
+	protected static ArrayList<Card> seenCards;
 	protected Board board;
+	protected char lastRoomVisited;
 	//may or may not use
 	//protected BoardCell boardCell;
 	
 	public Player(){
 		myCards = new ArrayList<Card>();
 		shownCards = new ArrayList<Card>();
+		seenCards= new ArrayList<Card>();
 	}
 	public Card disproveSuggestion(String person, String room, String weapon){
 		ArrayList<Card> possibleWrongCards = new ArrayList<Card>();
+		Card disprovedCard=null;
 		for(Card card: myCards)
 		{
 			if((card.getName().equals(person) || card.getName().equals(room) || card.getName().equals(weapon)) && !shownCards.contains(card))
@@ -37,15 +41,18 @@ public abstract class Player {
 		}
 		else if(possibleWrongCards.size() == 1)
 		{
-			return possibleWrongCards.get(0);
+			disprovedCard= possibleWrongCards.get(0);
 		}
 		else if(possibleWrongCards.size() > 1)
 		{
 			int randomNum = (int)(Math.random()*possibleWrongCards.size());
-			return possibleWrongCards.get(randomNum);
+			disprovedCard= possibleWrongCards.get(randomNum);
 		}
-
-		return null;
+		
+		if(disprovedCard!=null){
+			seenCards.add(disprovedCard);
+		}
+		return disprovedCard;
 	}
 	
 	// Be sure to trim the color, we don't want spaces around the name
@@ -108,6 +115,12 @@ public abstract class Player {
 	{
 		//System.out.println("return cards");
 		return myCards;
+	}
+	public void updateSeen(Card seen){
+		seenCards.add(seen);
+	}
+	public void setLastRoomVisited(char room){
+		lastRoomVisited=room;
 	}
 	//for Test purposes only
 	public void setCardHand(ArrayList<Card> testCards)

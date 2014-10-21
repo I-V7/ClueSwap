@@ -32,6 +32,8 @@ public class ClueGame {
 	public ClueGame(String board, String legend) {//throws BadConfigFormatException {
 		this.board = new Board(this);
 		rooms = new HashMap<Character,String>();
+		shownCards = new ArrayList<Card>();
+		cardStringToCard = new HashMap<String, Card>();
 		legendFile = legend;
 		setLayoutFile(board);
 		try {
@@ -113,6 +115,7 @@ public class ClueGame {
 	}
 	public void  loadCards(){
 		cards=new ArrayList<Card>();
+		Card currentCard;
 		try{
 			FileReader reader= new FileReader("cards.txt");
 			Scanner cardsFile= new Scanner(reader);
@@ -121,7 +124,9 @@ public class ClueGame {
 				String[] line=cardsFile.nextLine().split(",");
 				String name = line[0];
 				String cardType=  line[1].substring(1);
-				cards.add(new Card(name,cardType));
+				currentCard = new Card(name,cardType);
+				cards.add(currentCard);
+				cardStringToCard.put(name, currentCard);
 			}
 		}catch(FileNotFoundException e){
 			System.out.println(e.getLocalizedMessage());
@@ -209,6 +214,7 @@ public class ClueGame {
 		while(curPlayer!=indexOfPlayer){
 			suggestedCardResult=players.get(curPlayer).disproveSuggestion(person, room, weapon);
 			if(suggestedCardResult!=null){
+				//shownCards.add(suggestedCardResult);
 				break;
 			}
 			curPlayer=(curPlayer+1)%(players.size());
@@ -260,6 +266,29 @@ public class ClueGame {
 	public Solution getSolution()
 	{
 		return solution;
+	}
+	public boolean isWinner()
+	{
+		return winner;
+	}
+	
+	//set/get already shown cards for test purposes only
+	public void setShownCards(ArrayList<Card> testShownCards)
+	{
+		shownCards = testShownCards;
+		for(Player player: players)
+		{
+			player.setShownCards(testShownCards);
+		}
+		
+	}
+	public ArrayList<Card> getShownCards()
+	{
+		return shownCards;
+	}
+	public HashMap<String, Card> getStringToCard()
+	{
+		return (HashMap<String, Card>) cardStringToCard;
 	}
 	//FOR TESTING
 	public static void main(String[] args){

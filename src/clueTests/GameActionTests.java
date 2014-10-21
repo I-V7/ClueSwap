@@ -352,6 +352,7 @@ public class GameActionTests {
 		
 		String[] suggestion = ((ComputerPlayer) player).createSuggestion(game.getStringToCard(), game.getBoard());
 		Assert.assertEquals(3, suggestion.length);
+		System.out.println("1: " + suggestion[0] +" 2: " + suggestion[1] + " 3: "+ suggestion[2]);
         Assert.assertTrue(suggestion[0].equals("Mrs White"));
         Assert.assertTrue(suggestion[1].equals("Rope"));
         Assert.assertTrue(suggestion[2].equals("Hall"));
@@ -385,7 +386,7 @@ public class GameActionTests {
 		String[] suggestion = ((ComputerPlayer)player).createSuggestion(game.getStringToCard(), game.getBoard());
 		Assert.assertEquals(3, suggestion.length);
         
-
+		System.out.println("1: " + suggestion[0] +" 2: " + suggestion[1] + " 3: "+ suggestion[2]);
 		Assert.assertFalse(testShownCards.contains(cards.get(suggestion[0])));
 		Assert.assertFalse(testShownCards.contains(cards.get(suggestion[1])));
 		Assert.assertFalse(testShownCards.contains(cards.get(suggestion[2])));
