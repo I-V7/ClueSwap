@@ -1,4 +1,5 @@
 package clueGame;
+import java.awt.Graphics;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -9,12 +10,15 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+import javax.swing.JPanel;
+
 import org.junit.Assert;
 
 import clueGame.RoomCell.DoorDirection;
 
 
-public class Board {
+public class Board extends JPanel{
+	//logic
 	private BoardCell[][] layout;
 	private Map<Character, String> rooms;
 	private Map<BoardCell, LinkedList<BoardCell>> adjMtx;
@@ -26,6 +30,9 @@ public class Board {
 	private String boardFile;
 	private ClueGame game;
 	
+	//GUI instance variables
+	public final int BOARD_WIDTH=700;
+	public final int BOARD_HEIGHT=900;
 	// Board Constructor
 	public Board(ClueGame game) {
 		rooms = new HashMap<Character,String>();
@@ -34,7 +41,19 @@ public class Board {
 		targets = new HashSet<BoardCell>();
 		setGame(game);
 	}
-
+	//GUI methods
+	public void paintComponent(Graphics g){
+		super.paintComponent(g);
+		//g.drawRect(30,30,30, 30);
+		for(int i=0; i < numRows; i++){
+			for(int j=0; j < numColumns; j++){
+				layout[i][j].draw(g,this);
+			}
+		}
+		
+		//for(int i=0; i < )
+	}
+	//LOGIC methods
 	// load the board layout
 	public void loadBoardConfig(Map<Character,String> roomsFromClue) throws BadConfigFormatException {
 		Scanner scan = null; 
@@ -222,7 +241,7 @@ public class Board {
 
 	
 	// getter for the 2-D array
-	public BoardCell[][] getLayout() {
+	public BoardCell[][] getLayout1() {
 		return layout;
 	}
 

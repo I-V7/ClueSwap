@@ -1,10 +1,14 @@
 package clueGame;
 
-public abstract class BoardCell {
+import java.awt.Graphics;
 
+public abstract class BoardCell {
+	
 	protected int row;
 	protected int column;
-	
+	//gui instance variables
+	public final int CELL_WIDTH=34;
+	public final int CELL_HEIGHT=24;
 	public Boolean isWalkway() {
 		return false;
 	}
@@ -28,4 +32,5 @@ public abstract class BoardCell {
 	}
 	
 	// TODO add an abstract method named draw
+	public abstract void draw(Graphics g, Board board);
 }

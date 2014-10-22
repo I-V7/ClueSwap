@@ -1,5 +1,6 @@
 package clueGame;
 
+import java.awt.BorderLayout;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -8,11 +9,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import javax.swing.JFrame;
+
 import clueGame.Board;
 
 
-public class ClueGame {
-
+public class ClueGame extends JFrame {
+	//functionality
 	Map<Character,String> rooms;
 	private String legendFile;
 	private String layoutFile;
@@ -26,10 +29,11 @@ public class ClueGame {
 	private Solution solution;
 	private boolean winner;
 	
-	
+	//GUI Stuff
 	
 	// Constructors
 	public ClueGame(String board, String legend) {//throws BadConfigFormatException {
+		//Logic
 		this.board = new Board(this);
 		rooms = new HashMap<Character,String>();
 		shownCards = new ArrayList<Card>();
@@ -39,12 +43,20 @@ public class ClueGame {
 		try {
 			loadConfigFiles();
 		} catch (BadConfigFormatException e) {
-			// TODO Auto-generated catch block
 			e.getMessage();
 		}
 
 		solution= new Solution();
-
+		
+		//GUI stuff
+		gui();
+	}
+	//GUI function
+	private void gui(){
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("ClueGame");
+		setSize(board.BOARD_WIDTH,board.BOARD_HEIGHT);
+		add(board, BorderLayout.CENTER);
 	}
 	public ClueGame() {}
 
@@ -266,10 +278,9 @@ public class ClueGame {
 	{
 		return (HashMap<String, Card>) cardStringToCard;
 	}
-	//FOR TESTING
 	public static void main(String[] args){
-		//ClueGame game=new ClueGame("Clue Board.csv", "Clue Legend.csv");
-		//game.deal();
+		ClueGame game=new ClueGame("Clue Board.csv", "Clue Legend.csv");
+		game.setVisible(true);
 		
 	}
 	

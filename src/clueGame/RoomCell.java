@@ -1,5 +1,8 @@
 package clueGame;
 
+import java.awt.Color;
+import java.awt.Graphics;
+
 public class RoomCell extends BoardCell {
 
 	
@@ -79,6 +82,14 @@ public class RoomCell extends BoardCell {
 	// setter for doorDirection
 	public void setDoorDirection(DoorDirection direction) {
 		doorDirection = direction;
+	}
+
+	@Override
+	public void draw(Graphics g, Board board) {
+		g.setColor(Color.DARK_GRAY);
+		//g.drawRect(column*CELL_WIDTH, row*CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
+		g.fillRect(column*CELL_WIDTH, row*CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
+		
 	}
 
 	
