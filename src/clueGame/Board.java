@@ -45,6 +45,8 @@ public class Board extends JPanel{
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		//g.drawRect(30,30,30, 30);
+		RoomCell cell=(RoomCell)layout[13][1];
+		System.out.println("Room: " + cell.isRoom() + " is door "+ cell.isDoorway() + " doorDirection: " + cell.getDoorDirection());
 		for(int i=0; i < numRows; i++){
 			for(int j=0; j < numColumns; j++){
 				layout[i][j].draw(g,this);

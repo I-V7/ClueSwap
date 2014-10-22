@@ -88,9 +88,10 @@ public class RoomCell extends BoardCell {
 	public void draw(Graphics g, Board board) {
 		g.setColor(Color.DARK_GRAY);
 		g.fillRect(column*CELL_WIDTH, row*CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
+		
 		if(isDoorway()){
 			g.setColor(Color.CYAN);
-			switch(doorDirection){
+			switch(this.doorDirection){
 				case UP:
 					g.drawLine(column*CELL_WIDTH, row*CELL_HEIGHT, column*CELL_WIDTH+CELL_WIDTH, row*CELL_HEIGHT);
 					break;
@@ -103,7 +104,14 @@ public class RoomCell extends BoardCell {
 					break;
 				case RIGHT:
 					//System.out.println("heyy");
+					g.setColor(Color.white);
+					g.fillRect(column*CELL_WIDTH, row*CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
+					g.setColor(Color.CYAN);
+					g.drawLine(column*CELL_WIDTH, row*CELL_HEIGHT, column*CELL_WIDTH, row*CELL_HEIGHT+CELL_HEIGHT);
+
 					g.drawLine(column*CELL_WIDTH+CELL_WIDTH, row*CELL_HEIGHT, column*CELL_WIDTH+CELL_WIDTH, row*CELL_HEIGHT+CELL_HEIGHT);
+					g.drawLine(column*CELL_WIDTH, row*CELL_HEIGHT, column*CELL_WIDTH+CELL_WIDTH, row*CELL_HEIGHT);
+
 					break;
 				case NONE:
 					break;
