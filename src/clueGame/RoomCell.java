@@ -95,12 +95,14 @@ public class RoomCell extends BoardCell {
 					g.drawLine(column*CELL_WIDTH, row*CELL_HEIGHT, column*CELL_WIDTH+CELL_WIDTH, row*CELL_HEIGHT);
 					break;
 				case DOWN:
+					//System.out.println("heyy");
 					g.drawLine(column*CELL_WIDTH, row*CELL_HEIGHT+CELL_HEIGHT, column*CELL_WIDTH+CELL_WIDTH, row*CELL_HEIGHT+CELL_HEIGHT);
 					break;
 				case LEFT:
 					g.drawLine(column*CELL_WIDTH, row*CELL_HEIGHT, column*CELL_WIDTH, row*CELL_HEIGHT+CELL_HEIGHT);
 					break;
 				case RIGHT:
+					//System.out.println("heyy");
 					g.drawLine(column*CELL_WIDTH+CELL_WIDTH, row*CELL_HEIGHT, column*CELL_WIDTH+CELL_WIDTH, row*CELL_HEIGHT+CELL_HEIGHT);
 					break;
 				case NONE:
