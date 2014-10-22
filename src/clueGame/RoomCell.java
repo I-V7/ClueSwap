@@ -87,9 +87,30 @@ public class RoomCell extends BoardCell {
 	@Override
 	public void draw(Graphics g, Board board) {
 		g.setColor(Color.DARK_GRAY);
-		//g.drawRect(column*CELL_WIDTH, row*CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
 		g.fillRect(column*CELL_WIDTH, row*CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
+		if(isDoorway()){
+			g.setColor(Color.CYAN);
+			switch(doorDirection){
+				case UP:
+					g.drawLine(column*CELL_WIDTH, row*CELL_HEIGHT, column*CELL_WIDTH+CELL_WIDTH, row*CELL_HEIGHT);
+					break;
+				case DOWN:
+					g.drawLine(column*CELL_WIDTH, row*CELL_HEIGHT+CELL_HEIGHT, column*CELL_WIDTH+CELL_WIDTH, row*CELL_HEIGHT+CELL_HEIGHT);
+					break;
+				case LEFT:
+					g.drawLine(column*CELL_WIDTH, row*CELL_HEIGHT, column*CELL_WIDTH, row*CELL_HEIGHT+CELL_HEIGHT);
+					break;
+				case RIGHT:
+					g.drawLine(column*CELL_WIDTH+CELL_WIDTH, row*CELL_HEIGHT, column*CELL_WIDTH+CELL_WIDTH, row*CELL_HEIGHT+CELL_HEIGHT);
+					break;
+				case NONE:
+					break;
+				default:
+					break;
+			}
+		}
 		
+
 	}
 
 	
