@@ -2,6 +2,7 @@ package clueGame;
 
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Set;
@@ -87,6 +88,14 @@ public abstract class Player {
 	}
 	public abstract BoardCell pickLocation(Set<BoardCell> targets);
 	
+	public void draw(Graphics g, Board board){
+		g.setColor(this.color);
+		BoardCell[][] layout=board.getLayout1();
+		BoardCell cell = layout[0][0];
+		g.fillOval(this.col*cell.CELL_WIDTH+2, this.row*cell.CELL_HEIGHT, cell.CELL_WIDTH-4, cell.CELL_HEIGHT);
+		g.setColor(Color.BLACK);
+		g.drawOval(this.col*cell.CELL_WIDTH+2, this.row*cell.CELL_HEIGHT, cell.CELL_WIDTH-4, cell.CELL_HEIGHT);
+	}
 	//GETTERS AND SETTERS
 	public String getName(){
 		return this.name;

@@ -120,7 +120,6 @@ public class ClueGame extends JFrame {
 				}
 				i++;
 			}
-		
 		}catch(FileNotFoundException e){
 			System.out.println(e.getLocalizedMessage());
 		}
@@ -279,7 +278,7 @@ public class ClueGame extends JFrame {
 		return (HashMap<String, Card>) cardStringToCard;
 	}
 	public static void main(String[] args){
-		ClueGame game=new ClueGame("Clue Board.csv", "Clue Legend.csv");
+		ClueGame game=new ClueGame("ClueBoard.csv", "Clue Legend.csv");
 		game.setVisible(true);
 		
 	}

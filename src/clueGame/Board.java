@@ -22,12 +22,11 @@ public class Board extends JPanel{
 	private BoardCell[][] layout;
 	private Map<Character, String> rooms;
 	private Map<BoardCell, LinkedList<BoardCell>> adjMtx;
-	private Set<BoardCell> cell_set;
 	private Set<BoardCell> visited;
 	private Set<BoardCell> targets;
+	private ArrayList<Player> players;
 	private int numRows;
 	private int numColumns;
-	private String boardFile;
 	private ClueGame game;
 	
 	//GUI instance variables
@@ -44,16 +43,17 @@ public class Board extends JPanel{
 	//GUI methods
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
-		//g.drawRect(30,30,30, 30);
-		RoomCell cell=(RoomCell)layout[13][1];
-		System.out.println("Room: " + cell.isRoom() + " is door "+ cell.isDoorway() + " doorDirection: " + cell.getDoorDirection());
 		for(int i=0; i < numRows; i++){
 			for(int j=0; j < numColumns; j++){
 				layout[i][j].draw(g,this);
 			}
 		}
+		players=game.getPlayers();
+		System.out.println(players.size());
+		for(Player player:players){
+			player.draw(g, this);
+		}
 		
-		//for(int i=0; i < )
 	}
 	//LOGIC methods
 	// load the board layout
@@ -104,9 +104,9 @@ public class Board extends JPanel{
 		} catch (FileNotFoundException e) {
 			System.out.println("ERROR: the file: '" + game.getLayoutFile() + "' was not found");
 		}
-		
+		//close scanner
+		scan.close();
 	}
-	
 	
 	// Calculate an adjacency list for each BoardCell on the Board
 	public void calcAdjacencies() {
