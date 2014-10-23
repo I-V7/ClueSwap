@@ -91,27 +91,25 @@ public class RoomCell extends BoardCell {
 		
 		if(isDoorway()){
 			g.setColor(Color.BLUE);
+			int lineThickness=5;
 			switch(this.doorDirection){
 				case UP:
-					for(int i=0; i < 5; i++){
+					for(int i=0; i < lineThickness; i++){
 						g.drawLine(column*CELL_WIDTH, row*CELL_HEIGHT+i, column*CELL_WIDTH+CELL_WIDTH, row*CELL_HEIGHT+i);
 					}
 					break;
 				case DOWN:
-					//System.out.println("heyy");
-					for(int i=0; i < 5; i++){
+					for(int i=0; i < lineThickness; i++){
 						g.drawLine(column*CELL_WIDTH, row*CELL_HEIGHT+CELL_HEIGHT-i, column*CELL_WIDTH+CELL_WIDTH, row*CELL_HEIGHT+CELL_HEIGHT-i);
 					}
 					break;
 				case LEFT:
-					for(int i=0; i < 5; i++){
+					for(int i=0; i < lineThickness; i++){
 						g.drawLine(column*CELL_WIDTH+i, row*CELL_HEIGHT, column*CELL_WIDTH+i, row*CELL_HEIGHT+CELL_HEIGHT);
 					}
 					break;
 				case RIGHT:
-					g.drawLine(column*CELL_WIDTH+CELL_WIDTH, row*CELL_HEIGHT, column*CELL_WIDTH+CELL_WIDTH, row*CELL_HEIGHT+CELL_HEIGHT);
-					//g.drawLine(column*CELL_WIDTH+CELL_WIDTH+1, row*CELL_HEIGHT, column*CELL_WIDTH+CELL_WIDTH+1, row*CELL_HEIGHT+CELL_HEIGHT);
-					for(int i=0; i < 5; i++){
+					for(int i=0; i < lineThickness; i++){
 						g.drawLine(column*CELL_WIDTH+CELL_WIDTH-i, row*CELL_HEIGHT, column*CELL_WIDTH+CELL_WIDTH-i, row*CELL_HEIGHT+CELL_HEIGHT);
 					}
 					break;
