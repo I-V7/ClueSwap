@@ -90,28 +90,30 @@ public class RoomCell extends BoardCell {
 		g.fillRect(column*CELL_WIDTH, row*CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
 		
 		if(isDoorway()){
-			g.setColor(Color.CYAN);
+			g.setColor(Color.BLUE);
 			switch(this.doorDirection){
 				case UP:
-					g.drawLine(column*CELL_WIDTH, row*CELL_HEIGHT, column*CELL_WIDTH+CELL_WIDTH, row*CELL_HEIGHT);
+					for(int i=0; i < 5; i++){
+						g.drawLine(column*CELL_WIDTH, row*CELL_HEIGHT+i, column*CELL_WIDTH+CELL_WIDTH, row*CELL_HEIGHT+i);
+					}
 					break;
 				case DOWN:
 					//System.out.println("heyy");
-					g.drawLine(column*CELL_WIDTH, row*CELL_HEIGHT+CELL_HEIGHT, column*CELL_WIDTH+CELL_WIDTH, row*CELL_HEIGHT+CELL_HEIGHT);
+					for(int i=0; i < 5; i++){
+						g.drawLine(column*CELL_WIDTH, row*CELL_HEIGHT+CELL_HEIGHT-i, column*CELL_WIDTH+CELL_WIDTH, row*CELL_HEIGHT+CELL_HEIGHT-i);
+					}
 					break;
 				case LEFT:
-					g.drawLine(column*CELL_WIDTH, row*CELL_HEIGHT, column*CELL_WIDTH, row*CELL_HEIGHT+CELL_HEIGHT);
+					for(int i=0; i < 5; i++){
+						g.drawLine(column*CELL_WIDTH+i, row*CELL_HEIGHT, column*CELL_WIDTH+i, row*CELL_HEIGHT+CELL_HEIGHT);
+					}
 					break;
 				case RIGHT:
-					//System.out.println("heyy");
-					g.setColor(Color.white);
-					g.fillRect(column*CELL_WIDTH, row*CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
-					g.setColor(Color.CYAN);
-					g.drawLine(column*CELL_WIDTH, row*CELL_HEIGHT, column*CELL_WIDTH, row*CELL_HEIGHT+CELL_HEIGHT);
-
 					g.drawLine(column*CELL_WIDTH+CELL_WIDTH, row*CELL_HEIGHT, column*CELL_WIDTH+CELL_WIDTH, row*CELL_HEIGHT+CELL_HEIGHT);
-					g.drawLine(column*CELL_WIDTH, row*CELL_HEIGHT, column*CELL_WIDTH+CELL_WIDTH, row*CELL_HEIGHT);
-
+					//g.drawLine(column*CELL_WIDTH+CELL_WIDTH+1, row*CELL_HEIGHT, column*CELL_WIDTH+CELL_WIDTH+1, row*CELL_HEIGHT+CELL_HEIGHT);
+					for(int i=0; i < 5; i++){
+						g.drawLine(column*CELL_WIDTH+CELL_WIDTH-i, row*CELL_HEIGHT, column*CELL_WIDTH+CELL_WIDTH-i, row*CELL_HEIGHT+CELL_HEIGHT);
+					}
 					break;
 				case NONE:
 					break;
