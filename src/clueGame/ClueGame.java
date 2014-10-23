@@ -1,6 +1,8 @@
 package clueGame;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -10,6 +12,9 @@ import java.util.Map;
 import java.util.Scanner;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 import clueGame.Board;
 
@@ -30,7 +35,7 @@ public class ClueGame extends JFrame {
 	private boolean winner;
 	
 	//GUI Stuff
-	
+	private DetectiveNotesDialog detectiveNotes;
 	// Constructors
 	public ClueGame(String board, String legend) {//throws BadConfigFormatException {
 		//Logic
@@ -51,15 +56,50 @@ public class ClueGame extends JFrame {
 		//GUI stuff
 		gui();
 	}
-	//GUI function
+	public ClueGame() {}
+	//GUI FUNCTIONS
 	private void gui(){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("ClueGame");
 		setSize(board.BOARD_WIDTH,board.BOARD_HEIGHT);
 		add(board, BorderLayout.CENTER);
+		
+		//File Menu
+		JMenuBar fileMenu= new JMenuBar();
+		setJMenuBar(fileMenu);
+		fileMenu.add(createFileMenu());
 	}
-	public ClueGame() {}
-
+	
+	private JMenu createFileMenu(){
+		JMenu menu = new JMenu("File");
+		menu.add(createShowNotesItem());
+		menu.add(createFileExitItem());
+		return menu;
+	}
+	private JMenuItem createShowNotesItem(){
+		JMenuItem item = new JMenuItem("Show Notes");
+		class MenuItemListener implements ActionListener{
+			public void actionPerformed(ActionEvent e){
+				detectiveNotes=new DetectiveNotesDialog();
+				detectiveNotes.setVisible(true);
+			}
+		}
+		item.addActionListener(new MenuItemListener());
+		return item;
+	}
+	
+	private JMenuItem createFileExitItem(){
+		JMenuItem item = new JMenuItem("Exit");
+		class MenuItemListener implements ActionListener{
+			public void actionPerformed(ActionEvent e){
+				System.exit(0);
+			}
+		}
+		item.addActionListener(new MenuItemListener());
+		return item;
+	}
+	
+	//LOGIC FUNCTIONS
 	// load the config files
 	public void loadConfigFiles() throws BadConfigFormatException {
 		loadRoomConfig();

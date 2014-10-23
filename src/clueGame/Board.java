@@ -49,7 +49,6 @@ public class Board extends JPanel{
 			}
 		}
 		players=game.getPlayers();
-		System.out.println(players.size());
 		for(Player player:players){
 			player.draw(g, this);
 		}
