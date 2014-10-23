@@ -1,6 +1,0 @@
-Miss Scarlett, red, 6, 0
-Professor Plum, pink, 14, 0
-Mrs Peacock, blue, 28, 3
-Reverend Green, green, 28, 9
-Colonel Mustard, orange, 18, 19
-Mrs White, white, 7, 19
