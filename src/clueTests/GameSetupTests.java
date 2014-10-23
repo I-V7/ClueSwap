@@ -51,7 +51,7 @@ public class GameSetupTests {
 		ArrayList<Player> players=game.getPlayers();
 		//test Human
 		Assert.assertTrue(players.get(1).getName().equals("Professor Plum"));
-		Assert.assertTrue(players.get(1).getColorString().equals("purple"));
+		Assert.assertTrue(players.get(1).getColorString().equals("pink"));
 		Assert.assertEquals(players.get(1).getRow(), 14);
 		Assert.assertEquals(players.get(1).getCol(), 0);
 		Assert.assertTrue(players.get(1).isHuman());
