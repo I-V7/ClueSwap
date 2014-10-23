@@ -120,7 +120,6 @@ public class ClueGame extends JFrame {
 				}
 				i++;
 			}
-		
 		}catch(FileNotFoundException e){
 			System.out.println(e.getLocalizedMessage());
 		}
