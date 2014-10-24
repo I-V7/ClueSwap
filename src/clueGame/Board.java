@@ -42,6 +42,7 @@ public class Board extends JPanel{
 	private JLabel hallLabel;
 	private JLabel loungeLabel;
 	private JLabel diningLabel;
+	private JLabel closetLabel;
 	private Color labelColor;
 	
 	
@@ -63,6 +64,7 @@ public class Board extends JPanel{
 		hallLabel = new JLabel("Hall");
 		loungeLabel = new JLabel("Lounge");
 		diningLabel = new JLabel("Dining Room");
+		closetLabel= new JLabel("Closet");
 		labelColor = new Color(255,0,0);
 		setLayout(null);
 	    
@@ -81,6 +83,7 @@ public class Board extends JPanel{
 		hallLabel.setForeground(labelColor);
 		loungeLabel.setForeground(labelColor);
 		diningLabel.setForeground(labelColor);
+		closetLabel.setForeground(labelColor);
 		
 		
 		
@@ -93,6 +96,7 @@ public class Board extends JPanel{
 		hallLabel.setBounds(40, 600, 50, 20);
 		loungeLabel.setBounds(575, 300, 50, 20);
 		diningLabel.setBounds(575, 5, 100, 20);
+		closetLabel.setBounds(275,250,100,20);
 		
 		
 		add(kitchenLabel);
@@ -104,6 +108,7 @@ public class Board extends JPanel{
 		add(hallLabel);
 		add(loungeLabel);
 		add(diningLabel);
+		add(closetLabel);
 	}
 	//GUI methods
 	public void paintComponent(Graphics g){
