@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -34,6 +35,7 @@ public class ClueGame extends JFrame {
 	private Solution solution;
 	private boolean winner;
 	
+	
 	//GUI Stuff
 	private DetectiveNotesDialog detectiveNotes;
 	// Constructors
@@ -43,6 +45,9 @@ public class ClueGame extends JFrame {
 		rooms = new HashMap<Character,String>();
 		shownCards = new ArrayList<Card>();
 		cardStringToCard = new HashMap<String, Card>();
+		
+		
+		
 		legendFile = legend;
 		setLayoutFile(board);
 		try {
@@ -52,6 +57,7 @@ public class ClueGame extends JFrame {
 		}
 
 		solution= new Solution();
+		
 		
 		//GUI stuff
 		gui();
@@ -78,10 +84,13 @@ public class ClueGame extends JFrame {
 	}
 	private JMenuItem createShowNotesItem(){
 		JMenuItem item = new JMenuItem("Show Notes");
+		detectiveNotes=new DetectiveNotesDialog();
 		class MenuItemListener implements ActionListener{
 			public void actionPerformed(ActionEvent e){
-				detectiveNotes=new DetectiveNotesDialog();
+				
+				detectiveNotes.updateCheckBoxes(players.get(1));
 				detectiveNotes.setVisible(true);
+				
 			}
 		}
 		item.addActionListener(new MenuItemListener());
@@ -182,6 +191,7 @@ public class ClueGame extends JFrame {
 		}catch(FileNotFoundException e){
 			System.out.println(e.getLocalizedMessage());
 		}
+		
 	}
 	// getter for Board
 	public Board getBoard() {
@@ -218,6 +228,8 @@ public class ClueGame extends JFrame {
 			
 			i--;
 		}
+		System.out.println("dealing");
+		detectiveNotes.updateCheckBoxes(players.get(1));
 	}
 	
 	public void selectAnswer(){
@@ -319,6 +331,12 @@ public class ClueGame extends JFrame {
 	}
 	public static void main(String[] args){
 		ClueGame game=new ClueGame("Clue Board.csv", "Clue Legend.csv");
+        game.deal();
+        ArrayList<Card> cards = game.getPlayers().get(1).getCards();
+        for(Card card: cards)
+        {
+        	System.out.println("card..."+card.getName());
+        }
 		game.setVisible(true);
 		
 	}

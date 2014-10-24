@@ -1,5 +1,8 @@
 package clueGame;
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -10,7 +13,9 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import org.junit.Assert;
 
@@ -28,6 +33,17 @@ public class Board extends JPanel{
 	private int numRows;
 	private int numColumns;
 	private ClueGame game;
+	private JLabel kitchenLabel;
+	private JLabel ballroomLabel;
+	private JLabel conservatoryLabel;
+	private JLabel billardLabel;
+	private JLabel libraryLabel;
+	private JLabel studyLabel;
+	private JLabel hallLabel;
+	private JLabel loungeLabel;
+	private JLabel diningLabel;
+	private Color labelColor;
+	
 	
 	//GUI instance variables
 	public final int BOARD_WIDTH=700;
@@ -38,7 +54,56 @@ public class Board extends JPanel{
 		adjMtx = new HashMap<BoardCell, LinkedList<BoardCell>>();
 		visited = new HashSet<BoardCell>();
 		targets = new HashSet<BoardCell>();
+		kitchenLabel = new JLabel("Kitchen");
+		ballroomLabel = new JLabel("Ballroom");
+		conservatoryLabel = new JLabel("Conservatory");
+		billardLabel = new JLabel("Billard Room");
+		libraryLabel = new JLabel("Library");
+		studyLabel = new JLabel("Study");
+		hallLabel = new JLabel("Hall");
+		loungeLabel = new JLabel("Lounge");
+		diningLabel = new JLabel("Dining Room");
+		labelColor = new Color(255,0,0);
+		setLayout(null);
+	    
+		displayLabels();
 		setGame(game);
+	}
+	
+	private void displayLabels()
+	{
+		kitchenLabel.setForeground(labelColor);
+		ballroomLabel.setForeground(labelColor);
+		conservatoryLabel.setForeground(labelColor);
+		billardLabel.setForeground(labelColor);
+		libraryLabel.setForeground(labelColor);
+		studyLabel.setForeground(labelColor);
+		hallLabel.setForeground(labelColor);
+		loungeLabel.setForeground(labelColor);
+		diningLabel.setForeground(labelColor);
+		
+		
+		
+		kitchenLabel.setBounds(285, 5, 50, 20);
+		ballroomLabel.setBounds(210, 600, 100, 20);
+		conservatoryLabel.setBounds(575, 550, 100, 20);
+		billardLabel.setBounds(30, 240, 100, 20);
+		libraryLabel.setBounds(50, 50, 50, 20);
+		studyLabel.setBounds(410, 630, 50, 20);
+		hallLabel.setBounds(40, 600, 50, 20);
+		loungeLabel.setBounds(575, 300, 50, 20);
+		diningLabel.setBounds(575, 5, 100, 20);
+		
+		
+		add(kitchenLabel);
+		add(ballroomLabel);
+		add(conservatoryLabel);
+		add(billardLabel);
+		add(libraryLabel);
+		add(studyLabel);
+		add(hallLabel);
+		add(loungeLabel);
+		add(diningLabel);
 	}
 	//GUI methods
 	public void paintComponent(Graphics g){

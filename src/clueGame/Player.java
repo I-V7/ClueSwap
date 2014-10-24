@@ -137,6 +137,10 @@ public abstract class Player {
 	public void setShownCards(ArrayList<Card> shownCards) {
 		this.shownCards = shownCards;	
 	}
+	public ArrayList<Card> getShownCards()
+	{
+		return shownCards;
+	}
 	public void clearShownCards(){
 		shownCards.clear();
 	}
