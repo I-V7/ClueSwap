@@ -188,84 +188,89 @@ public class Board extends JPanel{
 				
 				BoardCell temp = getCellAt(i,j);
 				
+				int a = i-1;
+				int b = i+1;
+				int c = j+1;
+				int d = j-1;
+				
 				// Is the current cell a Doorway?
 				if(temp.isDoorway()) {
 					RoomCell door = getRoomCellAt(i,j);
 					if(door.getDoorDirection() == DoorDirection.UP) {
-						adj.add(getCellAt(i-1,j));
+						adj.add(getCellAt(a,j));
 					}
 					else if(door.getDoorDirection() == DoorDirection.DOWN) {
-						adj.add(getCellAt(i+1,j));
+						adj.add(getCellAt(b,j));
 					}
 					else if(door.getDoorDirection() == DoorDirection.RIGHT) {
-						adj.add(getCellAt(i,j+1));
+						adj.add(getCellAt(i,c));
 					}
 					else if(door.getDoorDirection() == DoorDirection.LEFT) {
-						adj.add(getCellAt(i,j-1));
+						adj.add(getCellAt(i,d));
 					}
 				}
 
 				else  { // Is the current cell a walkway or room?
 					// cell left of temp
-					if((j-1) >= 0) {
-						BoardCell tempU = getCellAt(i,j-1);
+					if((d) >= 0) {
+						BoardCell tempU = getCellAt(i,d);
 						if(tempU.isWalkway()) {
 							if(!temp.isRoom()) { 
-								adj.add(getCellAt(i,j-1));
+								adj.add(getCellAt(i,d));
 							}
 						}
 						if(tempU.isRoom()) {
-							RoomCell tempU2 = getRoomCellAt(i,j-1);
+							RoomCell tempU2 = getRoomCellAt(i,d);
 							if(tempU2.getDoorDirection() == DoorDirection.RIGHT) {
-								adj.add(getCellAt(i,j-1));
+								adj.add(getCellAt(i,d));
 							}
 						}	
 					
 					}
 					// cell right of temp
-					if((j+1) < numColumns) {
-						BoardCell tempD = getCellAt(i,j+1);
+					if((c) < numColumns) {
+						BoardCell tempD = getCellAt(i,c);
 						if(tempD.isWalkway()) {
 							if(!temp.isRoom()) {
-								adj.add(getCellAt(i,j+1));
+								adj.add(getCellAt(i,c));
 							}
 						}
 						if(tempD.isRoom()) {
-							RoomCell tempD2 = getRoomCellAt(i,j+1);
+							RoomCell tempD2 = getRoomCellAt(i,c);
 							if(tempD2.getDoorDirection() == DoorDirection.LEFT) {
-								adj.add(getCellAt(i,j+1));							
+								adj.add(getCellAt(i,c));							
 							}
 						}	
 					
 					}
 					// cell above temp
-					if((i-1) >= 0) {
-						BoardCell tempD = getCellAt(i-1,j);
+					if((a) >= 0) {
+						BoardCell tempD = getCellAt(a,j);
 						if(tempD.isWalkway()) {
 							if(!temp.isRoom()) {
-								adj.add(getCellAt(i-1,j));
+								adj.add(getCellAt(a,j));
 							}
 						}
 						if(tempD.isRoom()) {
-							RoomCell tempD2 = getRoomCellAt(i-1,j);
+							RoomCell tempD2 = getRoomCellAt(a,j);
 							if(tempD2.getDoorDirection() == DoorDirection.DOWN) {
-								adj.add(getCellAt(i-1,j));
+								adj.add(getCellAt(a,j));
 							}
 						}	
 					
 					}
 					// cell below temp
-					if((i+1) < numRows) {
-						BoardCell tempD = getCellAt(i+1,j);
+					if((b) < numRows) {
+						BoardCell tempD = getCellAt(b,j);
 						if(tempD.isWalkway()) {
 							if(!temp.isRoom()) {
-								adj.add(getCellAt(i+1,j));
+								adj.add(getCellAt(b,j));
 							}
 						}
 						if(tempD.isRoom()) {
-							RoomCell tempD2 = getRoomCellAt(i+1,j);
+							RoomCell tempD2 = getRoomCellAt(b,j);
 							if(tempD2.getDoorDirection() == DoorDirection.UP) {
-								adj.add(getCellAt(i+1,j));
+								adj.add(getCellAt(b,j));
 							}
 						}	
 					
