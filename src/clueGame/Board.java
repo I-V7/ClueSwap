@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Scanner;
@@ -33,18 +34,14 @@ public class Board extends JPanel{
 	private int numRows;
 	private int numColumns;
 	private ClueGame game;
-	private JLabel kitchenLabel;
-	private JLabel ballroomLabel;
-	private JLabel conservatoryLabel;
-	private JLabel billardLabel;
-	private JLabel libraryLabel;
-	private JLabel studyLabel;
-	private JLabel hallLabel;
-	private JLabel loungeLabel;
-	private JLabel diningLabel;
-	private JLabel closetLabel;
-	private Color labelColor;
 	
+	//Used for the labels.
+	private ArrayList<JLabel> roomLabel;
+	private Map<Character,String> roomLabels;
+	private Map<Character,Integer> roomLabelXPosition;
+	private Map<Character,Integer> roomLabelYPosition;
+	public final int CELL_WIDTH=34;
+	public final int CELL_HEIGHT=24;
 	
 	//GUI instance variables
 	public final int BOARD_WIDTH=700;
@@ -55,60 +52,17 @@ public class Board extends JPanel{
 		adjMtx = new HashMap<BoardCell, LinkedList<BoardCell>>();
 		visited = new HashSet<BoardCell>();
 		targets = new HashSet<BoardCell>();
-		kitchenLabel = new JLabel("Kitchen");
-		ballroomLabel = new JLabel("Ballroom");
-		conservatoryLabel = new JLabel("Conservatory");
-		billardLabel = new JLabel("Billard Room");
-		libraryLabel = new JLabel("Library");
-		studyLabel = new JLabel("Study");
-		hallLabel = new JLabel("Hall");
-		loungeLabel = new JLabel("Lounge");
-		diningLabel = new JLabel("Dining Room");
-		closetLabel= new JLabel("Closet");
-		labelColor = new Color(255,0,0);
 		setLayout(null);
 	    
-		displayLabels();
 		setGame(game);
 	}
 	
 	private void displayLabels()
 	{
-		kitchenLabel.setForeground(labelColor);
-		ballroomLabel.setForeground(labelColor);
-		conservatoryLabel.setForeground(labelColor);
-		billardLabel.setForeground(labelColor);
-		libraryLabel.setForeground(labelColor);
-		studyLabel.setForeground(labelColor);
-		hallLabel.setForeground(labelColor);
-		loungeLabel.setForeground(labelColor);
-		diningLabel.setForeground(labelColor);
-		closetLabel.setForeground(labelColor);
-		
-		
-		
-		kitchenLabel.setBounds(285, 5, 50, 20);
-		ballroomLabel.setBounds(210, 600, 100, 20);
-		conservatoryLabel.setBounds(575, 550, 100, 20);
-		billardLabel.setBounds(30, 240, 100, 20);
-		libraryLabel.setBounds(50, 50, 50, 20);
-		studyLabel.setBounds(410, 630, 50, 20);
-		hallLabel.setBounds(40, 600, 50, 20);
-		loungeLabel.setBounds(575, 300, 50, 20);
-		diningLabel.setBounds(575, 5, 100, 20);
-		closetLabel.setBounds(275,250,100,20);
-		
-		
-		add(kitchenLabel);
-		add(ballroomLabel);
-		add(conservatoryLabel);
-		add(billardLabel);
-		add(libraryLabel);
-		add(studyLabel);
-		add(hallLabel);
-		add(loungeLabel);
-		add(diningLabel);
-		add(closetLabel);
+		for (int i = 0; i < roomLabel.size(); i++)
+		{
+			add(roomLabel.get(i));
+		}
 	}
 	//GUI methods
 	public void paintComponent(Graphics g){
@@ -130,7 +84,9 @@ public class Board extends JPanel{
 		Scanner scan = null; 
 		String line;
 		rooms = roomsFromClue;
-
+		Map<Character,Integer> xValueAverage = new HashMap<Character,Integer>();
+		Map<Character,Integer> yValueAverage = new HashMap<Character,Integer>();
+		Map<Character,Integer> Count = new HashMap<Character,Integer>();
 		
 		try {
 			// try to read the layoutFile
@@ -159,6 +115,19 @@ public class Board extends JPanel{
 					}
 					else {
 						layout[i][j] = new RoomCell(i, j, temp2[j]);
+						Character charRoom = temp2[j].charAt(0);
+						if(xValueAverage.containsKey(charRoom))
+						{
+							Count.put(charRoom, Count.get(charRoom)+1);
+							xValueAverage.put(charRoom, xValueAverage.get(charRoom) + CELL_WIDTH * j);
+							yValueAverage.put(charRoom, yValueAverage.get(charRoom) + CELL_HEIGHT * i);
+						}
+						else
+						{
+							xValueAverage.put(temp2[j].charAt(0), CELL_WIDTH * j);
+							yValueAverage.put(temp2[j].charAt(0), CELL_HEIGHT * i);
+							Count.put(temp2[j].charAt(0), 1);
+						}
 					}
 					// test for a layout with bad rooms
 					if(!rooms.containsKey(temp2[j].charAt(0))) {
@@ -175,6 +144,40 @@ public class Board extends JPanel{
 		}
 		//close scanner
 		scan.close();
+		
+		roomLabelXPosition = new HashMap<Character,Integer>();
+		roomLabelYPosition = new HashMap<Character,Integer>();
+		for (Character a : Count.keySet())
+		{
+			roomLabelXPosition.put(a, xValueAverage.get(a) / Count.get(a));
+			roomLabelYPosition.put(a, yValueAverage.get(a) / Count.get(a));
+		}
+	}
+	
+	
+	//Gives the board the legend list, in order to create labels.
+	public void giveLabels(Map<Character,String> labels)
+	{
+		roomLabels = labels;
+		createLabels();
+	}
+	
+	//Creates the JLabels for the labels.
+	public void createLabels()
+	{
+		roomLabel = new ArrayList<JLabel>();
+		for (Character a : roomLabelXPosition.keySet())
+		{
+			JLabel temp = new JLabel(roomLabels.get(a));
+			temp.setBounds(roomLabelXPosition.get(a),roomLabelYPosition.get(a),100,20);
+			roomLabel.add(temp);
+		}
+		Color labelColor = new Color(255,0,0);
+		for (int i = 0; i < roomLabel.size(); i++)
+		{
+			roomLabel.get(i).setForeground(labelColor);
+		}
+		displayLabels();
 	}
 	
 	// Calculate an adjacency list for each BoardCell on the Board

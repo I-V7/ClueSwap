@@ -115,6 +115,7 @@ public class ClueGame extends JFrame {
 		board.loadBoardConfig(rooms);	
 		loadPlayers();
 		loadCards();
+		board.giveLabels(rooms);
 	    
 	}
 
