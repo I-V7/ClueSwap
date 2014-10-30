@@ -76,7 +76,6 @@ public class Board extends JPanel{
 		for(Player player:players){
 			player.draw(g, this);
 		}
-		
 	}
 	//LOGIC methods
 	// load the board layout
@@ -133,12 +132,8 @@ public class Board extends JPanel{
 					if(!rooms.containsKey(temp2[j].charAt(0))) {
 						throw new BadConfigFormatException(game.getLayoutFile());
 					}
-					
-			
 				}
-			
 			}
-
 		} catch (FileNotFoundException e) {
 			System.out.println("ERROR: the file: '" + game.getLayoutFile() + "' was not found");
 		}
@@ -375,6 +370,4 @@ public class Board extends JPanel{
 		targets.clear();
 		return copyTargets;
 	}
-	
-	
 }

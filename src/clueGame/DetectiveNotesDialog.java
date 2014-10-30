@@ -191,28 +191,20 @@ public class DetectiveNotesDialog extends JDialog{
 				{
 					if(boxName.equals(personComboBox.getItemAt(i)))
 					{
-
 						personComboBox.removeItemAt(i);
 						break;
-
 					}
-
 				}
-
 			}
 			else if(!box.isSelected())
 			{
 				personComboBox.addItem(boxName);
 			}
-
-
 		}
-
 	}
 
 	private class RoomCheckBoxItemListener implements ItemListener
 	{
-
 		@Override
 		public void itemStateChanged(ItemEvent event) {
 
@@ -220,33 +212,24 @@ public class DetectiveNotesDialog extends JDialog{
 			String boxName = box.getText();
 			if(box.isSelected())
 			{
-
 				for(int i=0; i<roomComboBox.getItemCount();i++)
 				{
 					if(boxName.equals(roomComboBox.getItemAt(i)))
 					{
-
 						roomComboBox.removeItemAt(i);
 						break;
-
 					}
-
 				}
-
 			}
 			else if(!box.isSelected())
 			{
 				roomComboBox.addItem(boxName);
 			}
-
-
 		}
-
 	}
 
 	private class WeaponCheckBoxItemListener implements ItemListener
 	{
-
 		@Override
 		public void itemStateChanged(ItemEvent event) {
 
@@ -254,28 +237,20 @@ public class DetectiveNotesDialog extends JDialog{
 			String boxName = box.getText();
 			if(box.isSelected())
 			{
-
 				for(int i=0; i<weaponComboBox.getItemCount();i++)
 				{
 					if(boxName.equals(weaponComboBox.getItemAt(i)))
 					{
-
 						weaponComboBox.removeItemAt(i);
 						break;
-
 					}
-
 				}
-
 			}
 			else if(!box.isSelected())
 			{
 				weaponComboBox.addItem(boxName);
 			}
-
-
 		}
-
 	}
 
 	public void updateCheckBoxes(Player player)
@@ -286,13 +261,10 @@ public class DetectiveNotesDialog extends JDialog{
 
 		for(JCheckBox box: peopleBoxes)
 		{
-
 			for(Card card: seenCards)
 			{
-
 				if(card.getName().equals(box.getText()))
 				{
-
 					box.setSelected(true);
 				}
 			}
@@ -300,7 +272,6 @@ public class DetectiveNotesDialog extends JDialog{
 			{
 				if(card.getName().equals(box.getText()))
 				{
-
 					box.setSelected(true);
 				}
 			}
@@ -308,10 +279,8 @@ public class DetectiveNotesDialog extends JDialog{
 
 		for(JCheckBox box: roomBoxes)
 		{
-
 			for(Card card: seenCards)
 			{
-
 				if(card.getName().equals(box.getText()))
 				{
 					box.setSelected(true);
@@ -327,13 +296,10 @@ public class DetectiveNotesDialog extends JDialog{
 		}
 		for(JCheckBox box: weaponBoxes)
 		{
-
 			for(Card card: seenCards)
 			{
-
 				if(card.getName().equals(box.getText()))
 				{
-
 					box.setSelected(true);
 				}
 			}
@@ -341,7 +307,6 @@ public class DetectiveNotesDialog extends JDialog{
 			{
 				if(card.getName().equals(box.getText()))
 				{
-
 					box.setSelected(true);
 				}
 			}
@@ -392,7 +357,6 @@ public class DetectiveNotesDialog extends JDialog{
 				}
 			}
 		}
-
 	}
 
 }
