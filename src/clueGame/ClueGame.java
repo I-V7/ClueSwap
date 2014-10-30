@@ -230,7 +230,6 @@ public class ClueGame extends JFrame {
 			
 			i--;
 		}
-		System.out.println("dealing");
 		detectiveNotes.updateCheckBoxes(players.get(1));
 	}
 	
@@ -335,10 +334,6 @@ public class ClueGame extends JFrame {
 		ClueGame game=new ClueGame("Clue Board.csv", "Clue Legend.csv");
         game.deal();
         ArrayList<Card> cards = game.getPlayers().get(1).getCards();
-        for(Card card: cards)
-        {
-        	System.out.println("card..."+card.getName());
-        }
 		game.setVisible(true);
 		
 	}

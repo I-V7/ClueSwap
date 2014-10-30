@@ -1,0 +1,305 @@
+*Before
+		peopleBoxes.add(new JCheckBox("Professor Plum"));
+		...
+		peopleComboBox.addItem("Professor Plum"));
+		
+		roomBoxes.add(new JCheckBox("Kitchen"));
+		...
+		roomComboBox.addItem("Dinning Room");
+		
+		weaponBoxes.add(new JCheckBox("Candle Stick"));
+		...
+		weaponComboBox.addItem("Wrench");
+		
+		
+*After
+
+		//add all people cards to list and combo box
+		for (int i = 0; i < people.size(); i++)
+		{
+			peopleBoxes.add(new JCheckBox(people.get(i).getName()));
+			personComboBox.addItem(people.get(i).getName());
+		}
+		//add listener to all checkboxes and add checkbox to panels
+		for(JCheckBox box: peopleBoxes)
+		{
+
+			box.addItemListener(new PersonCheckBoxItemListener());
+			peoplePanel.add(box);
+		}
+		personGuessPanel.add(personComboBox);
+
+		//add all room cards to list and combo box
+		for(int i = 0; i < rooms.size(); i++)
+		{
+			roomBoxes.add(new JCheckBox(rooms.get(i).getName()));
+			roomComboBox.addItem(rooms.get(i).getName());
+		}
+		//add listener to all checkboxes and add checkbox to panels
+		for(JCheckBox box: roomBoxes)
+		{
+			box.addItemListener(new RoomCheckBoxItemListener());
+			roomPanel.add(box);
+		}
+		roomGuessPanel.add(roomComboBox);
+
+		//add all weapon cards to list and combo box
+		for(int i = 0; i < weapons.size(); i++)
+		{
+			weaponBoxes.add(new JCheckBox(weapons.get(i).getName()));
+			weaponComboBox.addItem(weapons.get(i).getName());
+		}
+		//add listener to all checkboxes and add checkbox to panels
+		for(JCheckBox box: weaponBoxes)
+		{
+			box.addItemListener(new WeaponCheckBoxItemListener());
+			weaponPanel.add(box);
+		}
+		weaponGuessPanel.add(weaponComboBox);
+		
+*Before
+		
+		JLabel library = new JLabel("Library"));
+		...
+		JLabel kitchen = new JLabel("Kitchen"));
+		
+		library.setBounds(242,120,100,20);
+		...
+		kitchen.setBounds(860,790,100,20);
+		
+		
+		
+*After
+
+
+		//Excerpts from loadBoardConfig()
+						Character charRoom = temp2[j].charAt(0);
+						if(xValueAverage.containsKey(charRoom))
+						{
+							Count.put(charRoom, Count.get(charRoom)+1);
+							xValueAverage.put(charRoom, xValueAverage.get(charRoom) + CELL_WIDTH * j);
+							yValueAverage.put(charRoom, yValueAverage.get(charRoom) + CELL_HEIGHT * i);
+						}
+						else
+						{
+							xValueAverage.put(temp2[j].charAt(0), CELL_WIDTH * j);
+							yValueAverage.put(temp2[j].charAt(0), CELL_HEIGHT * i);
+							Count.put(temp2[j].charAt(0), 1);
+						}
+						...
+		roomLabelXPosition = new HashMap<Character,Integer>();
+		roomLabelYPosition = new HashMap<Character,Integer>();
+		for (Character a : Count.keySet())
+		{
+			roomLabelXPosition.put(a, xValueAverage.get(a) / Count.get(a));
+			roomLabelYPosition.put(a, yValueAverage.get(a) / Count.get(a));
+		}
+		
+		
+		//Gives the board the legend list, in order to create labels.
+		public void giveLabels(Map<Character,String> labels)
+		{
+			roomLabels = labels;
+			createLabels();
+		}
+	
+		//Creates the JLabels for the labels.
+		public void createLabels()
+		{
+			roomLabel = new ArrayList<JLabel>();
+			for (Character a : roomLabelXPosition.keySet())
+			{
+				JLabel temp = new JLabel(roomLabels.get(a));
+				temp.setBounds(roomLabelXPosition.get(a),roomLabelYPosition.get(a),100,20);
+				roomLabel.add(temp);
+			}
+			Color labelColor = new Color(255,0,0);
+			for (int i = 0; i < roomLabel.size(); i++)
+			{
+				roomLabel.get(i).setForeground(labelColor);
+			}
+			displayLabels();
+		}
+		
+*Before
+
+
+				if(temp.isDoorway()) {
+					RoomCell door = getRoomCellAt(i,j);
+					if(door.getDoorDirection() == DoorDirection.UP) {
+						adj.add(getCellAt(i-1,j));
+					}
+					else if(door.getDoorDirection() == DoorDirection.DOWN) {
+						adj.add(getCellAt(i+1,j));
+					}
+					else if(door.getDoorDirection() == DoorDirection.RIGHT) {
+						adj.add(getCellAt(i,j+1));
+					}
+					else if(door.getDoorDirection() == DoorDirection.LEFT) {
+						adj.add(getCellAt(i,j-1));
+					}
+				}
+				else  { // Is the current cell a walkway or room?
+					// cell left of temp
+					if((j-1) >= 0) {
+						BoardCell tempU = getCellAt(i,j-1);
+						if(tempU.isWalkway()) {
+							if(!temp.isRoom()) { 
+								adj.add(getCellAt(i,j-1));
+							}
+						}
+						if(tempU.isRoom()) {
+							RoomCell tempU2 = getRoomCellAt(i,j-1);
+							if(tempU2.getDoorDirection() == DoorDirection.RIGHT) {
+								adj.add(getCellAt(i,j-1));
+							}
+						}	
+					
+					}
+					// cell right of temp
+					if((j+1) < numColumns) {
+						BoardCell tempD = getCellAt(i,j+1);
+						if(tempD.isWalkway()) {
+							if(!temp.isRoom()) {
+								adj.add(getCellAt(i,j+1));
+							}
+						}
+						if(tempD.isRoom()) {
+							RoomCell tempD2 = getRoomCellAt(i,j+1);
+							if(tempD2.getDoorDirection() == DoorDirection.LEFT) {
+								adj.add(getCellAt(i,j+1));							
+							}
+						}	
+					
+					}
+					// cell above temp
+					if((i+1) >= 0) {
+						BoardCell tempD = getCellAt(i+1,j);
+						if(tempD.isWalkway()) {
+							if(!temp.isRoom()) {
+								adj.add(getCellAt(i+1,j));
+							}
+						}
+						if(tempD.isRoom()) {
+							RoomCell tempD2 = getRoomCellAt(i+1,j);
+							if(tempD2.getDoorDirection() == DoorDirection.DOWN) {
+								adj.add(getCellAt(i+1,j));
+							}
+						}	
+					
+					}
+					// cell below temp
+					if((i-1) < numRows) {
+						BoardCell tempD = getCellAt(i-1,j);
+						if(tempD.isWalkway()) {
+							if(!temp.isRoom()) {
+								adj.add(getCellAt(i-1,j));
+							}
+						}
+						if(tempD.isRoom()) {
+							RoomCell tempD2 = getRoomCellAt(i-1,j);
+							if(tempD2.getDoorDirection() == DoorDirection.UP) {
+								adj.add(getCellAt(i-1,j));
+							}
+						}	
+					
+					}
+					
+					
+				}
+
+*After
+				int a = i-1;
+				int b = i+1;
+				int c = j+1;
+				int d = j-1;
+				
+				// Is the current cell a Doorway?
+				if(temp.isDoorway()) {
+					RoomCell door = getRoomCellAt(i,j);
+					if(door.getDoorDirection() == DoorDirection.UP) {
+						adj.add(getCellAt(a,j));
+					}
+					else if(door.getDoorDirection() == DoorDirection.DOWN) {
+						adj.add(getCellAt(b,j));
+					}
+					else if(door.getDoorDirection() == DoorDirection.RIGHT) {
+						adj.add(getCellAt(i,c));
+					}
+					else if(door.getDoorDirection() == DoorDirection.LEFT) {
+						adj.add(getCellAt(i,d));
+					}
+				}
+
+				else  { // Is the current cell a walkway or room?
+					// cell left of temp
+					if((d) >= 0) {
+						BoardCell tempU = getCellAt(i,d);
+						if(tempU.isWalkway()) {
+							if(!temp.isRoom()) { 
+								adj.add(getCellAt(i,d));
+							}
+						}
+						if(tempU.isRoom()) {
+							RoomCell tempU2 = getRoomCellAt(i,d);
+							if(tempU2.getDoorDirection() == DoorDirection.RIGHT) {
+								adj.add(getCellAt(i,d));
+							}
+						}	
+					
+					}
+					// cell right of temp
+					if((c) < numColumns) {
+						BoardCell tempD = getCellAt(i,c);
+						if(tempD.isWalkway()) {
+							if(!temp.isRoom()) {
+								adj.add(getCellAt(i,c));
+							}
+						}
+						if(tempD.isRoom()) {
+							RoomCell tempD2 = getRoomCellAt(i,c);
+							if(tempD2.getDoorDirection() == DoorDirection.LEFT) {
+								adj.add(getCellAt(i,c));							
+							}
+						}	
+					
+					}
+					// cell above temp
+					if((a) >= 0) {
+						BoardCell tempD = getCellAt(a,j);
+						if(tempD.isWalkway()) {
+							if(!temp.isRoom()) {
+								adj.add(getCellAt(a,j));
+							}
+						}
+						if(tempD.isRoom()) {
+							RoomCell tempD2 = getRoomCellAt(a,j);
+							if(tempD2.getDoorDirection() == DoorDirection.DOWN) {
+								adj.add(getCellAt(a,j));
+							}
+						}	
+					
+					}
+					// cell below temp
+					if((b) < numRows) {
+						BoardCell tempD = getCellAt(b,j);
+						if(tempD.isWalkway()) {
+							if(!temp.isRoom()) {
+								adj.add(getCellAt(b,j));
+							}
+						}
+						if(tempD.isRoom()) {
+							RoomCell tempD2 = getRoomCellAt(b,j);
+							if(tempD2.getDoorDirection() == DoorDirection.UP) {
+								adj.add(getCellAt(b,j));
+							}
+						}	
+					
+					}
+					
+					
+				}
+		
+		
+*Before
+

@@ -44,6 +44,7 @@ public class DetectiveNotesDialog extends JDialog{
 		setTitle("Detective Notes");
 		setSize(500,600);
 
+		//initialize card deck and sorted piles.
 		cardDeck = cards;
 		weapons = new ArrayList<Card>();
 		rooms = new ArrayList<Card>();

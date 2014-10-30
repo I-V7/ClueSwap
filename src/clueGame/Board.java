@@ -326,7 +326,6 @@ public class Board extends JPanel{
 
 	// getter for the rooms Map
 	public Map<Character, String> getRooms() {
-		System.out.println("size" + rooms.size());
 		return rooms;
 	}
 
