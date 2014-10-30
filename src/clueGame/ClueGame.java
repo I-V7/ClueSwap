@@ -84,7 +84,7 @@ public class ClueGame extends JFrame {
 	}
 	private JMenuItem createShowNotesItem(){
 		JMenuItem item = new JMenuItem("Show Notes");
-		detectiveNotes=new DetectiveNotesDialog();
+		detectiveNotes=new DetectiveNotesDialog(cards);
 		class MenuItemListener implements ActionListener{
 			public void actionPerformed(ActionEvent e){
 				
@@ -113,9 +113,10 @@ public class ClueGame extends JFrame {
 	public void loadConfigFiles() throws BadConfigFormatException {
 		loadRoomConfig();
 		board.loadBoardConfig(rooms);	
-		loadPlayers();
 		loadCards();
+		loadPlayers();
 		board.giveLabels(rooms);
+		
 	    
 	}
 
@@ -164,9 +165,9 @@ public class ClueGame extends JFrame {
 				int row = Integer.parseInt(line[2].substring(1));
 				int col = Integer.parseInt(line[3].substring(1));
 				if(i!=humanPlayer){
-					players.add(new ComputerPlayer(name, color, row, col));
+					players.add(new ComputerPlayer(name, color, row, col, cards));
 				}else{
-					players.add(new HumanPlayer(name, color, row, col));
+					players.add(new HumanPlayer(name, color, row, col, cards));
 				}
 				i++;
 			}

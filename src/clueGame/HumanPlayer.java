@@ -6,17 +6,19 @@ import java.util.Set;
 
 public class HumanPlayer extends Player {
 	
+	ArrayList<Card> allCards;
 	
 	public HumanPlayer(){
 		
 	}
-	public HumanPlayer(String name, String color, int row, int col){
+	public HumanPlayer(String name, String color, int row, int col, ArrayList<Card> cards){
 		super();
 		this.name=name;
 		setPlayerColor(color);
 		this.colorString=color;
 		this.row=row;
 		this.col=col;
+		allCards = cards;
 		//this.boardCell=
 	}
 	@Override
