@@ -69,6 +69,7 @@ public class ClueGame extends JFrame {
 		setTitle("ClueGame");
 		setSize(board.BOARD_WIDTH,board.BOARD_HEIGHT);
 		add(board, BorderLayout.CENTER);
+		add(new GameControlPanel(), BorderLayout.SOUTH);
 		
 		//File Menu
 		JMenuBar fileMenu= new JMenuBar();
