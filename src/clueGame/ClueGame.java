@@ -35,7 +35,6 @@ public class ClueGame extends JFrame {
 	private Solution solution;
 	private boolean winner;
 	
-	
 	//GUI Stuff
 	private DetectiveNotesDialog detectiveNotes;
 	// Constructors
@@ -46,8 +45,6 @@ public class ClueGame extends JFrame {
 		shownCards = new ArrayList<Card>();
 		cardStringToCard = new HashMap<String, Card>();
 		
-		
-		
 		legendFile = legend;
 		setLayoutFile(board);
 		try {
@@ -57,7 +54,6 @@ public class ClueGame extends JFrame {
 		}
 
 		solution= new Solution();
-		
 		
 		//GUI stuff
 		gui();
@@ -87,11 +83,9 @@ public class ClueGame extends JFrame {
 		JMenuItem item = new JMenuItem("Show Notes");
 		detectiveNotes=new DetectiveNotesDialog(cards);
 		class MenuItemListener implements ActionListener{
-			public void actionPerformed(ActionEvent e){
-				
+			public void actionPerformed(ActionEvent e){		
 				detectiveNotes.updateCheckBoxes(players.get(1));
 				detectiveNotes.setVisible(true);
-				
 			}
 		}
 		item.addActionListener(new MenuItemListener());
@@ -117,11 +111,7 @@ public class ClueGame extends JFrame {
 		loadCards();
 		loadPlayers();
 		board.giveLabels(rooms);
-		
-	    
 	}
-
-	
 
 	public void loadRoomConfig() throws BadConfigFormatException {
 
@@ -194,8 +184,8 @@ public class ClueGame extends JFrame {
 		}catch(FileNotFoundException e){
 			System.out.println(e.getLocalizedMessage());
 		}
-		
 	}
+	
 	// getter for Board
 	public Board getBoard() {
 		return board;
@@ -217,10 +207,8 @@ public class ClueGame extends JFrame {
 	}
 	
 	//New methods from cluePlayer, new load configs are placed with load functions
-	public void deal(){
-		
+	public void deal(){	
 		int playerNumber =0;
-		
 		selectAnswer();
 		int i =cards.size()-1;
 		while(!cards.isEmpty())
@@ -255,7 +243,6 @@ public class ClueGame extends JFrame {
 				roomCards.add(card);
 			}
 		}
-		
 		int randomCardNum = (int)(Math.random()*personCards.size());
 		solution.person = personCards.get(randomCardNum).getName();
 		cards.remove(personCards.get(randomCardNum));
@@ -318,7 +305,6 @@ public class ClueGame extends JFrame {
 		shownCards = testShownCards;
 		//only need to set for one since seen cards is static
 		players.get(0).setShownCards(testShownCards);
-		
 	}
 	public void clearSeen(){
 		players.get(0).clearShownCards();
@@ -335,9 +321,7 @@ public class ClueGame extends JFrame {
 		ClueGame game=new ClueGame("Clue Board.csv", "Clue Legend.csv");
         game.deal();
         ArrayList<Card> cards = game.getPlayers().get(1).getCards();
-		game.setVisible(true);
-		
-	}
-	
+		game.setVisible(true);	
+	}	
 }
 

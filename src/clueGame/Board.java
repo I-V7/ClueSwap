@@ -46,6 +46,7 @@ public class Board extends JPanel{
 	//GUI instance variables
 	public final int BOARD_WIDTH=1500;
 	public final int BOARD_HEIGHT=900;
+	
 	// Board Constructor
 	public Board(ClueGame game) {
 		rooms = new HashMap<Character,String>();
@@ -64,6 +65,7 @@ public class Board extends JPanel{
 			add(roomLabel.get(i));
 		}
 	}
+	
 	//GUI methods
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
@@ -128,12 +130,14 @@ public class Board extends JPanel{
 							Count.put(temp2[j].charAt(0), 1);
 						}
 					}
+	
 					// test for a layout with bad rooms
 					if(!rooms.containsKey(temp2[j].charAt(0))) {
 						throw new BadConfigFormatException(game.getLayoutFile());
 					}
 				}
 			}
+			scan.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("ERROR: the file: '" + game.getLayoutFile() + "' was not found");
 		}
@@ -148,8 +152,6 @@ public class Board extends JPanel{
 			roomLabelYPosition.put(a, yValueAverage.get(a) / Count.get(a));
 		}
 	}
-	
-	
 	//Gives the board the legend list, in order to create labels.
 	public void giveLabels(Map<Character,String> labels)
 	{
@@ -164,7 +166,12 @@ public class Board extends JPanel{
 		for (Character a : roomLabelXPosition.keySet())
 		{
 			JLabel temp = new JLabel(roomLabels.get(a));
-			temp.setBounds(roomLabelXPosition.get(a),roomLabelYPosition.get(a),100,20);
+			
+			if(a == 'K')
+				temp.setBounds(280, 0, 100, 50);
+			else
+				temp.setBounds(roomLabelXPosition.get(a),roomLabelYPosition.get(a),100,20);
+			
 			roomLabel.add(temp);
 		}
 		Color labelColor = new Color(255,0,0);
@@ -178,12 +185,10 @@ public class Board extends JPanel{
 	// Calculate an adjacency list for each BoardCell on the Board
 	public void calcAdjacencies() {
 
-		for( int i = 0; i < numRows; i++ ) {
-			
+		for( int i = 0; i < numRows; i++ ) {		
 			for(int j = 0; j < numColumns; j++) {
 				
 				LinkedList<BoardCell> adj = new LinkedList<BoardCell>();
-				
 				BoardCell temp = getCellAt(i,j);
 				
 				int a = i-1;
@@ -207,7 +212,6 @@ public class Board extends JPanel{
 						adj.add(getCellAt(i,d));
 					}
 				}
-
 				else  { // Is the current cell a walkway or room?
 					// cell left of temp
 					if((d) >= 0) {
@@ -223,7 +227,6 @@ public class Board extends JPanel{
 								adj.add(getCellAt(i,d));
 							}
 						}	
-					
 					}
 					// cell right of temp
 					if((c) < numColumns) {
@@ -239,7 +242,6 @@ public class Board extends JPanel{
 								adj.add(getCellAt(i,c));							
 							}
 						}	
-					
 					}
 					// cell above temp
 					if((a) >= 0) {
@@ -255,7 +257,6 @@ public class Board extends JPanel{
 								adj.add(getCellAt(a,j));
 							}
 						}	
-					
 					}
 					// cell below temp
 					if((b) < numRows) {
@@ -271,15 +272,11 @@ public class Board extends JPanel{
 								adj.add(getCellAt(b,j));
 							}
 						}	
-					
 					}
-					
-					
 				}
 				adjMtx.put(getCellAt(i,j), adj); // key: BoarcdCell at (x,y), value: adjacency list 
 			}
 		}
-		
 	}
 	
 	
@@ -296,13 +293,12 @@ public class Board extends JPanel{
 				targets.add(b);
 			}
 		}
-
 		if(moves > 1) {
 			for(BoardCell b : possMove) {
 				if(b.isDoorway()) {
 					
 					targets.add(b);
-					System.out.println("adding b");
+					//System.out.println("adding b");
 				}
 				else if(!visited.contains(b)) {
 					calcTargets(b.getRow(),b.getCol(), moves - 1);
@@ -358,8 +354,6 @@ public class Board extends JPanel{
 	public LinkedList<BoardCell> getAdjList(int x, int y) {
 		return adjMtx.get(getCellAt(x,y));
 	}
-	
-	
 	
 	// getter for the targets Set
 	public Set<BoardCell> getTargets() {
