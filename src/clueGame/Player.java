@@ -14,7 +14,7 @@ public abstract class Player {
 	protected int row;
 	protected int col;
 	protected ArrayList<Card> myCards;
-	protected static ArrayList<Card> shownCards;
+	protected static ArrayList<Card> seenCards;
 	protected Board board;
 	protected char lastRoomVisited;
 	//may or may not use
@@ -22,14 +22,14 @@ public abstract class Player {
 	
 	public Player(){
 		myCards = new ArrayList<Card>();
-		shownCards = new ArrayList<Card>();
+		seenCards = new ArrayList<Card>();
 	}
 	public Card disproveSuggestion(String person, String room, String weapon){
 		ArrayList<Card> possibleWrongCards = new ArrayList<Card>();
 		Card disprovedCard=null;
 		for(Card card: myCards)
 		{
-			if((card.getName().equals(person) || card.getName().equals(room) || card.getName().equals(weapon)) && !shownCards.contains(card))
+			if((card.getName().equals(person) || card.getName().equals(room) || card.getName().equals(weapon)) && !seenCards.contains(card))
 			{
 				possibleWrongCards.add(card);
 			}
@@ -124,7 +124,7 @@ public abstract class Player {
 		return myCards;
 	}
 	public void updateSeen(Card seen){
-		shownCards.add(seen);
+		seenCards.add(seen);
 	}
 	public void setLastRoomVisited(char room){
 		lastRoomVisited=room;
@@ -135,14 +135,14 @@ public abstract class Player {
 		myCards = testCards;
 	}
 	public void setShownCards(ArrayList<Card> shownCards) {
-		this.shownCards = shownCards;	
+		this.seenCards = shownCards;	
 	}
 	public ArrayList<Card> getShownCards()
 	{
-		return shownCards;
+		return seenCards;
 	}
 	public void clearShownCards(){
-		shownCards.clear();
+		seenCards.clear();
 	}
 	
 }

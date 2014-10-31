@@ -50,12 +50,12 @@ public class DetectiveNotesDialog extends JDialog{
 		rooms = new ArrayList<Card>();
 		people = new ArrayList<Card>();
 		
-		//initialize combo boxex
+		//initialize combo boxes
 		personComboBox = new JComboBox<String>();	
 		roomComboBox = new JComboBox<String>();
 		weaponComboBox = new JComboBox<String>();
 
-		//initalize array lists of all checkbox types
+		//Initialize array lists of all checkbox types
 		peopleBoxes = new ArrayList<JCheckBox>();
 		weaponBoxes = new ArrayList<JCheckBox>();
 		roomBoxes = new ArrayList<JCheckBox>();

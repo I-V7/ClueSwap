@@ -36,7 +36,7 @@ public class HumanPlayer extends Player {
 		Card disprovenCard=null;
 		for(Card card: myCards)
 		{
-			if((card.getName().equals(person) || card.getName().equals(room) || card.getName().equals(weapon)) && !shownCards.contains(card))
+			if((card.getName().equals(person) || card.getName().equals(room) || card.getName().equals(weapon)) && !seenCards.contains(card))
 			{
 				disproveCards.add(card);
 			}

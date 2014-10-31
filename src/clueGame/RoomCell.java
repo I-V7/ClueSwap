@@ -8,7 +8,7 @@ public class RoomCell extends BoardCell {
 	
 	private DoorDirection doorDirection;
 	private char roomInitial;
-	private int doorways = 0;
+	//private int doorways = 0;
 	public enum DoorDirection {UP("U"), DOWN("D"), LEFT("L"), RIGHT("R"), NONE("N");
 		
 		private String door;
@@ -64,7 +64,7 @@ public class RoomCell extends BoardCell {
 			return false;
 		}
 		
-		doorways++;
+		//doorways++;
 		return true;
 	}
 	

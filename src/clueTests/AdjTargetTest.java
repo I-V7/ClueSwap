@@ -1,7 +1,6 @@
 package clueTests;
 
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Set;
 
 import org.junit.Assert;

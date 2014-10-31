@@ -1,14 +1,11 @@
 package clueGame;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.GridLayout;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Scanner;
@@ -16,10 +13,6 @@ import java.util.Set;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-
-import org.junit.Assert;
-
 import clueGame.RoomCell.DoorDirection;
 
 
@@ -79,6 +72,7 @@ public class Board extends JPanel{
 			player.draw(g, this);
 		}
 	}
+	
 	//LOGIC methods
 	// load the board layout
 	public void loadBoardConfig(Map<Character,String> roomsFromClue) throws BadConfigFormatException {
@@ -174,6 +168,7 @@ public class Board extends JPanel{
 			
 			roomLabel.add(temp);
 		}
+		
 		Color labelColor = new Color(255,0,0);
 		for (int i = 0; i < roomLabel.size(); i++)
 		{
@@ -305,7 +300,6 @@ public class Board extends JPanel{
 				}
 			}
 		}
-		
 		visited.remove(cell);
 	}
 

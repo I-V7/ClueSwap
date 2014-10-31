@@ -124,6 +124,7 @@ public class PartIITests {
 		game.loadRoomConfig();
 		game.getBoard().loadBoardConfig(game.getRooms());
 	}
+	
 	// Test that an exception is thrown for a bad config file
 	@SuppressWarnings("static-access")
 	@Test (expected = BadConfigFormatException.class)
@@ -133,6 +134,7 @@ public class PartIITests {
 		game.loadRoomConfig();
 		game.getBoard().loadBoardConfig(game.getRooms());
 	}
+	
 	// Test that an exception is thrown for a bad config file
 	@SuppressWarnings("static-access")
 	@Test (expected = BadConfigFormatException.class)

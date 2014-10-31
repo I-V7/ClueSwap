@@ -73,13 +73,9 @@ public class ComputerPlayer extends Player{
 			
 		}
 		
-		for(Card card: shownCards)
+		for(Card card: seenCards)
 		{
-			if(card.getCardType() == CardType.ROOM)
-			{
-				
-			}
-			else if(!alreadyGuessedCards.contains(card))
+			if(!alreadyGuessedCards.contains(card) && card.getCardType() != CardType.ROOM)
 			{
 				alreadyGuessedCards.add(card);
 			}

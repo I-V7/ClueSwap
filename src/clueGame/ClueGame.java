@@ -303,10 +303,10 @@ public class ClueGame extends JFrame {
 	public void setShownCards(ArrayList<Card> testShownCards)
 	{
 		shownCards = testShownCards;
-		//only need to set for one since seen cards is static
+		//only need to set for one since shown cards is static
 		players.get(0).setShownCards(testShownCards);
 	}
-	public void clearSeen(){
+	public void clearShown(){
 		players.get(0).clearShownCards();
 	}
 	public ArrayList<Card> getShownCards()
