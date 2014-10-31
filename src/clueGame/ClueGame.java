@@ -31,7 +31,7 @@ public class ClueGame extends JFrame {
 	private ArrayList<Card> cards;
 	private ArrayList<Player> players;
 	private ArrayList<Card> shownCards;
-	static Map<String,Card> cardStringToCard;
+	//static Map<String,Card> cardStringToCard;
 	private Solution solution;
 	private boolean winner;
 	
@@ -43,7 +43,7 @@ public class ClueGame extends JFrame {
 		this.board = new Board(this);
 		rooms = new HashMap<Character,String>();
 		shownCards = new ArrayList<Card>();
-		cardStringToCard = new HashMap<String, Card>();
+		//cardStringToCard = new HashMap<String, Card>();
 		
 		legendFile = legend;
 		setLayoutFile(board);
@@ -172,18 +172,20 @@ public class ClueGame extends JFrame {
 		try{
 			FileReader reader= new FileReader("cards.txt");
 			Scanner cardsFile= new Scanner(reader);
-			int i=0;
+			//int i=0;
 			while(cardsFile.hasNextLine()){
 				String[] line=cardsFile.nextLine().split(",");
 				String name = line[0];
 				String cardType=  line[1].substring(1);
 				currentCard = new Card(name,cardType);
 				cards.add(currentCard);
-				cardStringToCard.put(name, currentCard);
+				//cardStringToCard.put(name, currentCard);
 			}
+			cardsFile.close();
 		}catch(FileNotFoundException e){
 			System.out.println(e.getLocalizedMessage());
 		}
+		
 	}
 	
 	// getter for Board
@@ -257,9 +259,9 @@ public class ClueGame extends JFrame {
 		
 	}
 	public Card handleSuggestions(String person, String room, String weapon, Player accusingPerson){
-		String firstPlayer = "";
+		
 		Card suggestedCardResult=null;
-		HashMap<String,Card> playersThatCanDisprove = new HashMap<String,Card>();
+		
 		int indexOfPlayer=players.indexOf(accusingPerson);
 		int curPlayer=(indexOfPlayer+1)%(players.size());
 		while(curPlayer!=indexOfPlayer){
@@ -315,12 +317,12 @@ public class ClueGame extends JFrame {
 	}
 	public HashMap<String, Card> getStringToCard()
 	{
-		return (HashMap<String, Card>) cardStringToCard;
+		return null;//(HashMap<String, Card>) cardStringToCard;
 	}
 	public static void main(String[] args){
 		ClueGame game=new ClueGame("Clue Board.csv", "Clue Legend.csv");
         game.deal();
-        ArrayList<Card> cards = game.getPlayers().get(1).getCards();
+        //ArrayList<Card> cards = game.getPlayers().get(1).getCards();
 		game.setVisible(true);	
 	}	
 }
