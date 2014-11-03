@@ -37,6 +37,7 @@ public class ClueGame extends JFrame {
 	
 	//GUI Stuff
 	private DetectiveNotesDialog detectiveNotes;
+	
 	// Constructors
 	public ClueGame(String board, String legend) {//throws BadConfigFormatException {
 		//Logic
@@ -57,6 +58,8 @@ public class ClueGame extends JFrame {
 		
 		//GUI stuff
 		gui();
+		
+		
 	}
 	public ClueGame() {}
 	//GUI FUNCTIONS
@@ -71,6 +74,7 @@ public class ClueGame extends JFrame {
 		JMenuBar fileMenu= new JMenuBar();
 		setJMenuBar(fileMenu);
 		fileMenu.add(createFileMenu());
+		
 	}
 	
 	private JMenu createFileMenu(){
@@ -157,8 +161,10 @@ public class ClueGame extends JFrame {
 				int col = Integer.parseInt(line[3].substring(1));
 				if(i!=humanPlayer){
 					players.add(new ComputerPlayer(name, color, row, col, cards));
+					
 				}else{
 					players.add(new HumanPlayer(name, color, row, col, cards));
+					
 				}
 				i++;
 			}
@@ -324,6 +330,7 @@ public class ClueGame extends JFrame {
         game.deal();
         //ArrayList<Card> cards = game.getPlayers().get(1).getCards();
 		game.setVisible(true);	
+		NewGameDialog newGameDialog = new NewGameDialog(game.getPlayers().get(1).getName());
 	}	
 }
 
