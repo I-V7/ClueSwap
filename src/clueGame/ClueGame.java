@@ -70,6 +70,7 @@ public class ClueGame extends JFrame {
 		add(board, BorderLayout.CENTER);
 		add(new GameControlPanel(), BorderLayout.SOUTH);
 		
+		
 		//File Menu
 		JMenuBar fileMenu= new JMenuBar();
 		setJMenuBar(fileMenu);
@@ -228,6 +229,7 @@ public class ClueGame extends JFrame {
 			i--;
 		}
 		detectiveNotes.updateCheckBoxes(players.get(1));
+		add(new MyCardPanel(players.get(1).getCards()), BorderLayout.LINE_END);
 	}
 	
 	public void selectAnswer(){
