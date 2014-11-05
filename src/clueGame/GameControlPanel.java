@@ -2,6 +2,8 @@ package clueGame;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -20,10 +22,20 @@ public class GameControlPanel extends JPanel{
 	private JPanel buttonPanel() {
 		JPanel temp = new JPanel();
 		temp.setLayout(new GridLayout(1,3));;
-		JButton next = new JButton("Next player");
-		JButton accuse = new JButton("Make an accusation");
+		JButton nextPlayerButton = new JButton("Next player");
+		JButton accuseButton = new JButton("Make an accusation");
 		JPanel temporary = new JPanel();
 		temporary.setLayout(new GridLayout(2,2));
+		
+		nextPlayerButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				
+			}
+			
+		});
 		
 		JLabel nameLabeler = new JLabel("Which player's turn?");
 		JTextField nameLabel = new JTextField(20);
@@ -34,10 +46,11 @@ public class GameControlPanel extends JPanel{
 		temporary.setBorder(new EtchedBorder());
 		
 		temp.add(temporary);
-		temp.add(next);
-		temp.add(accuse);
+		temp.add(nextPlayerButton);
+		temp.add(accuseButton);
 		return temp;
 	}
+	
 	// Create a panel to display roll, turn, guesses
 	private JPanel infoPanel() 
 	{
@@ -83,5 +96,6 @@ public class GameControlPanel extends JPanel{
 		
 		return bottomPanel;
 	}
+	
 
 }
