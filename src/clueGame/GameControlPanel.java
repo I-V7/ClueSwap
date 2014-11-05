@@ -2,6 +2,8 @@ package clueGame;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -29,6 +31,16 @@ public class GameControlPanel extends JPanel{
 		JPanel temporary = new JPanel();
 		temporary.setLayout(new GridLayout(2,2));
 		
+		nextPlayerButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				
+			}
+			
+		});
+		
 		JLabel nameLabeler = new JLabel("Which player's turn?");
 		nameLabel = new JTextField(20);
 		nameLabel.setEditable(false);
@@ -38,7 +50,7 @@ public class GameControlPanel extends JPanel{
 		temporary.setBorder(new EtchedBorder());
 		
 		temp.add(temporary);
-		temp.add(next);
+		temp.add(nextPlayerButton);
 		temp.add(accuse);
 		return temp;
 	}
@@ -101,5 +113,4 @@ public class GameControlPanel extends JPanel{
 	{
 		rollNumber.setText(Integer.toString(i));
 	}
-
 }

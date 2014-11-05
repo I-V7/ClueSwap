@@ -298,7 +298,7 @@ public class ClueGame extends JFrame {
 		}
 		detectiveNotes.updateCheckBoxes(players.get(1));
 		board.calcAdjacencies();
-		//add(new MyCardPanel(players.get(1).getCards()), BorderLayout.LINE_END);
+		add(new MyCardPanel(players.get(1).getCards()), BorderLayout.LINE_END);
 	}
 
 	public void selectAnswer(){
@@ -401,7 +401,7 @@ public class ClueGame extends JFrame {
 		game.deal();
 		//ArrayList<Card> cards = game.getPlayers().get(1).getCards();
 		game.setVisible(true);	
-		//NewGameDialog newGameDialog = new NewGameDialog(game.getPlayers().get(1).getName());
+		NewGameDialog newGameDialog = new NewGameDialog(game.getPlayers().get(1).getName());
 	}	
 }
 
