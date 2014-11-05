@@ -2,6 +2,7 @@ package clueGame;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 public class RoomCell extends BoardCell {
 
@@ -92,8 +93,7 @@ public class RoomCell extends BoardCell {
 		{
 			g.setColor(Color.CYAN);
 		}
-		g.fillRect(column*CELL_WIDTH, row*CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
-		
+		g.fillRect(column*CELL_WIDTH, row*CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);		
 		if(isDoorway()){
 			g.setColor(Color.BLUE);
 			int lineThickness=5;

@@ -3,6 +3,8 @@ package clueGame;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -76,7 +78,8 @@ public class ClueGame extends JFrame {
 		add(board, BorderLayout.CENTER);
 		panel = new GameControlPanel();
 		add(panel, BorderLayout.SOUTH);
-		panel.getNextPlayerButton().addActionListener(new ActionListener(){
+		panel.getNextPlayerButton().addActionListener(new ActionListener()
+		{
 			public void actionPerformed(ActionEvent e)
 			{
 				if(playersTurnIsOver)
@@ -85,6 +88,52 @@ public class ClueGame extends JFrame {
 				}
 			}
 		});
+
+		addMouseListener( new MouseListener(){
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{
+				BoardCell whichCell = null;
+				System.out.println(e.getX());
+				System.out.println(e.getY());
+				for (int i = 0; i < board.getNumRows();i++)
+				{
+					for (int ii = 0; ii < board.getNumColumns(); ii++)
+					{
+						BoardCell temp = board.getCellAt(i, ii);
+						if (temp.containsClick(e.getX(),e.getY()))
+						{
+							if(!playersTurnIsOver)
+							{
+								players.get(1).setCol(temp.getCol());
+								players.get(1).setRow(temp.getRow());
+								playersTurnIsOver = true;
+								for (int j = 0; j < board.getNumRows();j++)
+								{
+									for (int jj = 0; jj < board.getNumColumns(); jj++)
+									{
+										board.getCellAt(j, jj).setAsNotTarget();
+									}
+								}
+								repaint();
+							}
+						}
+					}
+				}
+
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			@Override
+			public void mouseExited(MouseEvent e) {}
+			@Override
+			public void mouseClicked(MouseEvent e) {}
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+
+		}
+				);
 
 
 
@@ -109,9 +158,9 @@ public class ClueGame extends JFrame {
 		if (currentTurn != 1)
 		{
 			makeMove();
-			for (int i = 0; i < board.getNumRows()-1;i++)
+			for (int i = 0; i < board.getNumRows();i++)
 			{
-				for (int ii = 0; ii < board.getNumColumns()-1; ii++)
+				for (int ii = 0; ii < board.getNumColumns(); ii++)
 				{
 					board.getCellAt(i, ii).setAsNotTarget();
 				}
@@ -136,7 +185,6 @@ public class ClueGame extends JFrame {
 					}
 				}
 			}
-			playersTurnIsOver = true;
 		}
 		repaint();
 	}
