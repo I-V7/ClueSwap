@@ -109,6 +109,13 @@ public class ClueGame extends JFrame {
 		if (currentTurn != 1)
 		{
 			makeMove();
+			for (int i = 0; i < board.getNumRows()-1;i++)
+			{
+				for (int ii = 0; ii < board.getNumColumns()-1; ii++)
+				{
+					board.getCellAt(i, ii).setAsNotTarget();
+				}
+			}
 		}
 		else
 		{
