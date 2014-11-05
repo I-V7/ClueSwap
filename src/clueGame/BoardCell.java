@@ -9,7 +9,7 @@ public abstract class BoardCell {
 	//gui instance variables
 	public final int CELL_WIDTH=34;
 	public final int CELL_HEIGHT=24;
-	Boolean target = false;
+	protected Boolean target;
 	public Boolean isWalkway() {
 		return false;
 	}

@@ -26,6 +26,7 @@ public class RoomCell extends BoardCell {
 	RoomCell(int row, int col, String letter) {
 		this.row = row;
 		this.column = col;
+		target = false;
 		
 		roomInitial = letter.charAt(0); // first character
 		// check if the RoomCell has a door

@@ -10,6 +10,7 @@ public class WalkwayCell extends BoardCell {
 	WalkwayCell(int x, int y) {
 		this.row = x;
 		this.column = y;
+		target = false;
 	}
 
 	// default is true for a WalkwayCell

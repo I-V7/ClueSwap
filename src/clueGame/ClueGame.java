@@ -117,20 +117,15 @@ public class ClueGame extends JFrame {
 			{
 				for (int ii = 0; ii < board.getNumColumns()-1; ii++)
 				{
+					board.calcTargets(players.get(currentTurn).getRow(), players.get(currentTurn).getCol(), currentRoll);
 					BoardCell temp = board.getCellAt(i, ii);
-					for(BoardCell c : board.getTargets())
+					if(board.getTargets().contains(temp))
 					{
-						System.out.println("counter");
-						if (c == temp)
-						{
-							System.out.println("got here");
-							temp.setAsTarget();
-						}
-						else
-						{
-							System.out.println("got here first");
-							temp.setAsNotTarget();
-						}
+						temp.setAsTarget();
+					}
+					else
+					{
+						temp.setAsNotTarget();
 					}
 				}
 			}
