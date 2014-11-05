@@ -94,8 +94,7 @@ public class ClueGame extends JFrame {
 			public void mousePressed(MouseEvent e) 
 			{
 				BoardCell whichCell = null;
-				System.out.println(e.getX());
-				System.out.println(e.getY());
+				Boolean triggerWarning = false;
 				for (int i = 0; i < board.getNumRows();i++)
 				{
 					for (int ii = 0; ii < board.getNumColumns(); ii++)
@@ -118,7 +117,15 @@ public class ClueGame extends JFrame {
 								repaint();
 							}
 						}
+						else
+						{
+							triggerWarning = true;
+						}
 					}
+				}
+				if (triggerWarning)
+				{
+					System.out.println("Not a valid move.");
 				}
 
 			}
