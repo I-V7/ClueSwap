@@ -37,7 +37,7 @@ public class Board extends JPanel{
 	public final int CELL_HEIGHT=24;
 	
 	//GUI instance variables
-	public final int BOARD_WIDTH=1500;
+	public final int BOARD_WIDTH=1600;
 	public final int BOARD_HEIGHT=900;
 	
 	// Board Constructor

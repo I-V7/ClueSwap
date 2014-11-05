@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JTextField;
 
 import clueGame.Board;
 
@@ -40,6 +41,7 @@ public class ClueGame extends JFrame {
 	private boolean playersTurnIsOver;
 	private int currentTurn;
 	GameControlPanel panel;
+	JTextField messageBoard;
 	int currentRoll;
 
 	//GUI Stuff
@@ -93,8 +95,9 @@ public class ClueGame extends JFrame {
 			@Override
 			public void mousePressed(MouseEvent e) 
 			{
+				messageBoard.setText(null);
 				BoardCell whichCell = null;
-				Boolean triggerWarning = false;
+				Boolean triggerWarning = true;
 				for (int i = 0; i < board.getNumRows();i++)
 				{
 					for (int ii = 0; ii < board.getNumColumns(); ii++)
@@ -116,16 +119,13 @@ public class ClueGame extends JFrame {
 								}
 								repaint();
 							}
-						}
-						else
-						{
-							triggerWarning = true;
+							triggerWarning = false;
 						}
 					}
 				}
 				if (triggerWarning)
 				{
-					System.out.println("Not a valid move.");
+					messageBoard.setText("Invalid Move");
 				}
 
 			}
@@ -355,7 +355,9 @@ public class ClueGame extends JFrame {
 		}
 		detectiveNotes.updateCheckBoxes(players.get(1));
 		board.calcAdjacencies();
-		add(new MyCardPanel(players.get(1).getCards()), BorderLayout.LINE_END);
+		MyCardPanel paneler = new MyCardPanel(players.get(1).getCards());
+		add(paneler, BorderLayout.LINE_END);
+		messageBoard = paneler.getMessageBoard();
 	}
 
 	public void selectAnswer(){

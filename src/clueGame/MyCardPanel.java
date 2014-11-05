@@ -6,11 +6,18 @@ import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 public class MyCardPanel extends JPanel {
 
+	JTextField messageBoard;
+	
+	public JTextField getMessageBoard()
+	{
+		return messageBoard;
+	}
 	
 	public MyCardPanel(ArrayList<Card> myCards)
 	{
@@ -70,10 +77,12 @@ public class MyCardPanel extends JPanel {
 			roomPanel.add(roomLabel);
 		}
 		
+		messageBoard = new JTextField(12);
 		
 		cardPanel.add(peoplePanel);
 		cardPanel.add(weaponPanel);
 		cardPanel.add(roomPanel);
 		add(cardPanel);
+		add(messageBoard);
 	}
 }
