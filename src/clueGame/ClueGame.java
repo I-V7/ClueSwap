@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 
 import javax.swing.JFrame;
@@ -34,10 +35,14 @@ public class ClueGame extends JFrame {
 	//static Map<String,Card> cardStringToCard;
 	private Solution solution;
 	private boolean winner;
-	
+	private boolean playersTurnIsOver;
+	private int currentTurn;
+	GameControlPanel panel;
+	int currentRoll;
+
 	//GUI Stuff
 	private DetectiveNotesDialog detectiveNotes;
-	
+
 	// Constructors
 	public ClueGame(String board, String legend) {//throws BadConfigFormatException {
 		//Logic
@@ -45,7 +50,8 @@ public class ClueGame extends JFrame {
 		rooms = new HashMap<Character,String>();
 		shownCards = new ArrayList<Card>();
 		//cardStringToCard = new HashMap<String, Card>();
-		
+		currentTurn = 0;
+		playersTurnIsOver = true;
 		legendFile = legend;
 		setLayoutFile(board);
 		try {
@@ -55,11 +61,11 @@ public class ClueGame extends JFrame {
 		}
 
 		solution= new Solution();
-		
+
 		//GUI stuff
 		gui();
-		
-		
+
+
 	}
 	public ClueGame() {}
 	//GUI FUNCTIONS
@@ -68,16 +74,78 @@ public class ClueGame extends JFrame {
 		setTitle("ClueGame");
 		setSize(board.BOARD_WIDTH-700,board.BOARD_HEIGHT);
 		add(board, BorderLayout.CENTER);
-		add(new GameControlPanel(), BorderLayout.SOUTH);
-		
-		
+		panel = new GameControlPanel();
+		add(panel, BorderLayout.SOUTH);
+		panel.getNextPlayerButton().addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e)
+			{
+				if(playersTurnIsOver)
+				{
+					nextPlayersTurn();
+				}
+			}
+		});
+
+
+
 		//File Menu
 		JMenuBar fileMenu= new JMenuBar();
 		setJMenuBar(fileMenu);
 		fileMenu.add(createFileMenu());
-		
+
 	}
-	
+	//Advances a player's turn
+	private void nextPlayersTurn()
+	{
+		currentTurn = (currentTurn + 1 )% players.size();
+		if (currentTurn == 1)
+		{
+			playersTurnIsOver = false;
+		}
+		panel.updateNameLabel(players.get(currentTurn).getName());
+		Random rand = new Random();
+		currentRoll = rand.nextInt(players.size()) + 1;
+		panel.updateRollNumber(currentRoll);
+		if (currentTurn != 1)
+		{
+			makeMove();
+		}
+		else
+		{
+			board.calcTargets(players.get(currentTurn).getRow(), players.get(currentTurn).getCol(), currentRoll);
+			for (int i = 0; i < board.getNumRows()-1;i++)
+			{
+				for (int ii = 0; ii < board.getNumColumns()-1; ii++)
+				{
+					BoardCell temp = board.getCellAt(i, ii);
+					for(BoardCell c : board.getTargets())
+					{
+						System.out.println("counter");
+						if (c == temp)
+						{
+							System.out.println("got here");
+							temp.setAsTarget();
+						}
+						else
+						{
+							System.out.println("got here first");
+							temp.setAsNotTarget();
+						}
+					}
+				}
+			}
+			playersTurnIsOver = true;
+		}
+		repaint();
+	}
+	// Computer player makes a move
+	private void makeMove()
+	{
+		board.calcTargets(players.get(currentTurn).getRow(), players.get(currentTurn).getCol(), currentRoll);
+		BoardCell temp = players.get(currentTurn).pickLocation(board.getTargets());
+		players.get(currentTurn).setCol(temp.getCol());
+		players.get(currentTurn).setRow(temp.getRow());
+	}
 	private JMenu createFileMenu(){
 		JMenu menu = new JMenu("File");
 		menu.add(createShowNotesItem());
@@ -96,7 +164,7 @@ public class ClueGame extends JFrame {
 		item.addActionListener(new MenuItemListener());
 		return item;
 	}
-	
+
 	private JMenuItem createFileExitItem(){
 		JMenuItem item = new JMenuItem("Exit");
 		class MenuItemListener implements ActionListener{
@@ -107,7 +175,7 @@ public class ClueGame extends JFrame {
 		item.addActionListener(new MenuItemListener());
 		return item;
 	}
-	
+
 	//LOGIC FUNCTIONS
 	// load the config files
 	public void loadConfigFiles() throws BadConfigFormatException {
@@ -138,14 +206,14 @@ public class ClueGame extends JFrame {
 				// check for a bad name
 				if(name.contains(","))	throw new BadConfigFormatException(legendFile);
 				rooms.put(letter, name);
-				
+
 			}
-			
+
 		} catch (FileNotFoundException e) {
 			System.out.println("ERROR: the file: '" + legendFile + "' was not found");
 
 		}
-		
+
 	}
 	public void loadPlayers(){
 		players=new ArrayList<Player>();
@@ -162,10 +230,10 @@ public class ClueGame extends JFrame {
 				int col = Integer.parseInt(line[3].substring(1));
 				if(i!=humanPlayer){
 					players.add(new ComputerPlayer(name, color, row, col, cards));
-					
+
 				}else{
 					players.add(new HumanPlayer(name, color, row, col, cards));
-					
+
 				}
 				i++;
 			}
@@ -192,29 +260,29 @@ public class ClueGame extends JFrame {
 		}catch(FileNotFoundException e){
 			System.out.println(e.getLocalizedMessage());
 		}
-		
+
 	}
-	
+
 	// getter for Board
 	public Board getBoard() {
 		return board;
 	}
-	
+
 	// getter for rooms
 	public Map<Character,String> getRooms() {
 		return rooms;
 	}
-	
+
 	// getter for layout file
 	public String getLayoutFile() {
 		return layoutFile;
 	}
-	
+
 	// setter for layout file
 	public void setLayoutFile(String layoutFile) {
 		this.layoutFile = layoutFile;
 	}
-	
+
 	//New methods from cluePlayer, new load configs are placed with load functions
 	public void deal(){	
 		int playerNumber =0;
@@ -225,19 +293,20 @@ public class ClueGame extends JFrame {
 			players.get(playerNumber%MAX_PLAYERS).addCard(cards.get(i));
 			cards.remove(i);
 			playerNumber++;
-			
+
 			i--;
 		}
 		detectiveNotes.updateCheckBoxes(players.get(1));
-		add(new MyCardPanel(players.get(1).getCards()), BorderLayout.LINE_END);
+		board.calcAdjacencies();
+		//add(new MyCardPanel(players.get(1).getCards()), BorderLayout.LINE_END);
 	}
-	
+
 	public void selectAnswer(){
 
 		ArrayList<Card> personCards = new ArrayList<Card>();
 		ArrayList<Card> weaponCards = new ArrayList<Card>();
 		ArrayList<Card> roomCards = new ArrayList<Card>();
-		
+
 		for(Card card: cards)
 		{
 			if(card.getCardType() == CardType.PERSON)
@@ -256,20 +325,20 @@ public class ClueGame extends JFrame {
 		int randomCardNum = (int)(Math.random()*personCards.size());
 		solution.person = personCards.get(randomCardNum).getName();
 		cards.remove(personCards.get(randomCardNum));
-		
+
 		randomCardNum = (int)(Math.random()*weaponCards.size());
 		solution.weapon = weaponCards.get(randomCardNum).getName();
 		cards.remove(weaponCards.get(randomCardNum));
-		
+
 		randomCardNum = (int)(Math.random()*roomCards.size());
 		solution.room = roomCards.get(randomCardNum).getName();
 		cards.remove(roomCards.get(randomCardNum));
-		
+
 	}
 	public Card handleSuggestions(String person, String room, String weapon, Player accusingPerson){
-		
+
 		Card suggestedCardResult=null;
-		
+
 		int indexOfPlayer=players.indexOf(accusingPerson);
 		int curPlayer=(indexOfPlayer+1)%(players.size());
 		while(curPlayer!=indexOfPlayer){
@@ -284,7 +353,7 @@ public class ClueGame extends JFrame {
 
 	}
 	public boolean checkAccusation(Card person, Card room, Card weapon){
-		
+
 		if(solution.person.equals(person.getName()) && solution.weapon.equals(weapon.getName()) && solution.room.equals(room.getName()))
 		{
 			return true;
@@ -292,7 +361,7 @@ public class ClueGame extends JFrame {
 		else
 			return false;
 	}
-	
+
 	//GETTERS AND SETTER FOR CLUE PLAYERS
 	public ArrayList<Player> getPlayers(){
 		return this.players;
@@ -308,7 +377,7 @@ public class ClueGame extends JFrame {
 	{
 		return winner;
 	}
-	
+
 	//set/get already shown cards for test purposes only
 	public void setShownCards(ArrayList<Card> testShownCards)
 	{
@@ -329,10 +398,10 @@ public class ClueGame extends JFrame {
 	}
 	public static void main(String[] args){
 		ClueGame game=new ClueGame("Clue Board.csv", "Clue Legend.csv");
-        game.deal();
-        //ArrayList<Card> cards = game.getPlayers().get(1).getCards();
+		game.deal();
+		//ArrayList<Card> cards = game.getPlayers().get(1).getCards();
 		game.setVisible(true);	
-		NewGameDialog newGameDialog = new NewGameDialog(game.getPlayers().get(1).getName());
+		//NewGameDialog newGameDialog = new NewGameDialog(game.getPlayers().get(1).getName());
 	}	
 }
 

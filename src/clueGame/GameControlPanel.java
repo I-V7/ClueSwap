@@ -7,6 +7,9 @@ import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 public class GameControlPanel extends JPanel{
+	JButton nextPlayerButton;
+	JTextField nameLabel;
+	JTextField rollNumber;
 
 	public GameControlPanel() {
 		setLayout(new GridLayout(2,1));
@@ -21,12 +24,13 @@ public class GameControlPanel extends JPanel{
 		JPanel temp = new JPanel();
 		temp.setLayout(new GridLayout(1,3));;
 		JButton next = new JButton("Next player");
+		nextPlayerButton = next;
 		JButton accuse = new JButton("Make an accusation");
 		JPanel temporary = new JPanel();
 		temporary.setLayout(new GridLayout(2,2));
 		
 		JLabel nameLabeler = new JLabel("Which player's turn?");
-		JTextField nameLabel = new JTextField(20);
+		nameLabel = new JTextField(20);
 		nameLabel.setEditable(false);
 		temporary.add(nameLabeler);
 		temporary.add(nameLabel);
@@ -37,6 +41,16 @@ public class GameControlPanel extends JPanel{
 		temp.add(next);
 		temp.add(accuse);
 		return temp;
+	}
+	// Updates nameLabel
+	public void updateNameLabel(String s)
+	{
+		nameLabel.setText(s);
+	}
+	// Returns the next player button
+	public JButton getNextPlayerButton()
+	{
+		return nextPlayerButton;
 	}
 	// Create a panel to display roll, turn, guesses
 	private JPanel infoPanel() 
@@ -63,7 +77,7 @@ public class GameControlPanel extends JPanel{
 		
 		
 		JLabel rollResult = new JLabel("Roll");
-		JTextField rollNumber = new JTextField(1);
+		rollNumber = new JTextField(1);
 		rollNumber.setEditable(false);
 		JLabel guesser = new JLabel("Last Guess");
 		JTextField guess = new JTextField(20);
@@ -82,6 +96,10 @@ public class GameControlPanel extends JPanel{
 		bottomPanel.add(resultPanel);
 		
 		return bottomPanel;
+	}
+	public void updateRollNumber(int i)
+	{
+		rollNumber.setText(Integer.toString(i));
 	}
 
 }
