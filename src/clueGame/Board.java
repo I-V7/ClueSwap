@@ -341,9 +341,6 @@ public class Board extends JPanel{
 		this.game = game;
 	}
 	
-
-	
-	
 	// getter for the adjacency list
 	public LinkedList<BoardCell> getAdjList(int x, int y) {
 		return adjMtx.get(getCellAt(x,y));

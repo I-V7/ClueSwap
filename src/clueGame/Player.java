@@ -129,6 +129,10 @@ public abstract class Player {
 	public void setLastRoomVisited(char room){
 		lastRoomVisited=room;
 	}
+	public char getLastRoomVisited()
+	{
+		return lastRoomVisited;
+	}
 	//for Test purposes only
 	public void setCardHand(ArrayList<Card> testCards)
 	{

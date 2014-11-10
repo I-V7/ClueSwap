@@ -4,22 +4,32 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 public class GameControlPanel extends JPanel{
-	JButton nextPlayerButton;
-	JTextField nameLabel;
-	JTextField rollNumber;
+	private JButton nextPlayerButton;
+	private JTextField nameLabel;
+	private JTextField rollNumber;
+	private ArrayList<Player> players;
+	private ArrayList<Card> cards;
+	private Board board;
 
-	public GameControlPanel() {
+	public GameControlPanel(ArrayList<Card> inCards) {
 		setLayout(new GridLayout(2,1));
 		JPanel firstPane = buttonPanel();
 		JPanel secondPane = infoPanel();
 		setSize(100,100);
 		add(firstPane);
 		add(secondPane);
+	    this.cards = new ArrayList<Card>();
+	    for(Card card: inCards)
+	    {
+	    	cards.add(card);
+	    }
+	    
 	}
 	// Create a panel to display the buttons in
 	private JPanel buttonPanel() {
@@ -27,9 +37,21 @@ public class GameControlPanel extends JPanel{
 		temp.setLayout(new GridLayout(1,3));;
 		JButton next = new JButton("Next player");
 		nextPlayerButton = next;
-		JButton accuse = new JButton("Make an accusation");
+		JButton accuseButton = new JButton("Make an accusation");
 		JPanel temporary = new JPanel();
 		temporary.setLayout(new GridLayout(2,2));
+		
+		accuseButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				System.out.println(cards.size());
+				AccusationDialog accustionDialog = new AccusationDialog(cards);
+				
+			}
+			
+		});
 		
 		nextPlayerButton.addActionListener(new ActionListener(){
 
@@ -51,7 +73,7 @@ public class GameControlPanel extends JPanel{
 		
 		temp.add(temporary);
 		temp.add(nextPlayerButton);
-		temp.add(accuse);
+		temp.add(accuseButton);
 		return temp;
 	}
 	// Updates nameLabel

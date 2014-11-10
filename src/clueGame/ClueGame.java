@@ -46,7 +46,7 @@ public class ClueGame extends JFrame {
 
 	//GUI Stuff
 	private DetectiveNotesDialog detectiveNotes;
-
+	private SuggestionDialog suggestion;
 	// Constructors
 	public ClueGame(String board, String legend) {//throws BadConfigFormatException {
 		//Logic
@@ -71,19 +71,26 @@ public class ClueGame extends JFrame {
 
 
 	}
-	public ClueGame() {}
+	public ClueGame() {
+		try {
+			loadConfigFiles();
+		} catch (BadConfigFormatException e) {
+			e.getMessage();
+		}
+	}
 	//GUI FUNCTIONS
 	private void gui(){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("ClueGame");
 		setSize(board.BOARD_WIDTH-700,board.BOARD_HEIGHT);
 		add(board, BorderLayout.CENTER);
-		panel = new GameControlPanel();
+		panel = new GameControlPanel(cards);
 		add(panel, BorderLayout.SOUTH);
 		panel.getNextPlayerButton().addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
+				
 				if(playersTurnIsOver)
 				{
 					nextPlayersTurn();
@@ -92,19 +99,27 @@ public class ClueGame extends JFrame {
 		});
 
 		addMouseListener( new MouseListener(){
+			
 			@Override
 			public void mousePressed(MouseEvent e) 
 			{
 				messageBoard.setText(null);
 				BoardCell whichCell = null;
 				Boolean triggerWarning = true;
+				BoardCell selectedCell = null;
 				for (int i = 0; i < board.getNumRows();i++)
 				{
 					for (int ii = 0; ii < board.getNumColumns(); ii++)
 					{
 						BoardCell temp = board.getCellAt(i, ii);
+						
 						if (temp.containsClick(e.getX(),e.getY()))
 						{
+							
+							if(temp.isRoom())
+							{
+								makeSuggestion();
+							}
 							if(!playersTurnIsOver)
 							{
 								players.get(1).setCol(temp.getCol());
@@ -127,6 +142,8 @@ public class ClueGame extends JFrame {
 				{
 					messageBoard.setText("Invalid Move");
 				}
+				
+				
 
 			}
 
@@ -149,6 +166,43 @@ public class ClueGame extends JFrame {
 		setJMenuBar(fileMenu);
 		fileMenu.add(createFileMenu());
 
+	}
+	private void makeSuggestion()
+	{
+		RoomCell currentRoom = board.getRoomCellAt(players.get(1).getRow(), players.get(1).getRow());
+		char initial = currentRoom.getInitial();
+		String roomName ="";
+		switch(initial)
+		{
+			case 'L':
+				roomName = "Library";
+				break;
+			case 'R':
+				roomName = "Billiard Room";
+				break;
+			case 'S':
+				roomName = "Study";
+				break;
+			case 'K':
+				roomName = "Kitchen";
+				break;
+			case 'D':
+				roomName = "Dining Room";
+				break;
+			case 'O':
+				roomName = "Lounge";
+				break;
+			case 'B':
+				roomName = "Ballroom";
+				break;
+			case 'C':
+				roomName = "Conservatory";
+				break;
+			case 'H':
+				roomName = "Hall";
+				break;
+		}
+		suggestion.display(roomName);
 	}
 	//Advances a player's turn
 	private void nextPlayersTurn()
@@ -299,6 +353,7 @@ public class ClueGame extends JFrame {
 		}
 	}
 	public void  loadCards(){
+		
 		cards=new ArrayList<Card>();
 		Card currentCard;
 		try{
@@ -317,6 +372,7 @@ public class ClueGame extends JFrame {
 		}catch(FileNotFoundException e){
 			System.out.println(e.getLocalizedMessage());
 		}
+		suggestion = new SuggestionDialog(cards);
 
 	}
 
@@ -458,9 +514,12 @@ public class ClueGame extends JFrame {
 	public static void main(String[] args){
 		ClueGame game=new ClueGame("Clue Board.csv", "Clue Legend.csv");
 		game.deal();
-		//ArrayList<Card> cards = game.getPlayers().get(1).getCards();
+		ArrayList<Card> cards = game.getPlayers().get(1).getCards();
 		game.setVisible(true);	
 		NewGameDialog newGameDialog = new NewGameDialog(game.getPlayers().get(1).getName());
+		
 	}	
+	
+	
 }
 
