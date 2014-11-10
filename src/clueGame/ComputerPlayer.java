@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 public class ComputerPlayer extends Player{
@@ -123,11 +124,14 @@ public class ComputerPlayer extends Player{
 	    		
 	    	}
 	    }
+	    Random rand = new Random();
 	    //choose a random person card and weapon card from the remaining cards
-	    int randomCardNum = (int)(Math.random()*personCards.size());
+	    int randomCardNum = rand.nextInt(personCards.size());
+	    System.out.println(randomCardNum);
+	    System.out.println(personCards.size());
 		suggestions[0] = personCards.get(randomCardNum).getName();
 		
-		randomCardNum = (int)(Math.random()*weaponCards.size());
+		randomCardNum = rand.nextInt(weaponCards.size());
 		suggestions[1] = weaponCards.get(randomCardNum).getName();
 		
 		//get the current room initial and set the room suggestion to that room
@@ -165,7 +169,7 @@ public class ComputerPlayer extends Player{
 				suggestions[2] = "Closet";
 				break;
 			default:
-				System.out.println("problem in creatSuggestion");
+				System.out.println("problem in createSuggestion");
 				break;
 		}
 	    

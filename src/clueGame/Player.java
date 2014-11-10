@@ -29,7 +29,7 @@ public abstract class Player {
 		Card disprovedCard=null;
 		for(Card card: myCards)
 		{
-			if((card.getName().equals(person) || card.getName().equals(room) || card.getName().equals(weapon)) && !seenCards.contains(card))
+			if((card.getName().equals(person) || card.getName().equals(room) || card.getName().equals(weapon)))
 			{
 				possibleWrongCards.add(card);
 			}

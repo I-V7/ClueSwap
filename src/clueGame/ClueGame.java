@@ -45,6 +45,7 @@ public class ClueGame extends JFrame {
 	JTextField messageBoard;
 	int currentRoll;
 	private boolean neverDone;
+	private ArrayList<Card> copyCards;
 
 	//GUI Stuff
 	private DetectiveNotesDialog detectiveNotes;
@@ -171,79 +172,102 @@ public class ClueGame extends JFrame {
 	}
 	private void makeSuggestion()
 	{
-
 		char initial = board.getRoomCellAt(players.get(currentTurn).getRow(), players.get(currentTurn).getCol()).getInitial();
-		String roomName ="";
-		System.out.println(initial+"initial");
-		switch(initial)
+		if(players.get(currentTurn).isHuman())
 		{
-		case 'L':
-			roomName = "Library";
-			break;
-		case 'R':
-			roomName = "Billiard Room";
-			break;
-		case 'S':
-			roomName = "Study";
-			break;
-		case 'K':
-			roomName = "Kitchen";
-			break;
-		case 'D':
-			roomName = "Dining Room";
-			break;
-		case 'O':
-			roomName = "Lounge";
-			break;
-		case 'B':
-			roomName = "Ballroom";
-			break;
-		case 'C':
-			roomName = "Conservatory";
-			break;
-		case 'H':
-			roomName = "Hall";
-			break;
-		}
-		System.out.println(roomName);
-		suggestion.display(roomName);
-		suggestion.redisplay(roomName);
-		JButton makeSugg = suggestion.getSubmitButton();
-		makeSugg.addActionListener(new ActionListener(){
+			String roomName ="";
+			switch(initial)
+			{
+			case 'L':
+				roomName = "Library";
+				break;
+			case 'R':
+				roomName = "Billiard Room";
+				break;
+			case 'S':
+				roomName = "Study";
+				break;
+			case 'K':
+				roomName = "Kitchen";
+				break;
+			case 'D':
+				roomName = "Dining Room";
+				break;
+			case 'O':
+				roomName = "Lounge";
+				break;
+			case 'B':
+				roomName = "Ballroom";
+				break;
+			case 'C':
+				roomName = "Conservatory";
+				break;
+			case 'H':
+				roomName = "Hall";
+				break;
+			}
+			suggestion.display(roomName);
+			suggestion.redisplay(roomName);
+			JButton makeSugg = suggestion.getSubmitButton();
+			makeSugg.addActionListener(new ActionListener(){
 
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("submit");
-				String person = (String)suggestion.getPersonBox().getSelectedItem();
-				String weapon = (String)suggestion.getWeaponBox().getSelectedItem();
-				String room = suggestion.getRoom();
-				for(Player player: players)
-				{
-					if(player.isHuman())
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					String person = (String)suggestion.getPersonBox().getSelectedItem();
+					String weapon = (String)suggestion.getWeaponBox().getSelectedItem();
+					String room = suggestion.getRoom();
+					Boolean disprover = false;
+					for(Player player: players)
 					{
+						if(!player.isHuman())
+						{
+							Card disproveCard = player.disproveSuggestion(person, room, weapon);
+							if(disproveCard != null && disprover == false)
+							{
+								panel.setGuessResult(disproveCard.getName());
+								disprover = true;
+
+							}
+							else if (disprover == false)
+							{
+								panel.setGuessResult("Not disproved");
+							}
+						}
+					}
+					suggestion.close();
+				}
+
+			});
+		}
+		else
+		{
+			Boolean disprover = false;
+			ComputerPlayer playa = (ComputerPlayer)players.get(currentTurn);
+			HashMap<String,Card> allCards = new HashMap<String,Card>();
+			System.out.println(copyCards.size());
+			for(Card a: copyCards)
+			{
+				allCards.put(a.getName(),a);
+			}
+			String[] carderon = playa.createSuggestion(allCards,board);
+			for(Player player: players)
+			{
+				if(!player.isHuman())
+				{
+					Card disproveCard = player.disproveSuggestion(carderon[0], carderon[2], carderon[1]);
+					if(disproveCard != null && disprover == false)
+					{
+						panel.setGuessResult(disproveCard.getName());
+						disprover = true;
 
 					}
-					else
+					else if (disprover == false)
 					{
-						Card disproveCard = player.disproveSuggestion(person, room, weapon);
-						if(disproveCard != null)
-						{
-							panel.setGuessResult(disproveCard.getName());
-							System.out.println("disprove");
-							break;
-
-						}
-						else
-						{
-							panel.setGuessResult("Not disproved.");
-							System.out.println("not disproved.");
-						}
+						panel.setGuessResult("Not disproved");
 					}
 				}
-				suggestion.close();
 			}
-
-		});
+		}
 
 	}
 	//Advances a player's turn
@@ -302,6 +326,7 @@ public class ClueGame extends JFrame {
 		{
 			RoomCell temp1 = (RoomCell) temp;
 			players.get(currentTurn).setLastRoomVisited( temp1.getInitial() );
+			makeSuggestion();
 		}
 	}
 	private JMenu createFileMenu(){
@@ -419,6 +444,7 @@ public class ClueGame extends JFrame {
 		}catch(FileNotFoundException e){
 			System.out.println(e.getLocalizedMessage());
 		}
+		copyCards = new ArrayList<Card>(cards);
 		suggestion = new SuggestionDialog(cards);
 
 	}
