@@ -16,6 +16,8 @@ public class GameControlPanel extends JPanel{
 	private ArrayList<Player> players;
 	private ArrayList<Card> cards;
 	private Board board;
+	private JTextField guess;
+	private JTextField guessResult;
 
 	public GameControlPanel(ArrayList<Card> inCards) {
 		setLayout(new GridLayout(2,1));
@@ -114,10 +116,10 @@ public class GameControlPanel extends JPanel{
 		rollNumber = new JTextField(1);
 		rollNumber.setEditable(false);
 		JLabel guesser = new JLabel("Last Guess");
-		JTextField guess = new JTextField(20);
+		guess = new JTextField(20);
 		guess.setEditable(false);
 		JLabel guesserResult = new JLabel("Guess Result");
-		JTextField guessResult = new JTextField(20);
+		guessResult = new JTextField(20);
 		guessResult.setEditable(false);
 		rollPanel.add(rollResult);
 		rollPanel.add(rollNumber);
@@ -134,5 +136,16 @@ public class GameControlPanel extends JPanel{
 	public void updateRollNumber(int i)
 	{
 		rollNumber.setText(Integer.toString(i));
+	}
+	public void setGuessResult(String cardName)
+	{
+		System.out.println(cardName);
+		guessResult.setText(cardName);
+		
+	}
+	public void setLastGuess(String person, String weapon, String room)
+	{
+		String guessString = person + ", "+ weapon + ", " +room;
+		guess.setText(guessString);
 	}
 }

@@ -19,8 +19,8 @@ public class HumanPlayer extends Player {
 		this.row=row;
 		this.col=col;
 		allCards = cards;
-		//this.boardCell=
 	}
+	
 	@Override
 	public boolean isHuman(){
 		return true;

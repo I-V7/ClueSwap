@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -116,10 +117,7 @@ public class ClueGame extends JFrame {
 						if (temp.containsClick(e.getX(),e.getY()))
 						{
 							
-							if(temp.isRoom())
-							{
-								makeSuggestion();
-							}
+							
 							if(!playersTurnIsOver)
 							{
 								players.get(1).setCol(temp.getCol());
@@ -133,6 +131,10 @@ public class ClueGame extends JFrame {
 									}
 								}
 								repaint();
+								if(temp.isRoom())
+								{
+									makeSuggestion();
+								}
 							}
 							triggerWarning = false;
 						}
@@ -159,8 +161,6 @@ public class ClueGame extends JFrame {
 		}
 				);
 
-
-
 		//File Menu
 		JMenuBar fileMenu= new JMenuBar();
 		setJMenuBar(fileMenu);
@@ -169,9 +169,10 @@ public class ClueGame extends JFrame {
 	}
 	private void makeSuggestion()
 	{
-		RoomCell currentRoom = board.getRoomCellAt(players.get(1).getRow(), players.get(1).getRow());
-		char initial = currentRoom.getInitial();
+		
+		char initial = board.getRoomCellAt(players.get(1).getRow(), players.get(1).getCol()).getInitial();
 		String roomName ="";
+		System.out.println(initial+"initial");
 		switch(initial)
 		{
 			case 'L':
@@ -203,6 +204,38 @@ public class ClueGame extends JFrame {
 				break;
 		}
 		suggestion.display(roomName);
+		JButton makeSugg = suggestion.getSubmitButton();
+		makeSugg.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("submit");
+				String person = (String)suggestion.getPersonBox().getSelectedItem();
+				String weapon = (String)suggestion.getWeaponBox().getSelectedItem();
+				String room = suggestion.getRoom();
+				for(Player player: players)
+				{
+					if(player.isHuman())
+					{
+						
+					}
+					else
+					{
+						Card disproveCard = player.disproveSuggestion(person, room, weapon);
+						if(disproveCard != null)
+						{
+							panel.setGuessResult(disproveCard.getName());
+							System.out.println("disprove");
+							break;
+							
+						}
+					}
+				}
+				suggestion.close();
+			}
+			
+		});
+		
 	}
 	//Advances a player's turn
 	private void nextPlayersTurn()
