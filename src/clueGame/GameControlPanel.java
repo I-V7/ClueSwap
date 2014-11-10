@@ -139,7 +139,6 @@ public class GameControlPanel extends JPanel{
 	}
 	public void setGuessResult(String cardName)
 	{
-		System.out.println(cardName);
 		guessResult.setText(cardName);
 		
 	}

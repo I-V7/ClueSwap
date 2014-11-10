@@ -10,7 +10,6 @@ import java.util.Set;
 public class ComputerPlayer extends Player{
 	
 	ArrayList<Card> allCards;
-	//private char lastRoomVisited;
 	
 	public ComputerPlayer(){
 		
@@ -127,8 +126,6 @@ public class ComputerPlayer extends Player{
 	    Random rand = new Random();
 	    //choose a random person card and weapon card from the remaining cards
 	    int randomCardNum = rand.nextInt(personCards.size());
-	    System.out.println(randomCardNum);
-	    System.out.println(personCards.size());
 		suggestions[0] = personCards.get(randomCardNum).getName();
 		
 		randomCardNum = rand.nextInt(weaponCards.size());

@@ -46,6 +46,8 @@ public class ClueGame extends JFrame {
 	int currentRoll;
 	private boolean neverDone;
 	private ArrayList<Card> copyCards;
+	private boolean canAccuse;
+	private boolean disprover;
 
 	//GUI Stuff
 	private DetectiveNotesDialog detectiveNotes;
@@ -216,7 +218,7 @@ public class ClueGame extends JFrame {
 					String person = (String)suggestion.getPersonBox().getSelectedItem();
 					String weapon = (String)suggestion.getWeaponBox().getSelectedItem();
 					String room = suggestion.getRoom();
-					Boolean disprover = false;
+					disprover = false;
 					for(Player player: players)
 					{
 						if(player.getName().equals(person))
@@ -233,11 +235,13 @@ public class ClueGame extends JFrame {
 							if(disproveCard != null && disprover == false)
 							{
 								panel.setGuessResult(disproveCard.getName());
+								panel.setLastGuess(person,weapon,room);
 								disprover = true;
 
 							}
 							else if (disprover == false)
 							{
+								panel.setLastGuess(person,weapon,room);
 								panel.setGuessResult("Not disproved");
 							}
 						}
@@ -249,10 +253,9 @@ public class ClueGame extends JFrame {
 		}
 		else
 		{
-			Boolean disprover = false;
+			disprover = false;
 			ComputerPlayer playa = (ComputerPlayer)players.get(currentTurn);
 			HashMap<String,Card> allCards = new HashMap<String,Card>();
-			System.out.println(copyCards.size());
 			for(Card a: copyCards)
 			{
 				allCards.put(a.getName(),a);
@@ -274,11 +277,13 @@ public class ClueGame extends JFrame {
 					if(disproveCard != null && disprover == false)
 					{
 						panel.setGuessResult(disproveCard.getName());
+						panel.setLastGuess(carderon[0],carderon[1],carderon[2]);
 						disprover = true;
 
 					}
 					else if (disprover == false)
 					{
+						panel.setLastGuess(carderon[0],carderon[1],carderon[2]);
 						panel.setGuessResult("Not disproved");
 					}
 				}
@@ -289,6 +294,7 @@ public class ClueGame extends JFrame {
 	//Advances a player's turn
 	private void nextPlayersTurn()
 	{
+		canAccuse = true;
 		currentTurn = (currentTurn + 1 )% players.size();
 		if (currentTurn == 1)
 		{
@@ -298,8 +304,12 @@ public class ClueGame extends JFrame {
 		Random rand = new Random();
 		currentRoll = rand.nextInt(players.size()) + 1;
 		panel.updateRollNumber(currentRoll);
-		if (currentTurn != 1)
+		if (!players.get(currentTurn).isHuman())
 		{
+			if(disprover == false)
+			{
+				//TODO: MAKE THE ACCUSE STATEMENT HERE.
+			}
 			makeMove();
 			for (int i = 0; i < board.getNumRows();i++)
 			{
@@ -548,7 +558,6 @@ public class ClueGame extends JFrame {
 		while(curPlayer!=indexOfPlayer){
 			suggestedCardResult=players.get(curPlayer).disproveSuggestion(person, room, weapon);
 			if(suggestedCardResult!=null){
-				//shownCards.add(suggestedCardResult);
 				break;
 			}
 			curPlayer=(curPlayer+1)%(players.size());

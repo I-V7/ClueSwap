@@ -17,8 +17,6 @@ public abstract class Player {
 	protected static ArrayList<Card> seenCards;
 	protected Board board;
 	protected char lastRoomVisited;
-	//may or may not use
-	//protected BoardCell boardCell;
 	
 	public Player(){
 		myCards = new ArrayList<Card>();
