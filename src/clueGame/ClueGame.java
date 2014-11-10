@@ -219,6 +219,14 @@ public class ClueGame extends JFrame {
 					Boolean disprover = false;
 					for(Player player: players)
 					{
+						if(player.getName().equals(person))
+						{
+							player.setCol(players.get(currentTurn).getCol());
+							player.setRow(players.get(currentTurn).getRow());
+							player.setLastRoomVisited(players.get(currentTurn).getLastRoomVisited());
+							repaint();
+						}
+						
 						if(!player.isHuman())
 						{
 							Card disproveCard = player.disproveSuggestion(person, room, weapon);
@@ -252,6 +260,14 @@ public class ClueGame extends JFrame {
 			String[] carderon = playa.createSuggestion(allCards,board);
 			for(Player player: players)
 			{
+				if(player.getName().equals(carderon[0]))
+				{
+					player.setCol(players.get(currentTurn).getCol());
+					player.setRow(players.get(currentTurn).getRow());
+					player.setLastRoomVisited(players.get(currentTurn).getLastRoomVisited());
+					repaint();
+				}
+				
 				if(!player.isHuman())
 				{
 					Card disproveCard = player.disproveSuggestion(carderon[0], carderon[2], carderon[1]);
