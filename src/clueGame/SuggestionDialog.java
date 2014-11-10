@@ -108,10 +108,14 @@ public class SuggestionDialog extends JFrame {
 		frame.add(comboBoxPanel);
 	
 	}
+	public void redisplay(String room)
+	{
+		System.out.println(room);
+		currentRoom.setText(room);
+	}
 	public void display(String room)
 	{
 		this.room = room;
-		currentRoom = new JLabel(this.room);
 		
 		labelPanel.setLayout(new GridLayout(4,1));
 		comboBoxPanel.setLayout(new GridLayout(4,1));
@@ -125,6 +129,7 @@ public class SuggestionDialog extends JFrame {
 		
 		if(!alreadyAdded)
 		{
+			currentRoom = new JLabel(this.room);
 			comboBoxPanel.add(currentRoom);
 			alreadyAdded=true;
 		}
