@@ -322,10 +322,8 @@ public class ClueGame extends JFrame {
 				allCards.put(a.getName(),a);
 			}
 			String[] carderon = playa.createSuggestion(allCards,board);
-			System.out.println("test");
 			for(int i = currentTurn; i < currentTurn + players.size()-1; i++)
 			{
-				System.out.println(i % players.size());
 				Player player = players.get(i % players.size());
 				if(player.getName().equals(carderon[0]))
 				{
