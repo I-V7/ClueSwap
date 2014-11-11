@@ -18,6 +18,7 @@ public class GameControlPanel extends JPanel{
 	private Board board;
 	private JTextField guess;
 	private JTextField guessResult;
+	private JButton accuseButton;
 
 	public GameControlPanel(ArrayList<Card> inCards) {
 		setLayout(new GridLayout(2,1));
@@ -33,27 +34,19 @@ public class GameControlPanel extends JPanel{
 	    }
 	    
 	}
+	public JButton giveAccuseButton()
+	{
+		return accuseButton;
+	}
 	// Create a panel to display the buttons in
 	private JPanel buttonPanel() {
 		JPanel temp = new JPanel();
 		temp.setLayout(new GridLayout(1,3));;
 		JButton next = new JButton("Next player");
 		nextPlayerButton = next;
-		JButton accuseButton = new JButton("Make an accusation");
+		accuseButton = new JButton("Make an accusation");
 		JPanel temporary = new JPanel();
 		temporary.setLayout(new GridLayout(2,2));
-		
-		accuseButton.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				
-				System.out.println(cards.size());
-				AccusationDialog accustionDialog = new AccusationDialog(cards);
-				
-			}
-			
-		});
 		
 		nextPlayerButton.addActionListener(new ActionListener(){
 
@@ -146,5 +139,12 @@ public class GameControlPanel extends JPanel{
 	{
 		String guessString = person + ", "+ weapon + ", " +room;
 		guess.setText(guessString);
+	}
+	public String[] getLastGuess()
+	{
+		String temp = guess.getText();
+		String delims = ", ";
+		String[] tokens = temp.split(delims);
+		return tokens;
 	}
 }

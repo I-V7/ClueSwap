@@ -48,6 +48,7 @@ public class ClueGame extends JFrame {
 	private ArrayList<Card> copyCards;
 	private boolean canAccuse;
 	private boolean disprover;
+	private boolean notFirst;
 
 	//GUI Stuff
 	private DetectiveNotesDialog detectiveNotes;
@@ -63,6 +64,7 @@ public class ClueGame extends JFrame {
 		playersTurnIsOver = true;
 		legendFile = legend;
 		neverDone = true;
+		notFirst = false;
 		setLayoutFile(board);
 		try {
 			loadConfigFiles();
@@ -91,6 +93,68 @@ public class ClueGame extends JFrame {
 		setSize(board.BOARD_WIDTH-700,board.BOARD_HEIGHT);
 		add(board, BorderLayout.CENTER);
 		panel = new GameControlPanel(cards);
+		JButton accuseButton = panel.giveAccuseButton();
+		accuseButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				if(!playersTurnIsOver)
+				{
+					playersTurnIsOver = true;
+					AccusationDialog accuDialogue = new AccusationDialog(copyCards);
+					JButton chancellor = accuDialogue.getCancelButton();
+					JButton accuSubmit = accuDialogue.getSubmitButton();
+					accuSubmit.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent e)
+						{
+							String personSt = accuDialogue.getPerson();
+							String roomSt = accuDialogue.getRoom();
+							String weaponSt = accuDialogue.getWeapon();
+							Card person14 = null;
+							Card room14 = null;
+							Card weapon14 = null;
+							for(Card a: copyCards)
+							{
+								if(a.getName().equals(personSt))
+								{
+									person14 = a;
+								}
+								else if (a.getName().equals(roomSt))
+								{
+									room14 = a;
+								}
+								else if (a.getName().equals(weaponSt))
+								{
+									weapon14 = a;
+								}
+							}
+							if (checkAccusation(person14,room14,weapon14))
+							{
+								WinDialogue winner = new WinDialogue(players.get(currentTurn).getName());
+								winner.setVisible(true);
+							}
+							else
+							{
+								messageBoard.setText("Guessed wrong, sorry.");
+							}
+							accuDialogue.close();
+						}
+					});
+					chancellor.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							playersTurnIsOver = false;
+							accuDialogue.close();
+						}
+					});
+				}
+
+			}
+
+		});
+
 		add(panel, BorderLayout.SOUTH);
 		panel.getNextPlayerButton().addActionListener(new ActionListener()
 		{
@@ -228,7 +292,7 @@ public class ClueGame extends JFrame {
 							player.setLastRoomVisited(players.get(currentTurn).getLastRoomVisited());
 							repaint();
 						}
-						
+
 						if(!player.isHuman())
 						{
 							Card disproveCard = player.disproveSuggestion(person, room, weapon);
@@ -237,6 +301,7 @@ public class ClueGame extends JFrame {
 								panel.setGuessResult(disproveCard.getName());
 								panel.setLastGuess(person,weapon,room);
 								disprover = true;
+								notFirst = true;
 
 							}
 							else if (disprover == false)
@@ -270,7 +335,7 @@ public class ClueGame extends JFrame {
 					player.setLastRoomVisited(players.get(currentTurn).getLastRoomVisited());
 					repaint();
 				}
-				
+
 				if(!player.isHuman())
 				{
 					Card disproveCard = player.disproveSuggestion(carderon[0], carderon[2], carderon[1]);
@@ -279,6 +344,7 @@ public class ClueGame extends JFrame {
 						panel.setGuessResult(disproveCard.getName());
 						panel.setLastGuess(carderon[0],carderon[1],carderon[2]);
 						disprover = true;
+						notFirst = true;
 
 					}
 					else if (disprover == false)
@@ -306,16 +372,51 @@ public class ClueGame extends JFrame {
 		panel.updateRollNumber(currentRoll);
 		if (!players.get(currentTurn).isHuman())
 		{
-			if(disprover == false)
+			if(disprover == false && notFirst)
 			{
-				//TODO: MAKE THE ACCUSE STATEMENT HERE.
-			}
-			makeMove();
-			for (int i = 0; i < board.getNumRows();i++)
-			{
-				for (int ii = 0; ii < board.getNumColumns(); ii++)
+				//TODO: Actually do stuff here
+				String[] guesser = panel.getLastGuess();
+				String personSt = guesser[0];
+				String roomSt = guesser[2];
+				String weaponSt = guesser[1];
+				Card person14 = null;
+				Card room14 = null;
+				Card weapon14 = null;
+				for(Card a: copyCards)
 				{
-					board.getCellAt(i, ii).setAsNotTarget();
+					if(a.getName().equals(personSt))
+					{
+						person14 = a;
+					}
+					else if (a.getName().equals(roomSt))
+					{
+						room14 = a;
+					}
+					else if (a.getName().equals(weaponSt))
+					{
+						weapon14 = a;
+					}
+				}
+				if (checkAccusation(person14,room14,weapon14))
+				{
+					WinDialogue winner = new WinDialogue(players.get(currentTurn).getName());
+					winner.setVisible(true);
+				}
+				else
+				{
+					messageBoard.setText(players.get(currentTurn).getName() + " guessed wrong.");
+				}
+				disprover = true;
+			}
+			else
+			{
+				makeMove();
+				for (int i = 0; i < board.getNumRows();i++)
+				{
+					for (int ii = 0; ii < board.getNumColumns(); ii++)
+					{
+						board.getCellAt(i, ii).setAsNotTarget();
+					}
 				}
 			}
 		}
