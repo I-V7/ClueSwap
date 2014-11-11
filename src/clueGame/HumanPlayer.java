@@ -5,11 +5,11 @@ import java.util.Scanner;
 import java.util.Set;
 
 public class HumanPlayer extends Player {
-	
+
 	ArrayList<Card> allCards;
-	
+
 	public HumanPlayer(){
-		
+
 	}
 	public HumanPlayer(String name, String color, int row, int col, ArrayList<Card> cards){
 		super();
@@ -20,7 +20,7 @@ public class HumanPlayer extends Player {
 		this.col=col;
 		allCards = cards;
 	}
-	
+
 	@Override
 	public boolean isHuman(){
 		return true;
@@ -29,6 +29,8 @@ public class HumanPlayer extends Player {
 	public BoardCell pickLocation(Set<BoardCell> targets){
 		return board.getCellAt(4,4);
 	}
+	
+	/*
 	@Override
 	public Card disproveSuggestion(String person, String room, String weapon)
 	{
@@ -64,7 +66,7 @@ public class HumanPlayer extends Player {
 				}
 			}
 		}
-		
+
 		return disprovenCard;
-	}
+	}*/
 }

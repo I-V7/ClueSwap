@@ -292,23 +292,19 @@ public class ClueGame extends JFrame {
 							player.setLastRoomVisited(players.get(currentTurn).getLastRoomVisited());
 							repaint();
 						}
-
-						if(!player.isHuman())
+						Card disproveCard = player.disproveSuggestion(person, room, weapon);
+						if(disproveCard != null && disprover == false)
 						{
-							Card disproveCard = player.disproveSuggestion(person, room, weapon);
-							if(disproveCard != null && disprover == false)
-							{
-								panel.setGuessResult(disproveCard.getName());
-								panel.setLastGuess(person,weapon,room);
-								disprover = true;
-								notFirst = true;
+							panel.setGuessResult(disproveCard.getName());
+							panel.setLastGuess(person,weapon,room);
+							disprover = true;
+							notFirst = true;
 
-							}
-							else if (disprover == false)
-							{
-								panel.setLastGuess(person,weapon,room);
-								panel.setGuessResult("Not disproved");
-							}
+						}
+						else if (disprover == false)
+						{
+							panel.setLastGuess(person,weapon,room);
+							panel.setGuessResult("Not disproved");
 						}
 					}
 					suggestion.close();
@@ -326,8 +322,11 @@ public class ClueGame extends JFrame {
 				allCards.put(a.getName(),a);
 			}
 			String[] carderon = playa.createSuggestion(allCards,board);
-			for(Player player: players)
+			System.out.println("test");
+			for(int i = currentTurn; i < currentTurn + players.size()-1; i++)
 			{
+				System.out.println(i % players.size());
+				Player player = players.get(i % players.size());
 				if(player.getName().equals(carderon[0]))
 				{
 					player.setCol(players.get(currentTurn).getCol());
@@ -335,23 +334,19 @@ public class ClueGame extends JFrame {
 					player.setLastRoomVisited(players.get(currentTurn).getLastRoomVisited());
 					repaint();
 				}
-
-				if(!player.isHuman())
+				Card disproveCard = player.disproveSuggestion(carderon[0], carderon[2], carderon[1]);
+				if(disproveCard != null && disprover == false)
 				{
-					Card disproveCard = player.disproveSuggestion(carderon[0], carderon[2], carderon[1]);
-					if(disproveCard != null && disprover == false)
-					{
-						panel.setGuessResult(disproveCard.getName());
-						panel.setLastGuess(carderon[0],carderon[1],carderon[2]);
-						disprover = true;
-						notFirst = true;
+					panel.setGuessResult(disproveCard.getName());
+					panel.setLastGuess(carderon[0],carderon[1],carderon[2]);
+					disprover = true;
+					notFirst = true;
 
-					}
-					else if (disprover == false)
-					{
-						panel.setLastGuess(carderon[0],carderon[1],carderon[2]);
-						panel.setGuessResult("Not disproved");
-					}
+				}
+				else if (disprover == false)
+				{
+					panel.setLastGuess(carderon[0],carderon[1],carderon[2]);
+					panel.setGuessResult("Not disproved");
 				}
 			}
 		}
