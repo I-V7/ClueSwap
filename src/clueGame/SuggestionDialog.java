@@ -46,6 +46,7 @@ public class SuggestionDialog extends JFrame {
 		roomLabel = new JLabel("Room");
 		weaponLabel = new JLabel("Weapon");
 		personLabel = new JLabel("Person");
+		currentRoom = new JLabel("broke");
 		personBox = new JComboBox<String>();
 		weaponBox = new JComboBox<String>();
 		for(Card card: suggestionCards)
@@ -75,12 +76,7 @@ public class SuggestionDialog extends JFrame {
 		labelPanel.setLayout(new GridLayout(3,2));
 		labelPanel.setBorder(new EtchedBorder());
 		labelPanel.add(roomLabel);
-		if(!alreadyAdded)
-		{
-			currentRoom = new JLabel(this.room);
-			labelPanel.add(currentRoom);
-			alreadyAdded=true;
-		}
+		labelPanel.add(currentRoom);
 		labelPanel.add(personLabel);
 		labelPanel.add(personBox);
 		labelPanel.add(weaponLabel);
